@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb3161525860746335</string>
+			</array>
+		</dict>
+	</array>
+	<key>FacebookAppID</key>
+	<string>3161525860746335</string>
+	<key>FacebookClientToken</key>
+	<string>6f5511326a42c5f87a18da9358c3a947</string>
+	<key>FacebookDisplayName</key>
+	<string>mealq</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>fbapi</string>
+		<string>fbapi20130214</string>
+		<string>fbapi20130410</string>
+		<string>fbapi20130702</string>
+		<string>fbapi20131010</string>
+		<string>fbapi20131219</string>
+		<string>fbapi20140410</string>
+		<string>fbapi20140116</string>
+		<string>fbapi20150313</string>
+		<string>fbapi20150629</string>
+		<string>fbapi20160328</string>
+		<string>fbauth</string>
+		<string>fb-messenger-share-api</string>
+		<string>fbauth2</string>
+		<string>fbshareextension</string>
+	</array>
+	<key>UIAppFonts</key>
+	<array>
+		<string>/Fonts/Quicksand-Medium.ttf</string>
+		<string>/Fonts/Quicksand-Bold.ttf</string>
+		<string>/Fonts/Quicksand-Regular.ttf</string>
+		<string>/Fonts/Quicksand-SemiBold.ttf</string>
+	</array>
+</dict>
+</plist>
