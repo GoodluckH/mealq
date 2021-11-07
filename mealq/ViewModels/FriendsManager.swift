@@ -34,10 +34,10 @@ class FriendsManager: ObservableObject {
     /// Uses Firestore's snapshot listener to only fetch and update new changes.
     ///  - SeeAlso: `friends`.
     func fetchData() {
-        if let currentUser = currentUser {
+        if let currentUser = Auth.auth().currentUser {
             db.collection("users").whereField("friends.\(currentUser.uid)", isEqualTo: 1).addSnapshotListener { (snapshot, error) in
                 guard let documents = snapshot?.documents else {
-                    print("no friends :(")
+                    print("no friends :(  --- failed to retrieve snapshot")
                     return
                 }
                 DispatchQueue.main.async {
@@ -102,7 +102,7 @@ class FriendsManager: ObservableObject {
         
         
         // Filters all other users.
-        if let currentUser = currentUser {
+        if let currentUser = Auth.auth().currentUser {
             self.db.collection("users").getDocuments { (snapshot, error) in
                 guard let documents = snapshot?.documents else {
                     print("Couldn't fetch documents")

@@ -9,10 +9,11 @@ import SwiftUI
 
 struct ProfileView: View {
     @ObservedObject var sessionStore = SessionStore()
-   
+    @State private var showUserDeletion = false
     init() {
         sessionStore.listen()
     }
+    
     var body: some View {
         VStack {
             if !sessionStore.isAnon {
@@ -23,20 +24,28 @@ struct ProfileView: View {
 
                 }
             
-            Button(action: {
-                if sessionStore.signOut() {
-                    print("sign out succeeded")
+            Button("sign out")  {
+                sessionStore.signOut()
+                print("sign out succeeded")
                 }
-            }){
-                Text("sign out")
+            
+            Button("delete account") {
+                showUserDeletion = true
+            }
+            .foregroundColor(.red)
+            .confirmationDialog("Are you sure you want to permanently delete your account and data associated with it?", isPresented: $showUserDeletion , titleVisibility: .visible) {
+                Button("Delete Account", role: .destructive) {
+                    sessionStore.deleteUser()
+                }
+                
+            }
+            
+            
             }
         }
- 
-    }
+
+
 }
-
-
-
 
 
 

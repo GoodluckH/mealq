@@ -103,15 +103,76 @@ class SessionStore: ObservableObject {
     /// Signs the current user out through `FirebaseAuth`.
     ///
     /// - returns: whether the current user has been successfully signed out.
-    func signOut() -> Bool {
+    func signOut(){
         do {
             try authRef.signOut()
             self.localUser = nil
             self.isAnon = true
-            return true
+            return
             }
-        catch { return false }
+        catch { return }
         }
+    
+    
+    /// Deletes the current user and its associated data from other users.
+    func deleteUser() {
+        let currentUserUID = authRef.currentUser?.uid
+        // delete current user's record
+        if currentUserUID != nil {
+            db.collection("users").document(currentUserUID!).delete() { err in
+                if let err = err {
+                    print("Error removing document: \(err)")
+                } else {
+                    print("Document successfully removed!")
+                    self.authRef.currentUser?.delete { error in
+                        if let error = error {
+                            print("unable to delete account \(self.authRef.currentUser!.uid): \(error.localizedDescription)")
+                            return
+                        } else {
+                            print("deleted account \(currentUserUID!) from Firebase")
+                            let db = Firestore.firestore()
+                            
+                            // delete current user's record
+                            db.collection("users").document(currentUserUID!).delete() { err in
+                                if let err = err {
+                                    print("Error removing document: \(err)")
+                                } else {
+                                    print("Document successfully removed!")
+                                }
+                            }
+                            // delete current user's record in other users' documents
+                            db.collection("users").whereField("friends.\(currentUserUID!)", isLessThanOrEqualTo: 2).getDocuments {
+                               ( snapshot, error) in
+                                guard let documents = snapshot?.documents else {
+                                    print("failed to retrieve snapshot")
+                                    return
+                                }
+                                for document in documents {
+                                    db.collection("users").document(document.documentID).updateData([
+                                        "friends.\(currentUserUID!)": FieldValue.delete(),
+                                    ]) { err in
+                                        if let err = err {
+                                            print("Unable to delete the current user from \(document.documentID)'s friend list: \(err)")
+                                        } else {
+                                            
+                                            print("Successfully deleted \(currentUserUID!) from \(document.documentID)'s friend list")
+                                        }
+                                    }
+                                }
+                                //self.unbind()
+                                self.localUser = nil
+                                self.isAnon = true
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    
+        
+
+    }
+    
     
     
     /// Unbinds `Firebase` listener.

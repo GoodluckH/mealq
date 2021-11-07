@@ -12,9 +12,8 @@ enum Tab {
 }
 
 struct MainAppView: View {
-    
-    
     @State var selection: Tab = .social
+    
     var body: some View {
         TabView(selection: $selection) {
             ZStack{
@@ -32,11 +31,13 @@ struct MainAppView: View {
             ProfileView().tabItem{Image(systemName: "person")}.tag(Tab.profile)
             
         }
-        .onAppear{
+        
+
+        //.onAppear{
 //            let apparence = UITabBarAppearance()
 //            apparence.configureWithOpaqueBackground()
 //            if #available(iOS 15.0, *) {UITabBar.appearance().scrollEdgeAppearance = apparence}
-        }
+       // }
         .font(Font.custom("Quicksand-SemiBold", size: 17))
     }
 }
