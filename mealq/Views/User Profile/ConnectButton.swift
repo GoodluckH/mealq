@@ -10,49 +10,120 @@ import Firebase
 
 struct ConnectButton: View {
     var user: User
-   @EnvironmentObject var friendsManager: FriendsManager
-    
+    @EnvironmentObject var friendsManager: FriendsManager
+    @State private var showPendingSheet = false
+    @State private var showUnfriendSheet = false
     
     var body: some View {
-        EmptyView()
-        // if the user is already a friend, then when clicked, the button should remove the friendship
-        // otherwise, build a new friendship by sending a request
-        // if the potential friend's uid is in friendRequest, then display pending
-        // if the other friend accepts the request, remove the thing from friendRequest, and do the connectFriend method.
-        
-        
 
-        if friendsManager.friends[1]!.contains(user) {
-                Button(action: {
-                    friendsManager.unfriend(me: Auth.auth().currentUser!.uid, theOtherUser: user.id)
-                }) {
-                    Text("unfriend")
+        GeometryReader{ geometry in
+     
+            // if it's a friend, then display the button for removing this friend
+            if friendsManager.friends[1]!.contains(user) {
+                HStack{
+                    Spacer()
+                    Button(action: {showUnfriendSheet = true}) {
+                        HStack{
+                            Image(systemName: "checkmark")
+                            Text("connected")
+                        }
+                      }
+                       .font(.headline.weight(.bold))
+                       .foregroundColor(.blue)
+                       .padding(.vertical, 10)
+                       .frame(width: geometry.size.width/2)
+                       .background(Capsule().strokeBorder(Color.blue, lineWidth: 2))
+                       .confirmationDialog("Are you sure you don't want to be friends with \(user.fullname)?", isPresented: $showUnfriendSheet, titleVisibility: .visible) {
+                           Button("Unfriend", role: .destructive) {
+                               friendsManager.unfriend(me: Auth.auth().currentUser!.uid, theOtherUser: user.id)
+                           }
+                       }
+                    Spacer()
                 }
-        } else if friendsManager.friends[2]!.contains(user) {
-            Button(action: {
-                /// - Todo
-            }) {
-                Text("Pending, click to cancel request")
             }
-        }
+            
+            
+            // if this user has no accepted the friend request, then show the pending button
+            else if friendsManager.friends[2]!.contains(user) {
+                HStack{
+                    Spacer()
+                    Button("pending") {showPendingSheet = true}
+                       .font(.headline.weight(.bold))
+                       .foregroundColor(.blue)
+                       .padding(.vertical, 10.0)
+                       .frame(width: geometry.size.width/2)
+                       .background(Capsule().strokeBorder(Color.blue, lineWidth: 2))
+                       .confirmationDialog("Cancel friend request to \(user.fullname)?", isPresented: $showPendingSheet, titleVisibility: .visible) {
+                       Button("Unsend friend request", role: .destructive) {
+                           friendsManager.unsendFriendRequest(me: Auth.auth().currentUser!.uid, theOtherUser: user.id)
+                       }
+                   }
+                    Spacer()
+                }
+            }
+              
+            
+            
+            // if this user is not a friend nor there's any friend request, show add-friend button
+            else {
+                HStack{
+                    Spacer()
+                    Button(action: {
+                        friendsManager.sendFriendRequest(me: Auth.auth().currentUser!.uid, theOtherUser: user.id)
+                    }) {
+                      HStack{
+                          Image(systemName: "person.fill.badge.plus")
+                          Text("add friend").font(.headline.weight(.bold))
+                      }
+                      }
+                       .foregroundColor(.white)
+                       .padding(.vertical, 10.0)
+                       .frame(width: geometry.size.width/2)
+                       .background(Color.blue)
+                       .clipShape(Capsule())
+                    Spacer()
+                }
+            }
+                
+                
+                
+                
+                
+            } // GeometryReader
+        } // body
+    }
 
-        else {
-            Button(action: {
-                friendsManager.sendFriendRequest(me: Auth.auth().currentUser!.uid, theOtherUser: user.id)
-            }) {
-                Text("Send Request")
-            }
-        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+struct ConnectButton_Previews: PreviewProvider {
     
-    
-    
-    
+    static var previews: some View {
+        ConnectButton(user: User(id: "salfjal;sdf", fullname: "Mike Kim", email: "elas@lksd")).environmentObject(FriendsManager())
     }
 }
 
-//struct ConnectButton_Previews: PreviewProvider {
-//    
-//    static var previews: some View {
-//        ConnectButton(myFriends: [1: [User](), 2: [User]()], user: User(id: "salfjal;sdf", fullname: "Mike Kim", email: "elas@lksd") , friendsManager: FriendsManager())
-//    }
-//}

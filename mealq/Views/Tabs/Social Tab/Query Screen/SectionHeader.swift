@@ -12,13 +12,12 @@ struct SectionHeader: View {
     var body: some View {
         HStack{
             Text(headerText)
-                .fontWeight(.ultraLight)
-                .foregroundColor(.secondary)
+                .font(.footnote)
+                .fontWeight(.light)
+                .foregroundColor(.primary)
             Spacer()
             }
         .padding(.horizontal)
-        .background(.white)
-        
     }
 }
 

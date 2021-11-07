@@ -27,13 +27,18 @@ struct QueryScreen: View {
             ScrollView {
                 LazyVStack(alignment: .leading, pinnedViews: [.sectionHeaders]) {
                     if !friendsManager.queryResult["friends"]!.isEmpty {
-                        SectionView(usersCode: "query_friends", users: friendsManager.queryResult["friends"]!)
+                        SectionView(headerText: "My Friends", users: friendsManager.queryResult["friends"]!)
                     }
                     else if searchText.isEmpty {
-                        SectionView(usersCode: "connected_friends",users: friendsManager.friends[1]!)
+                        if friendsManager.friends[1]!.isEmpty {
+                            SectionView(headerText: "You don't have any friend... yet", users: [User]())
+                        }
+                        else {
+                            SectionView(headerText: "My Friends", users:friendsManager.friends[1]!)
+                        }
                     }
                     if !friendsManager.queryResult["others"]!.isEmpty {
-                        SectionView(usersCode: "query_others", users: friendsManager.queryResult["others"]!)
+                        SectionView(headerText: "Other People", users: friendsManager.queryResult["others"]!)
                     }
                         
                 }
@@ -48,8 +53,11 @@ struct QueryScreen: View {
                 friendsManager.queryResult["friends"]!.isEmpty &&
                 friendsManager.queryResult["others"]!.isEmpty {
                 if friendsManager.resolvingQuery {
-                    ProgressView()
+                    ActivityIndicatorView(isVisible: .constant(true), type: .gradient([Color("QueryLoaderStartingColor"), .primary]))
+                        .frame(width: geometry.size.width/12, height: geometry.size.width/12)
+                        
                 }else{
+       
                     NoMatchView(searchText: $searchText).padding()
                     .environmentObject(friendsManager)
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)

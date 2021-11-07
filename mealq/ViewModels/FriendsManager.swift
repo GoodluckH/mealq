@@ -180,10 +180,12 @@ class FriendsManager: ObservableObject {
                 print("Successfully sent request to \(otherUserID) from \(myID)")
             }
         }
-        
-        
     }
     
+    
+    func unsendFriendRequest(me myID: String, theOtherUser otherUserID: String) {
+        deleteFriend(myID, from: otherUserID)
+    }
     
     
     func unfriend(me myID: String, theOtherUser otherUserID: String) {
@@ -223,10 +225,6 @@ class FriendsManager: ObservableObject {
             }
         }
     }
-    
-    
-    
-    
     
 }
 
