@@ -27,8 +27,7 @@ struct ConnectButton: View {
                             Image(systemName: "checkmark")
                             Text("connected")
                         }
-                      }
-                       .font(.headline.weight(.bold))
+                      }.customFont(name: "Quicksand-SemiBold", style: .headline, weight: .black)
                        .foregroundColor(.blue)
                        .padding(.vertical, 10)
                        .frame(width: geometry.size.width/2)
@@ -48,7 +47,7 @@ struct ConnectButton: View {
                 HStack{
                     Spacer()
                     Button("pending") {showPendingSheet = true}
-                       .font(.headline.weight(.bold))
+                        .customFont(name: "Quicksand-SemiBold", style: .headline, weight: .bold)
                        .foregroundColor(.blue)
                        .padding(.vertical, 10.0)
                        .frame(width: geometry.size.width/2)
@@ -73,7 +72,8 @@ struct ConnectButton: View {
                     }) {
                       HStack{
                           Image(systemName: "person.fill.badge.plus")
-                          Text("add friend").font(.headline.weight(.bold))
+                          Text("add friend")
+                              .customFont(name: "Quicksand-SemiBold", style: .headline, weight: .bold)
                       }
                       }
                        .foregroundColor(.white)

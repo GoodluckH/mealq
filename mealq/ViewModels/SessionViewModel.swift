@@ -8,6 +8,7 @@
 import Foundation
 import Firebase
 import FirebaseAuth
+import FirebaseMessaging
 import FacebookLogin
 
 /// A view model that handles login and logout operations.
@@ -86,17 +87,40 @@ class SessionStore: ObservableObject {
                                     _ email: String,
                                     _ thumbnailPicURL: String = "",
                                     _ normalPicURL: String = "") {
-        db.collection("users").document(userID).setData([
-            "uid": userID,
-            "fullname": fullname,
-            "email": email,
-            "thumbnailPicURL": thumbnailPicURL,
-            "normalPicURL": normalPicURL,
-            "friends": [:]
-        ]) {err in
-                if let err = err {print("Error writing document: \(err)")}
-                else {print("Document successfully written!")}
-                }
+
+        Messaging.messaging().token { token, error in
+          if let error = error {
+            print("Error fetching FCM registration token: \(error)")
+              self.db.collection("users").document(userID).setData([
+                "uid": userID,
+                "fullname": fullname,
+                "email": email,
+                "thumbnailPicURL": thumbnailPicURL,
+                "normalPicURL": normalPicURL,
+                "friends": [:],
+                "fcmToken": ""
+              ]) {err in
+                    if let err = err {print("Error writing document: \(err)")}
+                    else {print("Document successfully written!")}
+                    }
+              
+          } else if let token = token {
+            print("FCM registration token: \(token)")
+            self.db.collection("users").document(userID).setData([
+              "uid": userID,
+              "fullname": fullname,
+              "email": email,
+              "thumbnailPicURL": thumbnailPicURL,
+              "normalPicURL": normalPicURL,
+              "friends": [:],
+              "fcmToken": token
+            ]) {err in
+                  if let err = err {print("Error writing document: \(err)")}
+                  else {print("Document successfully written!")}
+                  }
+          }
+        }
+
     }
     
         
@@ -108,7 +132,6 @@ class SessionStore: ObservableObject {
             try authRef.signOut()
             self.localUser = nil
             self.isAnon = true
-            return
             }
         catch { return }
         }
@@ -117,61 +140,71 @@ class SessionStore: ObservableObject {
     /// Deletes the current user and its associated data from other users.
     func deleteUser() {
         let currentUserUID = authRef.currentUser?.uid
-        // delete current user's record
         if currentUserUID != nil {
-            db.collection("users").document(currentUserUID!).delete() { err in
-                if let err = err {
-                    print("Error removing document: \(err)")
-                } else {
-                    print("Document successfully removed!")
-                    self.authRef.currentUser?.delete { error in
+
+            self.loginManager.logIn(permissions: [.publicProfile, .email], viewController: nil) { loginResult in
+                switch loginResult {
+                case .failed(let error):
+                    print(error)
+                case .cancelled:
+                    print("User cancelled login. Deletion process halted.")
+                case .success:
+                    let credential = FacebookAuthProvider.credential(withAccessToken: AccessToken.current!.tokenString)
+                    self.authRef.currentUser?.reauthenticate(with: credential) { result, error in
                         if let error = error {
-                            print("unable to delete account \(self.authRef.currentUser!.uid): \(error.localizedDescription)")
-                            return
+                            print("Unable to reauthenticate user: \(error)")
                         } else {
-                            print("deleted account \(currentUserUID!) from Firebase")
-                            let db = Firestore.firestore()
-                            
-                            // delete current user's record
-                            db.collection("users").document(currentUserUID!).delete() { err in
+                            // delete current user's record from Firestore
+                            self.db.collection("users").document(currentUserUID!).delete() { err in
                                 if let err = err {
                                     print("Error removing document: \(err)")
                                 } else {
                                     print("Document successfully removed!")
-                                }
-                            }
-                            // delete current user's record in other users' documents
-                            db.collection("users").whereField("friends.\(currentUserUID!)", isLessThanOrEqualTo: 2).getDocuments {
-                               ( snapshot, error) in
-                                guard let documents = snapshot?.documents else {
-                                    print("failed to retrieve snapshot")
-                                    return
-                                }
-                                for document in documents {
-                                    db.collection("users").document(document.documentID).updateData([
-                                        "friends.\(currentUserUID!)": FieldValue.delete(),
-                                    ]) { err in
-                                        if let err = err {
-                                            print("Unable to delete the current user from \(document.documentID)'s friend list: \(err)")
-                                        } else {
-                                            
-                                            print("Successfully deleted \(currentUserUID!) from \(document.documentID)'s friend list")
+                                    
+                                    // ----------------------------------------------------------------------
+                                    // --------- DELETE CURRENT USER FROM OTHER USER'S FRIEND LISTS ---------
+                                    self.db.collection("users").whereField("friends.\(currentUserUID!)", isLessThanOrEqualTo: 2).getDocuments {
+                                       ( snapshot, error) in
+                                        guard let documents = snapshot?.documents else {
+                                            print("failed to retrieve snapshot")
+                                            return
+                                        }
+                                        for document in documents {
+                                            self.db.collection("users").document(document.documentID).updateData([
+                                                "friends.\(currentUserUID!)": FieldValue.delete(),
+                                            ]) { err in
+                                                if let err = err {
+                                                    print("Unable to delete the current user from \(document.documentID)'s friend list: \(err)")
+                                                } else {
+                                                    print("Successfully deleted \(currentUserUID!) from \(document.documentID)'s friend list")
+
+                                                }
+                                            }
+                                        }
+                                        
+                                        // -----------------------------------------------------
+                                        // --------- DELETE CURRENT USER FROM FIREBASE ---------
+                                        self.authRef.currentUser?.delete { error in
+                                            if let error = error {
+                                                print("unable to delete account \(self.authRef.currentUser!.uid): \(error.localizedDescription)")
+                                                return
+                                            } else {
+                                                print("deleted account \(currentUserUID!) from Firebase")
+                                                //self.unbind()
+                                                self.localUser = nil
+                                                self.isAnon = true
+                                            }
                                         }
                                     }
                                 }
-                                //self.unbind()
-                                self.localUser = nil
-                                self.isAnon = true
                             }
                         }
                     }
                 }
             }
         }
-    
-        
-
     }
+
     
     
     

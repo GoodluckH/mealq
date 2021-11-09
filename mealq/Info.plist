@@ -19,6 +19,8 @@
 	<string>6f5511326a42c5f87a18da9358c3a947</string>
 	<key>FacebookDisplayName</key>
 	<string>mealq</string>
+	<key>FirebaseAppDelegateProxyEnabled</key>
+	<false/>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>fbapi</string>

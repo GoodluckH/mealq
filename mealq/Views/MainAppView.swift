@@ -38,7 +38,7 @@ struct MainAppView: View {
 //            apparence.configureWithOpaqueBackground()
 //            if #available(iOS 15.0, *) {UITabBar.appearance().scrollEdgeAppearance = apparence}
        // }
-        .font(Font.custom("Quicksand-SemiBold", size: 17))
+        .customFont(name: "Quicksand-SemiBold", style: .body)
     }
 }
 

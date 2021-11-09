@@ -12,8 +12,7 @@ struct SectionHeader: View {
     var body: some View {
         HStack{
             Text(headerText)
-                .font(.footnote)
-                .fontWeight(.light)
+                .customFont(name: "Quicksand-SemiBold", style: .subheadline)
                 .foregroundColor(.primary)
             Spacer()
             }

@@ -25,13 +25,14 @@ struct UserProfileView: View {
 
             ProfilePicView(picURL: user.thumbnailPicURL)
                    .frame(width: ProfilePicStyles.profilePicWidth, height: ProfilePicStyles.profilePicHeight)
-               Text(user.fullname).font(.title).fontWeight(.bold)
+               Text(user.fullname)
+                   .customFont(name: "Quicksand-SemiBold", style: .title1, weight: .black)
                Text("\(friendsManager.otherUserFriends.count) friends")
-                   .font(.subheadline)
-                   .fontWeight(.semibold)
+                   .customFont(name: "Quicksand-SemiBold", style: .subheadline, weight: .semibold)
+                   
                    
                ConnectButton(user: user).padding(.top).padding(.horizontal)
-              
+                   
                    
                
                Spacer()
