@@ -30,11 +30,11 @@ struct QueryScreen: View {
                         SectionView(headerText: "My Friends", users: friendsManager.queryResult["friends"]!)
                     }
                     else if searchText.isEmpty {
-                        if friendsManager.friends[1]!.isEmpty {
+                        if friendsManager.friends.isEmpty {
                             SectionView(headerText: "You don't have any friend... yet", users: [User]())
                         }
                         else {
-                            SectionView(headerText: "My Friends", users:friendsManager.friends[1]!)
+                            SectionView(headerText: "My Friends", users:friendsManager.friends)
                         }
                     }
                     if !friendsManager.queryResult["others"]!.isEmpty {

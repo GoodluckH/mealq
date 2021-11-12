@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		802BC314273DC926004F1505 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802BC313273DC926004F1505 /* NotificationService.swift */; };
+		802BC318273DC926004F1505 /* notifications for mealq.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 802BC311273DC926004F1505 /* notifications for mealq.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		802BC31E273DC92F004F1505 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 802BC31D273DC92F004F1505 /* FirebaseMessaging */; };
 		80964EAD2739ABEA00F54B6D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80964EAC2739ABEA00F54B6D /* AppDelegate.swift */; };
 		80C12067272E02CB006D125D /* mealqApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C12066272E02CB006D125D /* mealqApp.swift */; };
 		80C12069272E02CB006D125D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C12068272E02CB006D125D /* ContentView.swift */; };
@@ -50,10 +53,37 @@
 		80EFC38F273496FA005520D3 /* ConnectButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EFC38E273496FA005520D3 /* ConnectButton.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		802BC316273DC926004F1505 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 80C1205B272E02CB006D125D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 802BC310273DC926004F1505;
+			remoteInfo = "notifications for mealq";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		80964EC0273DA7E900F54B6D /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				802BC318273DC926004F1505 /* notifications for mealq.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		802BC30C273DC8BB004F1505 /* mealq.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = mealq.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		802BC311273DC926004F1505 /* notifications for mealq.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "notifications for mealq.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		802BC313273DC926004F1505 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		802BC315273DC926004F1505 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		80964EAB2738AB4900F54B6D /* mealq.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = mealq.entitlements; sourceTree = "<group>"; };
 		80964EAC2739ABEA00F54B6D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		80C12063272E02CB006D125D /* mealq.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = mealq.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		80C12066272E02CB006D125D /* mealqApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mealqApp.swift; sourceTree = "<group>"; };
 		80C12068272E02CB006D125D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		80C1206A272E02CC006D125D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -90,6 +120,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		802BC30E273DC926004F1505 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				802BC31E273DC92F004F1505 /* FirebaseMessaging in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		80C12060272E02CB006D125D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -108,20 +146,39 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		802BC312273DC926004F1505 /* notifications for mealq */ = {
+			isa = PBXGroup;
+			children = (
+				802BC313273DC926004F1505 /* NotificationService.swift */,
+				802BC315273DC926004F1505 /* Info.plist */,
+			);
+			path = "notifications for mealq";
+			sourceTree = "<group>";
+		};
+		802BC31C273DC92F004F1505 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		806B30C3273DC75E003FF495 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				802BC30C273DC8BB004F1505 /* mealq.app */,
+				802BC311273DC926004F1505 /* notifications for mealq.appex */,
+			);
+			path = Products;
+			sourceTree = "<group>";
+		};
 		80C1205A272E02CB006D125D = {
 			isa = PBXGroup;
 			children = (
 				80C12065272E02CB006D125D /* mealq */,
-				80C12064272E02CB006D125D /* Products */,
+				802BC312273DC926004F1505 /* notifications for mealq */,
+				806B30C3273DC75E003FF495 /* Products */,
+				802BC31C273DC92F004F1505 /* Frameworks */,
 			);
-			sourceTree = "<group>";
-		};
-		80C12064272E02CB006D125D /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				80C12063272E02CB006D125D /* mealq.app */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		80C12065272E02CB006D125D /* mealq */ = {
@@ -273,6 +330,26 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		802BC310273DC926004F1505 /* notifications for mealq */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 802BC31B273DC926004F1505 /* Build configuration list for PBXNativeTarget "notifications for mealq" */;
+			buildPhases = (
+				802BC30D273DC926004F1505 /* Sources */,
+				802BC30E273DC926004F1505 /* Frameworks */,
+				802BC30F273DC926004F1505 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "notifications for mealq";
+			packageProductDependencies = (
+				802BC31D273DC92F004F1505 /* FirebaseMessaging */,
+			);
+			productName = "notifications for mealq";
+			productReference = 802BC311273DC926004F1505 /* notifications for mealq.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		80C12062272E02CB006D125D /* mealq */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 80C12071272E02CC006D125D /* Build configuration list for PBXNativeTarget "mealq" */;
@@ -280,10 +357,12 @@
 				80C1205F272E02CB006D125D /* Sources */,
 				80C12060272E02CB006D125D /* Frameworks */,
 				80C12061272E02CB006D125D /* Resources */,
+				80964EC0273DA7E900F54B6D /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				802BC317273DC926004F1505 /* PBXTargetDependency */,
 			);
 			name = mealq;
 			packageProductDependencies = (
@@ -297,7 +376,7 @@
 				80C120AE272F86C9006D125D /* ActivityIndicatorView */,
 			);
 			productName = mealq;
-			productReference = 80C12063272E02CB006D125D /* mealq.app */;
+			productReference = 802BC30C273DC8BB004F1505 /* mealq.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -310,6 +389,9 @@
 				LastSwiftUpdateCheck = 1310;
 				LastUpgradeCheck = 1310;
 				TargetAttributes = {
+					802BC310273DC926004F1505 = {
+						CreatedOnToolsVersion = 13.1;
+					};
 					80C12062272E02CB006D125D = {
 						CreatedOnToolsVersion = 13.1;
 					};
@@ -329,16 +411,24 @@
 				80C12082272E06A1006D125D /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */,
 				80C120AD272F86C9006D125D /* XCRemoteSwiftPackageReference "ActivityIndicatorView" */,
 			);
-			productRefGroup = 80C12064272E02CB006D125D /* Products */;
+			productRefGroup = 806B30C3273DC75E003FF495 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				80C12062272E02CB006D125D /* mealq */,
+				802BC310273DC926004F1505 /* notifications for mealq */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		802BC30F273DC926004F1505 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		80C12061272E02CB006D125D /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -353,6 +443,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		802BC30D273DC926004F1505 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				802BC314273DC926004F1505 /* NotificationService.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		80C1205F272E02CB006D125D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -391,7 +489,67 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		802BC317273DC926004F1505 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 802BC310273DC926004F1505 /* notifications for mealq */;
+			targetProxy = 802BC316273DC926004F1505 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		802BC319273DC926004F1505 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = AZ5YZ6A37J;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "notifications for mealq/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "notifications for mealq";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "li.xipu.mealq.notifications-for-mealq";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		802BC31A273DC926004F1505 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = AZ5YZ6A37J;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "notifications for mealq/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "notifications for mealq";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "li.xipu.mealq.notifications-for-mealq";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		80C1206F272E02CC006D125D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -511,6 +669,7 @@
 		80C12072272E02CC006D125D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = mealq/mealq.entitlements;
@@ -545,6 +704,7 @@
 		80C12073272E02CC006D125D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = mealq/mealq.entitlements;
@@ -579,6 +739,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		802BC31B273DC926004F1505 /* Build configuration list for PBXNativeTarget "notifications for mealq" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				802BC319273DC926004F1505 /* Debug */,
+				802BC31A273DC926004F1505 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		80C1205E272E02CB006D125D /* Build configuration list for PBXProject "mealq" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -627,6 +796,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		802BC31D273DC92F004F1505 /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 80C12076272E0341006D125D /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
+		};
 		80C12077272E0341006D125D /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 80C12076272E0341006D125D /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;

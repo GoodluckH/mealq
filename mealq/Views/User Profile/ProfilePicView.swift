@@ -17,20 +17,27 @@ struct ProfilePicView: View {
    
     var body: some View {
         GeometryReader{ geometry in
-            AsyncImage(url: picURL ?? URL(string: "https://INVALIDADDRESS")) { phase in
-                if let image = phase.image {
-                image.resizable()
-                    .aspectRatio(1, contentMode: .fit)
-            } else if phase.error != nil {
-                Text("🐮").font(resizeFont(in: geometry.size, scale: ProfilePicStyles.errorTextFontScaleFactor))
-                    .position(x: geometry.size.width/2, y: geometry.size.height/2)
-            } else {
-                ActivityIndicatorView(isVisible: .constant(true), type: .gradient(makeColors(from: ProfilePicStyles.gradient)))
+            if let picURL = picURL {
+                AsyncImage(url: picURL) { phase in
+                    if let image = phase.image {
+                    image.resizable()
+                        .aspectRatio(1, contentMode: .fit)
+                } else if phase.error != nil {
+                    Text("").font(resizeFont(in: geometry.size, scale: ProfilePicStyles.errorTextFontScaleFactor))
+                        .position(x: geometry.size.width/2, y: geometry.size.height/2)
+                } else {
+                    ActivityIndicatorView(isVisible: .constant(true), type: .gradient(makeColors(from: ProfilePicStyles.gradient)))
+                }
             }
-        }
-        .background(LinearGradient(gradient: Gradient(colors: makeColors(from: ProfilePicStyles.gradient)), startPoint: .bottomTrailing, endPoint: .topLeading))
-        .clipShape(Circle())
-            
+            .background(LinearGradient(gradient: Gradient(colors: makeColors(from: ProfilePicStyles.gradient)), startPoint: .bottomTrailing, endPoint: .topLeading))
+            .clipShape(Circle())
+            } else {
+                Image("AppLogo")
+                    .resizable()
+                    .aspectRatio(1, contentMode: .fit)
+                    .clipShape(Circle())
+                    .position(x: geometry.size.width/2, y: geometry.size.height/2)
+            }
         }
         
         

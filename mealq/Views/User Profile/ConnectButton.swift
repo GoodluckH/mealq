@@ -11,6 +11,7 @@ import Firebase
 struct ConnectButton: View {
     var user: User
     @EnvironmentObject var friendsManager: FriendsManager
+    @ObservedObject var sessionStore =  SessionStore()
     @State private var showPendingSheet = false
     @State private var showUnfriendSheet = false
     
@@ -19,7 +20,7 @@ struct ConnectButton: View {
         GeometryReader{ geometry in
      
             // if it's a friend, then display the button for removing this friend
-            if friendsManager.friends[1]!.contains(user) {
+            if friendsManager.friends.contains(user) {
                 HStack{
                     Spacer()
                     Button(action: {showUnfriendSheet = true}) {
@@ -43,7 +44,7 @@ struct ConnectButton: View {
             
             
             // if this user has no accepted the friend request, then show the pending button
-            else if friendsManager.friends[2]!.contains(user) {
+            else if friendsManager.sentRequests.contains(user) {
                 HStack{
                     Spacer()
                     Button("pending") {showPendingSheet = true}
@@ -54,7 +55,7 @@ struct ConnectButton: View {
                        .background(Capsule().strokeBorder(Color.blue, lineWidth: 2))
                        .confirmationDialog("Cancel friend request to \(user.fullname)?", isPresented: $showPendingSheet, titleVisibility: .visible) {
                        Button("Unsend friend request", role: .destructive) {
-                           friendsManager.unsendFriendRequest(me: Auth.auth().currentUser!.uid, theOtherUser: user.id)
+                           friendsManager.unsendFriendRequest(to: user.id)
                        }
                    }
                     Spacer()
@@ -68,7 +69,7 @@ struct ConnectButton: View {
                 HStack{
                     Spacer()
                     Button(action: {
-                        friendsManager.sendFriendRequest(me: Auth.auth().currentUser!.uid, theOtherUser: user.id)
+                        friendsManager.sendFriendRequest(to: user)
                     }) {
                       HStack{
                           Image(systemName: "person.fill.badge.plus")
