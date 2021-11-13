@@ -20,32 +20,23 @@ struct SocialView: View {
                     Text("activities")
                         .customFont(name: "Quicksand-SemiBold", style: .title1, weight: .black)
                     Spacer()
-                    
                     AlertButton()
                         .padding(.horizontal)
                     SearchButton()
-                        
                 }
                 .padding()
                     
-                
-            
-                
           
-                    /// Todo
-                    Text("no friend activity to display")
+                    // TODO: implement the friend activity stream
+                    Text("no friend activity to display (coming up...)")
                         .frame(maxHeight: geometry.size.height, alignment: .top)
                         .ignoresSafeArea(.keyboard)
                         
                 }.navigationBarHidden(true)
                     .navigationBarTitle(Text(""))
-                
-        }
-                    
-
+                }
             }
         }
-
     }
 
 

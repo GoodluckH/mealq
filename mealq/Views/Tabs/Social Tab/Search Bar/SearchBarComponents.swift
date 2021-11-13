@@ -35,9 +35,7 @@ struct CustomTextField: View {
                 .frame(alignment: .leading)
                 .focused($focusedField)
                 .onTapGesture {
-                    withAnimation(.spring(response: 0.3, dampingFraction: 0.7, blendDuration: 0.2)){
                     focusedField = true
-                    }
                 }
                 .foregroundColor(Color("SearchBarSymbolColor"))
                 .accentColor(Color("SearchBarSymbolColor"))

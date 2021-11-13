@@ -28,7 +28,6 @@ struct SearchScreen: View {
                             if searchText == " " {searchText = ""}
                             else {friendsManager.queryString(of: searchText)}
                         }
-                        .transition(.move(edge: .bottom))
                 }
                
             }.navigationBarTitle("")
