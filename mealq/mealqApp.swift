@@ -11,10 +11,12 @@ import SwiftUI
 @main
 struct mealqApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-    
+    @StateObject var sessionStore = SessionStore()
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(sessionStore)
+                .onAppear{sessionStore.listen()}
         }
     }
 }

@@ -11,7 +11,7 @@ struct SocialView: View {
     @State private var searchText = ""
     @State private var showSearchScreen = false
     
-    @StateObject var friendsManager = FriendsManager()
+    @EnvironmentObject var friendsManager: FriendsManager
     @FocusState private var focusedField: Bool
     
     var body: some View {
@@ -31,7 +31,6 @@ struct SocialView: View {
                             .onAppear{
                                 if searchText == " " {searchText = ""}
                                 else {friendsManager.queryString(of: searchText)}
-                                friendsManager.fetchData()
                             }
                             .transition(.move(edge: .bottom))
                     } else {
@@ -47,7 +46,7 @@ struct SocialView: View {
                     .navigationBarTitle(Text(""))
 
             }
-        }.environmentObject(friendsManager)
+        }//.environmentObject(friendsManager)
 
     }
 }

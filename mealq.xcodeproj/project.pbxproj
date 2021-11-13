@@ -10,6 +10,8 @@
 		802BC314273DC926004F1505 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802BC313273DC926004F1505 /* NotificationService.swift */; };
 		802BC318273DC926004F1505 /* notifications for mealq.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 802BC311273DC926004F1505 /* notifications for mealq.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		802BC31E273DC92F004F1505 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 802BC31D273DC92F004F1505 /* FirebaseMessaging */; };
+		802BC320273F6F74004F1505 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802BC31F273F6F74004F1505 /* Constants.swift */; };
+		802BC322273F7394004F1505 /* SingleFriendRequestRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802BC321273F7394004F1505 /* SingleFriendRequestRow.swift */; };
 		80964EAD2739ABEA00F54B6D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80964EAC2739ABEA00F54B6D /* AppDelegate.swift */; };
 		80C12067272E02CB006D125D /* mealqApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C12066272E02CB006D125D /* mealqApp.swift */; };
 		80C12069272E02CB006D125D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C12068272E02CB006D125D /* ContentView.swift */; };
@@ -82,6 +84,8 @@
 		802BC311273DC926004F1505 /* notifications for mealq.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "notifications for mealq.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		802BC313273DC926004F1505 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		802BC315273DC926004F1505 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		802BC31F273F6F74004F1505 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		802BC321273F7394004F1505 /* SingleFriendRequestRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleFriendRequestRow.swift; sourceTree = "<group>"; };
 		80964EAB2738AB4900F54B6D /* mealq.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = mealq.entitlements; sourceTree = "<group>"; };
 		80964EAC2739ABEA00F54B6D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		80C12066272E02CB006D125D /* mealqApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mealqApp.swift; sourceTree = "<group>"; };
@@ -265,6 +269,7 @@
 				80C120B0272F8C54006D125D /* MakeColors.swift */,
 				80C120B6272F98B8006D125D /* ResizeFont.swift */,
 				80EFC3742732EE38005520D3 /* GestureActions.swift */,
+				802BC31F273F6F74004F1505 /* Constants.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -283,6 +288,7 @@
 			isa = PBXGroup;
 			children = (
 				80C12095272E5024006D125D /* MealsView.swift */,
+				802BC321273F7394004F1505 /* SingleFriendRequestRow.swift */,
 			);
 			path = "Meals Tab";
 			sourceTree = "<group>";
@@ -457,9 +463,11 @@
 			files = (
 				80C120A3272E55EE006D125D /* mealqButtonStyle.swift in Sources */,
 				80EFC38C27345423005520D3 /* UserProfileView.swift in Sources */,
+				802BC322273F7394004F1505 /* SingleFriendRequestRow.swift in Sources */,
 				80C120B1272F8C54006D125D /* MakeColors.swift in Sources */,
 				80C120B5272F984D006D125D /* ProfilePicStyles.swift in Sources */,
 				80964EAD2739ABEA00F54B6D /* AppDelegate.swift in Sources */,
+				802BC320273F6F74004F1505 /* Constants.swift in Sources */,
 				80EFC3732731DE8B005520D3 /* FriendsManager.swift in Sources */,
 				80C1208F272E4841006D125D /* SessionViewModel.swift in Sources */,
 				80C120A0272E511D006D125D /* MainAppView.swift in Sources */,
@@ -503,7 +511,7 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = AZ5YZ6A37J;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "notifications for mealq/Info.plist";
@@ -520,7 +528,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -529,7 +537,7 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = AZ5YZ6A37J;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "notifications for mealq/Info.plist";
@@ -546,7 +554,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -675,7 +683,7 @@
 				CODE_SIGN_ENTITLEMENTS = mealq/mealq.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"mealq/Preview Content\"";
 				DEVELOPMENT_TEAM = AZ5YZ6A37J;
 				ENABLE_PREVIEWS = YES;
@@ -697,7 +705,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -710,7 +718,7 @@
 				CODE_SIGN_ENTITLEMENTS = mealq/mealq.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"mealq/Preview Content\"";
 				DEVELOPMENT_TEAM = AZ5YZ6A37J;
 				ENABLE_PREVIEWS = YES;
@@ -732,7 +740,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

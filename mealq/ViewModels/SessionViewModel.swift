@@ -22,15 +22,17 @@ class SessionStore: ObservableObject {
     private let db = Firestore.firestore()
     private let authRef = Auth.auth()
     
+
+   // \(user!.photoURL!.absoluteString)
     /// Listens to state changes made by Firebase operations.
     func listen()  {
         handle = authRef.addStateDidChangeListener {[self] (auth, user) in
             if user != nil {
                 self.localUser = User(id: user!.uid,
-                                      fullname: user!.displayName!,
+                                      fullname: user!.displayName ?? "Rando",
                                       email: user!.email!,
                                       thumbnailPicURL: user!.photoURL,
-                                      normalPicURL: URL(string :"\(user!.photoURL!.absoluteString)?type=large"))
+                                      normalPicURL: URL(string :"\(user!.photoURL?.absoluteString ?? "none")?type=large"))
                 self.isAnon = false
             } else {
                 self.isAnon = true
@@ -39,6 +41,23 @@ class SessionStore: ObservableObject {
         }
     }
     
+    
+    
+    func demoLogin() {
+        
+        authRef.signIn(withEmail: "test@test.com", password: "12345678")
+        
+        // Create a new demo account
+//        authRef.createUser(withEmail: "test@test.com", password: "12345678") { result,err in
+//            if let err = err {
+//                print("something went wrong when logining demo account: \(err.localizedDescription)")
+//                return
+//            }
+//            result!.user.createProfileChangeRequest().displayName = "Apple Tester"
+//            self.addUserToFirestore(with: result!.user.uid, result!.user.displayName!, result!.user.email!)
+//
+//        }
+    }
     
     
     /// Logs the user in using `loginManager`.

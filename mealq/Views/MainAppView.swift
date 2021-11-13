@@ -13,6 +13,8 @@ enum Tab {
 
 struct MainAppView: View {
     @State var selection: Tab = .social
+    @StateObject var friendsManager = FriendsManager()
+    @EnvironmentObject var sessionStore: SessionStore
     
     var body: some View {
         TabView(selection: $selection) {
@@ -26,11 +28,15 @@ struct MainAppView: View {
                 CreateMealButton().zIndex(1)
                 MealsView()
             }.tabItem{Image(systemName: "mail.stack")}.tag(Tab.meals)
-                
+                .badge(friendsManager.pendingFriends.count)
             
-            ProfileView().tabItem{Image(systemName: "person")}.tag(Tab.profile)
+            ProfileView()
+                .tabItem{Image(systemName: "person")}.tag(Tab.profile)
+                .onAppear{sessionStore.listen()}
             
-        }
+        }.customFont(name: "Quicksand-SemiBold", style: .body)
+            .onAppear{friendsManager.fetchData()}
+            .environmentObject(friendsManager)
         
 
         //.onAppear{
@@ -38,9 +44,22 @@ struct MainAppView: View {
 //            apparence.configureWithOpaqueBackground()
 //            if #available(iOS 15.0, *) {UITabBar.appearance().scrollEdgeAppearance = apparence}
        // }
-        .customFont(name: "Quicksand-SemiBold", style: .body)
+        
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 struct MainAppView_Previews: PreviewProvider {
     static var previews: some View {

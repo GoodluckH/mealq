@@ -15,14 +15,13 @@ struct InviteSheet: View {
                 .frame(width: 30, height: 5)
                 .padding(10)
 
-            Text("invite your friend")
+            Text("invite your friend for a meal (coming up...)")
 
             Spacer()
           
         }
-        .cornerRadius(40)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color.purple)
+        
     }
     
 

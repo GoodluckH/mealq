@@ -9,15 +9,9 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @ObservedObject var sessionStore = SessionStore()
-   
-    init() {
-        sessionStore.listen()
-    }
-    
+    @EnvironmentObject var sessionStore: SessionStore
     
     var body: some View {
-        
         MainAppView()
             .fullScreenCover(isPresented: $sessionStore.isAnon) {
                 ZStack{

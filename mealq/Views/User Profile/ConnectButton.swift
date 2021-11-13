@@ -11,7 +11,6 @@ import Firebase
 struct ConnectButton: View {
     var user: User
     @EnvironmentObject var friendsManager: FriendsManager
-    @ObservedObject var sessionStore =  SessionStore()
     @State private var showPendingSheet = false
     @State private var showUnfriendSheet = false
     
@@ -35,14 +34,47 @@ struct ConnectButton: View {
                        .background(Capsule().strokeBorder(Color.blue, lineWidth: 2))
                        .confirmationDialog("Are you sure you don't want to be friends with \(user.fullname)?", isPresented: $showUnfriendSheet, titleVisibility: .visible) {
                            Button("Unfriend", role: .destructive) {
-                               friendsManager.unfriend(me: Auth.auth().currentUser!.uid, theOtherUser: user.id)
+                               friendsManager.unfriend(from: user.id)
                            }
                        }
                     Spacer()
                 }
             }
             
-            
+            // if this user has sent a friend request to current user, show the accept and reject pair
+            else if friendsManager.pendingFriends.contains(user) {
+                HStack{
+                    Spacer()
+                    
+                    Button(action: {
+                        friendsManager.declineFriendRequest(from: user.id)
+                    }) {
+                      HStack{
+                          Image(systemName: "xmark")
+                              .customFont(name: "Quicksand-SemiBold", style: .headline, weight: .bold)
+                      }}
+                    .foregroundColor(.white)
+                    .padding(.vertical, 10.0)
+                    .frame(width: geometry.size.width/8)
+                    .background(Color.red)
+                    .clipShape(Circle())
+                    Button(action: {
+                        friendsManager.connectFriend(with: user.id)
+                    }) {
+                      HStack{
+                          Image(systemName: "checkmark")
+                          Text("accept friend")
+                              
+                      }}
+                    .customFont(name: "Quicksand-SemiBold", style: .headline, weight: .bold)
+                       .foregroundColor(.white)
+                       .padding(.vertical, 10.0)
+                       .frame(width: geometry.size.width/2)
+                       .background(Color.green)
+                       .clipShape(Capsule())
+                    Spacer()
+                }
+            }
             // if this user has no accepted the friend request, then show the pending button
             else if friendsManager.sentRequests.contains(user) {
                 HStack{
@@ -66,6 +98,8 @@ struct ConnectButton: View {
             
             // if this user is not a friend nor there's any friend request, show add-friend button
             else {
+  
+                
                 HStack{
                     Spacer()
                     Button(action: {
@@ -84,6 +118,8 @@ struct ConnectButton: View {
                        .clipShape(Capsule())
                     Spacer()
                 }
+                
+                
             }
                 
                 

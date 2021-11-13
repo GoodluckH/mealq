@@ -8,23 +8,74 @@
 import SwiftUI
 
 struct MealsView: View {
-
-    @State var showModal: Bool = false
+    
+    @EnvironmentObject var friendsManager: FriendsManager
+    
      var body: some View {
-         NavigationView {
-             Button(action: {
-                 self.showModal = true
-             }) {
-                 Text("Tap me!")
-             }
+         NavigationView{
+             VStack{
+                 HStack {
+                     Text("friend requests")
+                         .padding()
+                         .customFont(name: "Quicksand-SemiBold", style: .title1, weight: .bold)
+                 }
+         
+                 if friendsManager.pendingFriends.isEmpty {
+                     Text("you have no friend requests for now")
+                 }
+                 else {
+                     ScrollView{
+                         ForEach(friendsManager.pendingFriends, id: \.id) { user in
+                                 SingleFriendRequestRow(user: user)
+                                 .padding(.vertical)
+                         }
+                    }
+                 }
+             } .navigationBarHidden(true)
+                 .navigationBarTitle(Text(""))
          }
-         .navigationBarTitle(Text("Navigation!"))
-         .overlay(self.showModal ? Color.green : nil)
      }
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 struct MealsView_Previews: PreviewProvider {
     static var previews: some View {
-        MealsView()
+        MealsView().environmentObject(FriendsManager())
     }
 }

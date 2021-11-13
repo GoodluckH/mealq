@@ -8,11 +8,10 @@
 import SwiftUI
 
 struct UserLoginView: View {
-    @ObservedObject var sessionStore = SessionStore()
+    @EnvironmentObject var sessionStore: SessionStore
     
     
     var body: some View {
-
             VStack {
                 Button(action: {
                     sessionStore.facebookLogin()
@@ -23,13 +22,15 @@ struct UserLoginView: View {
                             .aspectRatio(contentMode: .fit)
                         Text("continue with Facebook")
                             .font(Font.custom("Quicksand-Bold", size: 20))
-                            
-                        
                     }
                 }
                  .buttonStyle(mealqButtonStyle(clipShape: Capsule()))
                  .frame(height: 60)
-        }
+                
+                Button("Demo Login (for Apple reviewers)") {
+                    sessionStore.demoLogin()
+                }
+            }
         
     }
     

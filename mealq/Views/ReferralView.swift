@@ -10,7 +10,7 @@ import SwiftUI
 struct ReferralView: View {
     @Binding var showReferralSheet: Bool
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Text("invite your friends to mealq (coming up...)")
         Button(action: {showReferralSheet.toggle()}) {
              Image(systemName: "xmark")
         }
