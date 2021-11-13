@@ -23,7 +23,7 @@ struct UserProfileView: View {
         
            VStack {
 
-            ProfilePicView(picURL: user.thumbnailPicURL)
+            ProfilePicView(picURL: user.normalPicURL)
                    .frame(width: ProfilePicStyles.profilePicWidth, height: ProfilePicStyles.profilePicHeight)
                Text(user.fullname)
                    .customFont(name: "Quicksand-SemiBold", style: .title1, weight: .black)

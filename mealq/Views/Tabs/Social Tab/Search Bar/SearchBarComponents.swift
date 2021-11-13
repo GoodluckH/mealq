@@ -9,35 +9,25 @@ import SwiftUI
 
 struct SearchBarSymbols: View {
     @Binding var searchText: String
-    @Binding var showSearchScreen: Bool
     @FocusState.Binding var focusedField: Bool
-    
+    @Binding var showNavLinkView: Bool
     var body: some View {
-        if !showSearchScreen {
-            Image(systemName: "magnifyingglass")
-                .font(.body.weight(.bold))
-                .foregroundColor(Color("SearchBarSymbolColor"))
-                .onTapGesture {
-                    focusedField = true
-                    showSearchScreen = true
-                }
-        } else {
+       
             Button(action: {
-                showSearchScreen = false
                 focusedField = false
                 searchText = ""
+                showNavLinkView = false
             }){
             Image(systemName: "arrow.left")
                 .font(.body.weight(.bold))
             }
             .foregroundColor(Color("SearchBarSymbolColor"))
-        }
+        
     }
 }
 
 struct CustomTextField: View {
     @Binding var searchText: String
-    @Binding var showSearchScreen: Bool
     @FocusState.Binding var focusedField: Bool
 
     var body: some View {
@@ -47,7 +37,7 @@ struct CustomTextField: View {
                 .onTapGesture {
                     withAnimation(.spring(response: 0.3, dampingFraction: 0.7, blendDuration: 0.2)){
                     focusedField = true
-                    showSearchScreen = true}
+                    }
                 }
                 .foregroundColor(Color("SearchBarSymbolColor"))
                 .accentColor(Color("SearchBarSymbolColor"))

@@ -28,7 +28,6 @@ struct MainAppView: View {
                 CreateMealButton().zIndex(1)
                 MealsView()
             }.tabItem{Image(systemName: "mail.stack")}.tag(Tab.meals)
-                .badge(friendsManager.pendingFriends.count)
             
             ProfileView()
                 .tabItem{Image(systemName: "person")}.tag(Tab.profile)
@@ -63,6 +62,6 @@ struct MainAppView: View {
 
 struct MainAppView_Previews: PreviewProvider {
     static var previews: some View {
-        MainAppView()
+        MainAppView().environmentObject(SessionStore())
     }
 }

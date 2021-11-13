@@ -197,64 +197,67 @@ class FriendsManager: ObservableObject {
     /// - parameter theOtherUser: the User model of the other user to send the friend request to.
     func sendFriendRequest(to theOtherUser: User) {
         if let currentUserId = currentUser?.uid {
+        
             db.collection("users").document(currentUserId).getDocument() {snapshot, error in
                 guard let data = snapshot?.data() else {
                     print ("cannot get data from user \(currentUserId)")
                     return
                 }
-                let fullname = data["fullname"] as! String
-                let fcmToken = data["fcmToken"] as! String
-                let uid = data["uid"] as! String
-                let thumbnailPicURL = data["thumbnailPicURL"] as? String
-                let normalPicURL = data["normalPicURL"] as? String
-                let email = data["email"] as! String
+                let curFullname = data["fullname"] as! String
+                let curFcmToken = data["fcmToken"] as! String
+                let curUid = data["uid"] as! String
+                let curThumbnailPicURL = data["thumbnailPicURL"] as? String
+                let curNormalPicURL = data["normalPicURL"] as? String
+                let curEmail = data["email"] as! String
                 
                 self.db.collection("users").document(theOtherUser.id).collection("requests").document(currentUserId).setData( [
-                    "fullname": fullname,
-                    "fcmToken": fcmToken,
-                    "email": email,
-                    "uid": uid,
-                    "thumbnailPicURL": thumbnailPicURL ?? Constants.placeholder_pic,
-                    "normalPicURL": normalPicURL ?? Constants.placeholder_pic
+                    "fullname": curFullname,
+                    "fcmToken": curFcmToken,
+                    "email": curEmail,
+                    "uid": curUid,
+                    "thumbnailPicURL": curThumbnailPicURL ?? Constants.placeholder_pic,
+                    "normalPicURL": curNormalPicURL ?? Constants.placeholder_pic
                 ]) { err in
                     if let err = err {
                         print("Error adding document: \(err)")
                     } else {
                         print("Friend request succesfully added to: \(theOtherUser.id)")
                     }
-                    
                 }
-            }
-            
-            
-            db.collection("users").document(theOtherUser.id).getDocument() {snapshot, error in
-                guard let data = snapshot?.data() else {
-                    print ("cannot get data from user \(currentUserId)")
-                    return
-                }
-           
-                let fullname = data["fullname"] as! String
-                let fcmToken = data["fcmToken"] as! String
-                let uid = data["uid"] as! String
-                let thumbnailPicURL = data["thumbnailPicURL"] as? String
-                let normalPicURL = data["normalPicURL"] as? String
-                let email = data["email"] as! String
                 
                 
-                self.db.collection("users").document(currentUserId).collection("sentRequests").document(theOtherUser.id).setData([
-                    "fullname": fullname,
-                    "fcmToken": fcmToken,
-                    "email": email,
-                    "uid": uid,
-                    "thumbnailPicURL": thumbnailPicURL ?? Constants.placeholder_pic,
-                    "normalPicURL": normalPicURL ?? Constants.placeholder_pic
-                ]) { err in
-                    if let err = err {
-                        print("Error adding document: \(err)")
-                    } else {
-                        print("Sent request added to current users's sentRequests collection")
+                self.db.collection("users").document(theOtherUser.id).getDocument() {snapshot, error in
+                    guard let data = snapshot?.data() else {
+                        print ("cannot get data from user \(currentUserId)")
+                        return
                     }
-                }
+               
+                    let fullname = data["fullname"] as! String
+                    let fcmToken = data["fcmToken"] as! String
+                    let uid = data["uid"] as! String
+                    let email = data["email"] as! String
+                    let thumbnailPicURL = data["thumbnailPicURL"] as? String
+                    let normalPicURL = data["normalPicURL"] as? String
+                    
+                    self.db.collection("users").document(currentUserId).collection("sentRequests").document(theOtherUser.id).setData([
+                        "fullname": fullname,
+                        "fcmToken": fcmToken,
+                        "email": email,
+                        "uid": uid,
+                        "thumbnailPicURL": thumbnailPicURL ?? Constants.placeholder_pic,
+                        "normalPicURL": normalPicURL ?? Constants.placeholder_pic,
+                        // these should show the current user's info so that notification works logically
+                        "from": curFullname,
+                        "fromThumbnailPicURL": curThumbnailPicURL ?? Constants.placeholder_pic,
+                        "fromNormalPicURL": curNormalPicURL ?? Constants.placeholder_pic
+                    ]) { err in
+                        if let err = err {
+                            print("Error adding document: \(err)")
+                        } else {
+                            print("Sent request added to current users's sentRequests collection")
+                        }
+                    }
+                }        
             }
         }
     }

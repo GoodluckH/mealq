@@ -12,6 +12,10 @@
 		802BC31E273DC92F004F1505 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 802BC31D273DC92F004F1505 /* FirebaseMessaging */; };
 		802BC320273F6F74004F1505 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802BC31F273F6F74004F1505 /* Constants.swift */; };
 		802BC322273F7394004F1505 /* SingleFriendRequestRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802BC321273F7394004F1505 /* SingleFriendRequestRow.swift */; };
+		802BC32427404D87004F1505 /* AlertButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802BC32327404D87004F1505 /* AlertButton.swift */; };
+		802BC32627404E47004F1505 /* SearchButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802BC32527404E47004F1505 /* SearchButton.swift */; };
+		802BC32927405083004F1505 /* SearchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802BC32827405083004F1505 /* SearchScreen.swift */; };
+		802BC32C274063A3004F1505 /* FriendRequestsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802BC32B274063A3004F1505 /* FriendRequestsView.swift */; };
 		80964EAD2739ABEA00F54B6D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80964EAC2739ABEA00F54B6D /* AppDelegate.swift */; };
 		80C12067272E02CB006D125D /* mealqApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C12066272E02CB006D125D /* mealqApp.swift */; };
 		80C12069272E02CB006D125D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C12068272E02CB006D125D /* ContentView.swift */; };
@@ -86,6 +90,10 @@
 		802BC315273DC926004F1505 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		802BC31F273F6F74004F1505 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		802BC321273F7394004F1505 /* SingleFriendRequestRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleFriendRequestRow.swift; sourceTree = "<group>"; };
+		802BC32327404D87004F1505 /* AlertButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertButton.swift; sourceTree = "<group>"; };
+		802BC32527404E47004F1505 /* SearchButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchButton.swift; sourceTree = "<group>"; };
+		802BC32827405083004F1505 /* SearchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchScreen.swift; sourceTree = "<group>"; };
+		802BC32B274063A3004F1505 /* FriendRequestsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRequestsView.swift; sourceTree = "<group>"; };
 		80964EAB2738AB4900F54B6D /* mealq.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = mealq.entitlements; sourceTree = "<group>"; };
 		80964EAC2739ABEA00F54B6D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		80C12066272E02CB006D125D /* mealqApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mealqApp.swift; sourceTree = "<group>"; };
@@ -166,6 +174,24 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		802BC32727404FCA004F1505 /* NavBar Components */ = {
+			isa = PBXGroup;
+			children = (
+				802BC32327404D87004F1505 /* AlertButton.swift */,
+				802BC32527404E47004F1505 /* SearchButton.swift */,
+			);
+			path = "NavBar Components";
+			sourceTree = "<group>";
+		};
+		802BC32A27406392004F1505 /* Friend Requests */ = {
+			isa = PBXGroup;
+			children = (
+				802BC32B274063A3004F1505 /* FriendRequestsView.swift */,
+				802BC321273F7394004F1505 /* SingleFriendRequestRow.swift */,
+			);
+			path = "Friend Requests";
+			sourceTree = "<group>";
+		};
 		806B30C3273DC75E003FF495 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -214,6 +240,7 @@
 		80C12089272E08FB006D125D /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				802BC32A27406392004F1505 /* Friend Requests */,
 				80EFC38D27349678005520D3 /* User Profile */,
 				80C120A1272E55BF006D125D /* Utils */,
 				80C12099272E504B006D125D /* Invite Components */,
@@ -277,9 +304,11 @@
 		80C120A8272F838B006D125D /* Social Tab */ = {
 			isa = PBXGroup;
 			children = (
+				802BC32727404FCA004F1505 /* NavBar Components */,
 				80EFC381273316A5005520D3 /* Search Bar */,
 				80EFC3802733167F005520D3 /* Query Screen */,
 				80EFC3782732EF5F005520D3 /* SocialView.swift */,
+				802BC32827405083004F1505 /* SearchScreen.swift */,
 			);
 			path = "Social Tab";
 			sourceTree = "<group>";
@@ -288,7 +317,6 @@
 			isa = PBXGroup;
 			children = (
 				80C12095272E5024006D125D /* MealsView.swift */,
-				802BC321273F7394004F1505 /* SingleFriendRequestRow.swift */,
 			);
 			path = "Meals Tab";
 			sourceTree = "<group>";
@@ -461,10 +489,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				802BC32427404D87004F1505 /* AlertButton.swift in Sources */,
 				80C120A3272E55EE006D125D /* mealqButtonStyle.swift in Sources */,
 				80EFC38C27345423005520D3 /* UserProfileView.swift in Sources */,
 				802BC322273F7394004F1505 /* SingleFriendRequestRow.swift in Sources */,
 				80C120B1272F8C54006D125D /* MakeColors.swift in Sources */,
+				802BC32C274063A3004F1505 /* FriendRequestsView.swift in Sources */,
 				80C120B5272F984D006D125D /* ProfilePicStyles.swift in Sources */,
 				80964EAD2739ABEA00F54B6D /* AppDelegate.swift in Sources */,
 				802BC320273F6F74004F1505 /* Constants.swift in Sources */,
@@ -485,10 +515,12 @@
 				80C1208C272E472C006D125D /* UserModel.swift in Sources */,
 				80C1209D272E5080006D125D /* InviteSheet.swift in Sources */,
 				80C120AC272F851B006D125D /* ProfilePicView.swift in Sources */,
+				802BC32927405083004F1505 /* SearchScreen.swift in Sources */,
 				80C120B3272F93CE006D125D /* test.swift in Sources */,
 				80EFC38827334D35005520D3 /* NoMatchView.swift in Sources */,
 				80C12096272E5024006D125D /* MealsView.swift in Sources */,
 				80EFC38427331781005520D3 /* SectionHeader.swift in Sources */,
+				802BC32627404E47004F1505 /* SearchButton.swift in Sources */,
 				80EFC3752732EE38005520D3 /* GestureActions.swift in Sources */,
 				80EFC37D27330921005520D3 /* CustomSearchBar.swift in Sources */,
 				80EFC3792732EF5F005520D3 /* SocialView.swift in Sources */,

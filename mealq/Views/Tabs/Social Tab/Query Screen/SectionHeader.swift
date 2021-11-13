@@ -17,6 +17,7 @@ struct SectionHeader: View {
             Spacer()
             }
         .padding(.horizontal)
+        .background(Color("QueryLoaderStartingColor"))
     }
 }
 
