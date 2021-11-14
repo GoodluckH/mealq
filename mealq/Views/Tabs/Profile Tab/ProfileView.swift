@@ -15,7 +15,18 @@ struct ProfileView: View {
 
     
     var body: some View {
-        
+            
+        if sessionStore.deletingUser {
+          
+            GeometryReader{ geometry in
+                VStack{
+                    ActivityIndicatorView(isVisible: .constant(true), type: .equalizer)
+                        .foregroundColor(.primary)
+                        .frame(width: geometry.size.width/10, height: geometry.size.width/10, alignment: .center)
+                        .position(x: geometry.size.width / 2, y: geometry.size.height / 2)
+            }
+        }
+        } else {
             VStack {
                 if !sessionStore.isAnon {
             
@@ -47,6 +58,10 @@ struct ProfileView: View {
                 }
             
             }.padding()
+        }
+        
+        
+           
         }
 }
 

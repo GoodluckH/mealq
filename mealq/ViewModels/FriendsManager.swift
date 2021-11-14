@@ -7,13 +7,20 @@
 
 import Foundation
 import Firebase
-import simd
+import FirebaseAuth
 
 /// A ViewModel that manages operations involving fetching and querying other users and friends.
 class FriendsManager: ObservableObject {
     
     private let db = Firestore.firestore()
-    private let currentUser = Auth.auth().currentUser
+    private var currentUser: User?
+    
+    
+    init() {
+        Auth.auth().addStateDidChangeListener {auth, user in
+            self.currentUser = auth.currentUser
+        }
+    }
     
     /// An array of user uids.
     /// Use this variable to store friends of the other user of choice.
@@ -21,10 +28,10 @@ class FriendsManager: ObservableObject {
     /// - SeeAlso: `getFriendsFrom`
     @Published var otherUserFriends = [String]()
     
-    @Published var friends = [User]()
-    @Published var pendingFriends = [User]()
-    @Published var sentRequests = [User]()
-    @Published var queryResult = ["friends": [User](), "others": [User]()]
+    @Published var friends = [MealqUser]()
+    @Published var pendingFriends = [MealqUser]()
+    @Published var sentRequests = [MealqUser]()
+    @Published var queryResult = ["friends": [MealqUser](), "others": [MealqUser]()]
     
     /// A flag to indicate whether query results from a previous async request should be stored.
     private var stopQuery = false
@@ -48,7 +55,7 @@ class FriendsManager: ObservableObject {
                         let email = data["email"] as! String
                         let thumbnailPicURL = data["thumbnailPicURL"] as? String ?? ""
                         let normalPicURL = data["normalPicURL"] as? String ?? ""
-                        return User(id: FirebaseID, fullname: fullName, email: email, thumbnailPicURL: URL(string: thumbnailPicURL), normalPicURL: URL(string:normalPicURL))
+                        return MealqUser(id: FirebaseID, fullname: fullName, email: email, thumbnailPicURL: URL(string: thumbnailPicURL), normalPicURL: URL(string:normalPicURL))
                     }
                 }
             }
@@ -67,7 +74,7 @@ class FriendsManager: ObservableObject {
                     let email = data["email"] as! String
                     let thumbnailPicURL = data["thumbnailPicURL"] as? String ?? ""
                     let normalPicURL = data["normalPicURL"] as? String ?? ""
-                    return User(id: FirebaseID, fullname: fullName, email: email, thumbnailPicURL: URL(string: thumbnailPicURL), normalPicURL: URL(string:normalPicURL))
+                    return MealqUser(id: FirebaseID, fullname: fullName, email: email, thumbnailPicURL: URL(string: thumbnailPicURL), normalPicURL: URL(string:normalPicURL))
                 }
                 }
      
@@ -87,7 +94,7 @@ class FriendsManager: ObservableObject {
                     let email = data["email"] as! String
                     let thumbnailPicURL = data["thumbnailPicURL"] as? String ?? ""
                     let normalPicURL = data["normalPicURL"] as? String ?? ""
-                    return User(id: FirebaseID, fullname: fullName, email: email, thumbnailPicURL: URL(string: thumbnailPicURL), normalPicURL: URL(string:normalPicURL))
+                    return MealqUser(id: FirebaseID, fullname: fullName, email: email, thumbnailPicURL: URL(string: thumbnailPicURL), normalPicURL: URL(string:normalPicURL))
                 }
                 }
 
@@ -110,7 +117,7 @@ class FriendsManager: ObservableObject {
     /// - parameter text: the query string used for filtering.
     func queryString(of text: String) {
         if text.isEmpty || text.trimmingCharacters(in: .whitespaces).isEmpty {
-            queryResult = ["friends": [User](), "others": [User]()]
+            queryResult = ["friends": [MealqUser](), "others": [MealqUser]()]
             stopQuery = true
             return
         }
@@ -136,7 +143,7 @@ class FriendsManager: ObservableObject {
                      }
                     let myFriends = data["friends"] as! [String: Int]
                     
-                    var othersResult = [User]()
+                    var othersResult = [MealqUser]()
                     for document in documents {
                         if myFriends[document.documentID] == nil
                             && document.documentID != currentUser.uid
@@ -148,7 +155,7 @@ class FriendsManager: ObservableObject {
                                 let email = docData["email"] as! String
                                 let thumbnailPicURL = docData["thumbnailPicURL"] as? String ?? ""
                                 let normalPicURL = docData["normalPicURL"] as? String ?? ""
-                                othersResult.append(User(id: FirebaseID, fullname: fullName, email: email, thumbnailPicURL: URL(string: thumbnailPicURL), normalPicURL: URL(string:normalPicURL)))
+                                othersResult.append(MealqUser(id: FirebaseID, fullname: fullName, email: email, thumbnailPicURL: URL(string: thumbnailPicURL), normalPicURL: URL(string:normalPicURL)))
                             }
                         }
                     }
@@ -195,7 +202,7 @@ class FriendsManager: ObservableObject {
     /// Two writes to the database; one is to add the current user to the other user's "requests" collection, the other is to add the other user to the current user's "sentRequests" collection.
     ///
     /// - parameter theOtherUser: the User model of the other user to send the friend request to.
-    func sendFriendRequest(to theOtherUser: User) {
+    func sendFriendRequest(to theOtherUser: MealqUser) {
         if let currentUserId = currentUser?.uid {
         
             db.collection("users").document(currentUserId).getDocument() {snapshot, error in

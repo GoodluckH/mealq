@@ -9,14 +9,14 @@ import SwiftUI
 
 struct SingleFriendRequestRow: View {
     @EnvironmentObject var friendsManager: FriendsManager
-    var user: User
+    var user: MealqUser
     var body: some View {
         GeometryReader {geometry in
            
                 HStack {
       
                     NavigationLink(destination: UserProfileView(user: user)){
-                        ProfilePicView().frame(width: geometry.size.width/7, height: geometry.size.width/7)
+                        ProfilePicView(picURL: user.normalPicURL).frame(width: geometry.size.width/7, height: geometry.size.width/7)
                             .padding()
                         Text(user.fullname)
                     }
@@ -84,7 +84,7 @@ struct SingleFriendRequestRow: View {
 
 
 struct SingleFriendRequestRow_Previews: PreviewProvider {
-    static let user = User(id: "asdfsdf", fullname: "test", email: "sdf@lsd.com")
+    static let user = MealqUser(id: "asdfsdf", fullname: "test", email: "sdf@lsd.com")
     static var previews: some View {
         SingleFriendRequestRow(user: user)
     }

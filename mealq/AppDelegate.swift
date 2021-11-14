@@ -9,6 +9,7 @@ import Foundation
 import Firebase
 import FirebaseMessaging
 import FacebookCore
+import FacebookLogin
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication,
@@ -89,11 +90,13 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     
     
     // set this so that people can log in with their Facebook app
-    func application(_ app: UIApplication,
-                     open url: URL,
-                     options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        return ApplicationDelegate.shared.application(app, open: url, options: options)
-    }
+//    func application( _ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:] ) -> Bool {
+//        UIApplication.shared.applicationIconBadgeNumber = 0
+//        guard let firebaseUI = FUIAuth.defaultAuthUI() else { return false }
+//        let sourceApplication = options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String
+//        let handled = firebaseUI.handleOpen(url, sourceApplication: sourceApplication)
+//        return handled
+//    }
 }
 
 @available(iOS 10, *)
@@ -142,17 +145,17 @@ extension AppDelegate: MessagingDelegate {
     // Note: This callback is fired at each app startup and whenever a new token is generated.
       
     // Update the fcm token
-    if let currentUser = Auth.auth().currentUser {
-           Firestore.firestore().collection("users").document(currentUser.uid).setData(["fcmToken": fcmToken ?? ""], merge: true) {err in
-               if let err = err {
-                   print("Unable to add the new fcm token to Firestore db: \(err)")
-               } else {
-                   print("Successfully sent fresh token Firestore")
-               }
-           }
-    } else {
-       print("Unable to update token because the current user cannot be fetched.")
-    }
+//    if let currentUser = Auth.auth().currentUser {
+//           Firestore.firestore().collection("users").document(currentUser.uid).setData(["fcmToken": fcmToken ?? ""], merge: true) {err in
+//               if let err = err {
+//                   print("Unable to add the new fcm token to Firestore db: \(err)")
+//               } else {
+//                   print("Successfully sent fresh token Firestore")
+//               }
+//           }
+//    } else {
+//       print("Unable to update token because the current user cannot be fetched.")
+//    }
            
        
   }

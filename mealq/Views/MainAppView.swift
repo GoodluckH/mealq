@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import Firebase
+import FirebaseAuth
 
 enum Tab {
     case social, meals, profile, test
@@ -15,6 +17,8 @@ struct MainAppView: View {
     @State var selection: Tab = .social
     @StateObject var friendsManager = FriendsManager()
     @EnvironmentObject var sessionStore: SessionStore
+    
+    
     
     var body: some View {
         TabView(selection: $selection) {
@@ -31,10 +35,16 @@ struct MainAppView: View {
             
             ProfileView()
                 .tabItem{Image(systemName: "person")}.tag(Tab.profile)
-                .onAppear{sessionStore.listen()}
+                //.onAppear{sessionStore.listen()}
             
         }.customFont(name: "Quicksand-SemiBold", style: .body)
-            .onAppear{friendsManager.fetchData()}
+            .task{
+                Auth.auth().addStateDidChangeListener {_, user in
+                    if let _ = user {
+                        friendsManager.fetchData()
+                    }
+                }
+            }
             .environmentObject(friendsManager)
         
 

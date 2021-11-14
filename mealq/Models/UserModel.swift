@@ -9,14 +9,14 @@ import Foundation
 import Combine
 
 /// A model for the current user.
-struct User: Identifiable, Codable, Hashable {
+struct MealqUser: Identifiable, Codable, Hashable {
     var id: String
     var fullname: String
     var email: String
     var thumbnailPicURL: URL?
     var normalPicURL: URL?
     
-    static func == (lhs: User, rhs: User) -> Bool {
+    static func == (lhs: MealqUser, rhs: MealqUser) -> Bool {
         return lhs.id == rhs.id
     }
     

@@ -9,7 +9,7 @@ import SwiftUI
 import Firebase
 
 struct ConnectButton: View {
-    var user: User
+    var user: MealqUser
     @EnvironmentObject var friendsManager: FriendsManager
     @State private var showPendingSheet = false
     @State private var showUnfriendSheet = false
@@ -160,7 +160,7 @@ struct ConnectButton: View {
 struct ConnectButton_Previews: PreviewProvider {
     
     static var previews: some View {
-        ConnectButton(user: User(id: "salfjal;sdf", fullname: "Mike Kim", email: "elas@lksd")).environmentObject(FriendsManager())
+        ConnectButton(user: MealqUser(id: "salfjal;sdf", fullname: "Mike Kim", email: "elas@lksd")).environmentObject(FriendsManager())
     }
 }
 

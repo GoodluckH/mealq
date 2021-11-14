@@ -13,7 +13,7 @@ import FacebookLogin
 
 /// A view model that handles login and logout operations.
 class SessionStore: ObservableObject {
-    @Published var localUser: User?
+    @Published var localUser: MealqUser?
     @Published var isAnon = false
     
     private var handle: AuthStateDidChangeListenerHandle?
@@ -28,11 +28,22 @@ class SessionStore: ObservableObject {
     func listen()  {
         handle = authRef.addStateDidChangeListener {[self] (auth, user) in
             if user != nil {
-                self.localUser = User(id: user!.uid,
+                self.localUser = MealqUser(id: user!.uid,
                                       fullname: user!.displayName ?? "Rando",
                                       email: user!.email!,
                                       thumbnailPicURL: user!.photoURL,
                                       normalPicURL: URL(string :"\(user!.photoURL?.absoluteString ?? "none")?type=large"))
+                Messaging.messaging().token { token, error in
+                    Firestore.firestore().collection("users").document(user!.uid).setData(["fcmToken": token ?? ""], merge: true) {err in
+                       if let err = err {
+                           print("Unable to add the new fcm token to Firestore db: \(err)")
+                       } else {
+                           print("Successfully sent fresh token Firestore")
+                       }
+                    }
+                    
+                }
+                    
                 self.isAnon = false
             } else {
                 self.isAnon = true
@@ -59,7 +70,7 @@ class SessionStore: ObservableObject {
 //        }
     }
     
-    
+    @Published var fbSigningIn = false
     /// Logs the user in using `loginManager`.
     ///
     /// If successful, get the Facebook credential and sign in using `FirebaseAuth`.
@@ -67,10 +78,13 @@ class SessionStore: ObservableObject {
     /// - SeeAlso: `loginManager`.
     func facebookLogin() {
         loginManager.logIn(permissions: [.publicProfile, .email], viewController: nil) { [self] loginResult in
+            fbSigningIn = true
             switch loginResult {
             case .failed(let error):
+                fbSigningIn = false
                 print(error)
             case .cancelled:
+                fbSigningIn = false
                 print("User cancelled login.")
             case .success:
                 let credential = FacebookAuthProvider.credential(withAccessToken: AccessToken.current!.tokenString)
@@ -79,6 +93,7 @@ class SessionStore: ObservableObject {
                         print("Facebook auth with Firebase error: \(error)")
                         return
                         }
+                    fbSigningIn = false
                     if authResult!.additionalUserInfo!.isNewUser {
                         print("The user is new. Adding to Firestore with uid: \(authResult!.user.uid)")
                         addUserToFirestore(with: authResult!.user.uid,
@@ -156,35 +171,42 @@ class SessionStore: ObservableObject {
         }
     
     
+    @Published var deletingUser = false
     /// Deletes the current user and its associated data from other users.
     func deleteUser() {
         let currentUserUID = authRef.currentUser?.uid
         if currentUserUID != nil {
 
             self.loginManager.logIn(permissions: [.publicProfile, .email], viewController: nil) { loginResult in
+                self.deletingUser = true
                 switch loginResult {
                 case .failed(let error):
+                    self.deletingUser = false
                     print(error)
                 case .cancelled:
+                    self.deletingUser = false
                     print("User cancelled login. Deletion process halted.")
                 case .success:
                     let credential = FacebookAuthProvider.credential(withAccessToken: AccessToken.current!.tokenString)
                     self.authRef.currentUser?.reauthenticate(with: credential) { result, error in
                         if let error = error {
+                            self.deletingUser = false
                             print("Unable to reauthenticate user: \(error)")
                         } else {
                             // delete current user's record from Firestore
                             self.db.collection("users").document(currentUserUID!).delete() { err in
                                 if let err = err {
+                                    self.deletingUser = false
                                     print("Error removing document: \(err)")
                                 } else {
                                     print("Document successfully removed!")
                                     
                                     // ----------------------------------------------------------------------
                                     // --------- DELETE CURRENT USER FROM OTHER USER'S FRIEND LISTS ---------
-                                    self.db.collection("users").whereField("friends.\(currentUserUID!)", isLessThanOrEqualTo: 2).getDocuments {
+                                    self.db.collection("users").whereField("friends.\(currentUserUID!)", isEqualTo: 1).getDocuments {
                                        ( snapshot, error) in
                                         guard let documents = snapshot?.documents else {
+                                            self.deletingUser = false
                                             print("failed to retrieve snapshot")
                                             return
                                         }
@@ -193,6 +215,7 @@ class SessionStore: ObservableObject {
                                                 "friends.\(currentUserUID!)": FieldValue.delete(),
                                             ]) { err in
                                                 if let err = err {
+                                                    self.deletingUser = false
                                                     print("Unable to delete the current user from \(document.documentID)'s friend list: \(err)")
                                                 } else {
                                                     print("Successfully deleted \(currentUserUID!) from \(document.documentID)'s friend list")
@@ -204,6 +227,7 @@ class SessionStore: ObservableObject {
                                         // -----------------------------------------------------
                                         // --------- DELETE CURRENT USER FROM FIREBASE ---------
                                         self.authRef.currentUser?.delete { error in
+                                            self.deletingUser = false
                                             if let error = error {
                                                 print("unable to delete account \(self.authRef.currentUser!.uid): \(error.localizedDescription)")
                                                 return

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct UserProfileView: View {
-    var user: User
+    var user: MealqUser
     @EnvironmentObject var friendsManager: FriendsManager
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
@@ -47,6 +47,6 @@ struct UserProfileView: View {
 
 struct UserProfileView_Previews: PreviewProvider {
     static var previews: some View {
-        UserProfileView(user: User(id: "5s2dfasdgasdfsa", fullname: "someone", email: "trump@nb.com", thumbnailPicURL: URL(string: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Donald_Trump_official_portrait.jpg/128px-Donald_Trump_official_portrait.jpg"), normalPicURL: URL(string: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Donald_Trump_official_portrait.jpg/512px-Donald_Trump_official_portrait.jpg"))).environmentObject(FriendsManager())
+        UserProfileView(user: MealqUser(id: "5s2dfasdgasdfsa", fullname: "someone", email: "trump@nb.com", thumbnailPicURL: URL(string: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Donald_Trump_official_portrait.jpg/128px-Donald_Trump_official_portrait.jpg"), normalPicURL: URL(string: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Donald_Trump_official_portrait.jpg/512px-Donald_Trump_official_portrait.jpg"))).environmentObject(FriendsManager())
     }
 }

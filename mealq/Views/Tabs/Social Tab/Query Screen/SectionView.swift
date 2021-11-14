@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SectionView: View {
     var headerText: String 
-    var users: [User]
+    var users: [MealqUser]
     
     @EnvironmentObject var friendsManager: FriendsManager
 
