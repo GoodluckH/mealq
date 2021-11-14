@@ -19,7 +19,7 @@ struct ProfileView: View {
             VStack {
                 if !sessionStore.isAnon {
             
-                    ProfilePicView(picURL: sessionStore.localUser?.thumbnailPicURL)
+                    ProfilePicView(picURL: sessionStore.localUser?.normalPicURL)
                            .frame(width: ProfilePicStyles.profilePicWidth, height: ProfilePicStyles.profilePicHeight)
                       
                     Text(sessionStore.localUser?.fullname ?? "Rando")

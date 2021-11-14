@@ -8,5 +8,5 @@
 import Foundation
 
 struct Constants {
-    static let placeholder_pic: String = "https://i.imgur.com/gElpLZX.png"
+    static let placeholder_pic: String = "https://i.imgur.com/8wSudUk.png"
 }
