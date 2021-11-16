@@ -22,7 +22,6 @@ struct FriendRequestsView: View {
                 
                 
                 Text("friend requests")
-                    .padding(.bottom)
                     .padding(.horizontal)
                     .customFont(name: "Quicksand-SemiBold", style: .title1, weight: .bold)
         

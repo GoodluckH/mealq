@@ -13,14 +13,8 @@ import FirebaseAuth
 class FriendsManager: ObservableObject {
     
     private let db = Firestore.firestore()
-    private var currentUser: User?
+    private var currentUser = Auth.auth().currentUser
     
-    
-    init() {
-        Auth.auth().addStateDidChangeListener {auth, user in
-            self.currentUser = auth.currentUser
-        }
-    }
     
     /// An array of user uids.
     /// Use this variable to store friends of the other user of choice.
@@ -31,7 +25,6 @@ class FriendsManager: ObservableObject {
     @Published var friends = [MealqUser]()
     @Published var pendingFriends = [MealqUser]()
     @Published var sentRequests = [MealqUser]()
-    @Published var queryResult = ["friends": [MealqUser](), "others": [MealqUser]()]
     
     /// A flag to indicate whether query results from a previous async request should be stored.
     private var stopQuery = false
@@ -42,31 +35,33 @@ class FriendsManager: ObservableObject {
     ///  - SeeAlso: `friends`.
     func fetchData() {
         if let currentUser = Auth.auth().currentUser {
-            db.collection("users").whereField("friends.\(currentUser.uid)", isEqualTo: 1).addSnapshotListener { (snapshot, error) in
-                guard let documents = snapshot?.documents else {
+            
+            // update the friends list
+            db.collection("users").document(currentUser.uid).collection("friends").addSnapshotListener { (querySnapshot, error) in
+                guard let documents = querySnapshot?.documents else {
                     print("no friends :(  --- failed to retrieve snapshot")
                     return
                 }
-                DispatchQueue.main.async {
-                    self.friends = documents.map { docSnapshot in
-                        let data = docSnapshot.data()
-                        let FirebaseID = data["uid"] as! String
-                        let fullName = data["fullname"] as! String
-                        let email = data["email"] as! String
-                        let thumbnailPicURL = data["thumbnailPicURL"] as? String ?? ""
-                        let normalPicURL = data["normalPicURL"] as? String ?? ""
-                        return MealqUser(id: FirebaseID, fullname: fullName, email: email, thumbnailPicURL: URL(string: thumbnailPicURL), normalPicURL: URL(string:normalPicURL))
-                    }
+                
+                self.friends = documents.map { docSnapshot in
+                    let data = docSnapshot.data()
+                    let FirebaseID = data["uid"] as! String
+                    let fullName = data["fullname"] as! String
+                    let email = data["email"] as! String
+                    let thumbnailPicURL = data["thumbnailPicURL"] as? String ?? ""
+                    let normalPicURL = data["normalPicURL"] as? String ?? ""
+                    return MealqUser(id: FirebaseID, fullname: fullName, email: email, thumbnailPicURL: URL(string: thumbnailPicURL), normalPicURL: URL(string:normalPicURL))
                 }
             }
             
+            
+            // update to see if there's any friend requests
             db.collection("users").document(currentUser.uid).collection("requests").addSnapshotListener { (snapshot, error) in
                 guard let documents = snapshot?.documents else {
                     print("no friends requests :(  --- failed to retrieve snapshot")
                     return
                 }
                 
-                DispatchQueue.main.async {
                 self.pendingFriends = documents.map { docSnapshot in
                     let data = docSnapshot.data()
                     let FirebaseID = data["uid"] as! String
@@ -76,17 +71,17 @@ class FriendsManager: ObservableObject {
                     let normalPicURL = data["normalPicURL"] as? String ?? ""
                     return MealqUser(id: FirebaseID, fullname: fullName, email: email, thumbnailPicURL: URL(string: thumbnailPicURL), normalPicURL: URL(string:normalPicURL))
                 }
-                }
      
             }
             
+            
+            // update the sent requets
             db.collection("users").document(currentUser.uid).collection("sentRequests").addSnapshotListener { (snapshot, error) in
                 guard let documents = snapshot?.documents else {
                     print("no friends requests :(  --- failed to retrieve snapshot")
                     return
                 }
                 
-                DispatchQueue.main.async {
                 self.sentRequests = documents.map { docSnapshot in
                     let data = docSnapshot.data()
                     let FirebaseID = data["uid"] as! String
@@ -96,8 +91,6 @@ class FriendsManager: ObservableObject {
                     let normalPicURL = data["normalPicURL"] as? String ?? ""
                     return MealqUser(id: FirebaseID, fullname: fullName, email: email, thumbnailPicURL: URL(string: thumbnailPicURL), normalPicURL: URL(string:normalPicURL))
                 }
-                }
-
             }
         } else {
             print("Cannot fetch current Firebase user.")
@@ -109,7 +102,8 @@ class FriendsManager: ObservableObject {
 
     
     @Published var resolvingQuery = true
-    
+    @Published var queryResult = ["friends": [MealqUser](), "others": [MealqUser]()]
+
     /// Filters the current user's friends and all other users based on query string.
     ///
     /// Performs filtering on the existing `friends` array first to optimize for user experience. The `friends` array should already been updated because `fetchData` is called before any query.
@@ -133,61 +127,49 @@ class FriendsManager: ObservableObject {
         if let currentUser = Auth.auth().currentUser {
             self.db.collection("users").getDocuments { (snapshot, error) in
                 guard let documents = snapshot?.documents else {
+                    self.resolvingQuery = false
                     print("Couldn't fetch documents")
                     return
                 }
-                self.db.collection("users").document(currentUser.uid).getDocument {  (snapshot, error) in
-                    guard let data = snapshot?.data() else {
-                         print("Couldn't find snapshot for current user with id: \(currentUser.uid)")
-                         return
-                     }
-                    let myFriends = data["friends"] as! [String: Int]
-                    
-                    var othersResult = [MealqUser]()
-                    for document in documents {
-                        if myFriends[document.documentID] == nil
-                            && document.documentID != currentUser.uid
-                            && !self.stopQuery {
-                            let docData = document.data()
-                            let fullName = docData["fullname"] as! String
-                            if fullName.lowercased().contains(text.lowercased()){
-                                let FirebaseID = docData["uid"] as! String
-                                let email = docData["email"] as! String
-                                let thumbnailPicURL = docData["thumbnailPicURL"] as? String ?? ""
-                                let normalPicURL = docData["normalPicURL"] as? String ?? ""
-                                othersResult.append(MealqUser(id: FirebaseID, fullname: fullName, email: email, thumbnailPicURL: URL(string: thumbnailPicURL), normalPicURL: URL(string:normalPicURL)))
-                            }
+                
+            
+                var othersResult = [MealqUser]()
+                for document in documents {
+                    if  !self.friends.contains(where:{$0.id == document.documentID})
+                        && document.documentID != currentUser.uid
+                        && !self.stopQuery {
+                        let docData = document.data()
+                        let fullName = docData["fullname"] as! String
+                        if fullName.lowercased().contains(text.lowercased()) {
+                            let FirebaseID = docData["uid"] as! String
+                            let email = docData["email"] as! String
+                            let thumbnailPicURL = docData["thumbnailPicURL"] as? String ?? ""
+                            let normalPicURL = docData["normalPicURL"] as? String ?? ""
+                            othersResult.append(MealqUser(id: FirebaseID, fullname: fullName, email: email, thumbnailPicURL: URL(string: thumbnailPicURL), normalPicURL: URL(string:normalPicURL)))
                         }
                     }
-                    self.queryResult["others"]! = othersResult
-                    self.resolvingQuery = false
+                }
+                self.queryResult["others"]! = othersResult
+                self.resolvingQuery = false
                 }
             }
         }
-    }
     
     
     
     
-
     /// Fetches friends given a user's id and stores the result to `otherUserFriends`.
     ///
     /// - parameter id: the uid of a user.
     /// - SeeAlso: `otherUserFriends`.
     func getFriendsFrom(user id: String) {
         self.otherUserFriends = [String]()
-        db.collection("users").document(id).getDocument() { (snapshot, error) in
-            guard let data = snapshot?.data() else {
+        db.collection("users").document(id).collection("friends").getDocuments() { (snapshot, error) in
+            guard let documents = snapshot?.documents else {
                 print ("cannot get data from user \(id)")
                 return
             }
-            
-            let friendsOfUser = data["friends"] as! [String: Int]
-            
-            friendsOfUser.forEach { friend, code in
-                self.otherUserFriends.append(friend)
-            }
-            
+            self.otherUserFriends = documents.map { $0.documentID }
         }
     }
 
@@ -319,81 +301,73 @@ class FriendsManager: ObservableObject {
     }
     
     
-    
-    
-    
-    
     /// Removes friends from two users' "friends" field.
     /// - parameter theOtherUserID: the other user's uid.
     func unfriend(from theOtherUserID: String) {
         if let currentUserId = currentUser?.uid {
-            deleteFriend(theOtherUserID, from: currentUserId)
-            deleteFriend(currentUserId, from: theOtherUserID)
+            self.db.collection("users").document(currentUserId).collection("friends").document(theOtherUserID).delete() {err in
+                if let err = err {
+                    print("Error removing \(theOtherUserID) from the current user's friends collection: \(err)")
+                } else {
+                    print("Successfully removed \(theOtherUserID) from current user's friends collection!")
+                }
+            }
+            self.db.collection("users").document(theOtherUserID).collection("friends").document(currentUserId).delete() {err in
+                if let err = err {
+                    print("Error removing the current user from the  \(theOtherUserID)'s friends collection: \(err)")
+                } else {
+                    print("Successfully removed the current user from \(theOtherUserID)'s friends collection!")
+                }
+            }
         }
     }
     
+    
+    
+    
+    @Published var addingFriends = false
     /// Adds friends two two users' "friends" field;
     ///  calls  `declineFriendRequest` to update the "sentRequests" and "requests" collections.
-    /// - parameter theOtherUserID: the other user's uid.
-    func connectFriend(with theOtherUserID: String) {
-        if let currentUserId = currentUser?.uid {
-            addFriend(theOtherUserID, from: currentUserId)
-            addFriend(currentUserId, from: theOtherUserID)
+    /// - parameter me: the current user.
+    /// - parameter otherUser: the other user.
+    func connectFriend(_ me: MealqUser, with otherUser: MealqUser) {
+        if let _ = currentUser {
+        addingFriends = true
+            self.db.collection("users").document(me.id).collection("friends").document(otherUser.id).setData([
+            "uid": otherUser.id,
+            "email": otherUser.email,
+            "fullname": otherUser.fullname,
+            "thumbnailPicURL": otherUser.thumbnailPicURL?.absoluteString ?? Constants.placeholder_pic,
+            "normalPicURL": otherUser.normalPicURL?.absoluteString ?? Constants.placeholder_pic,
+            ]) { err in
+                if let err = err {
+                    self.addingFriends = false
+                    print("Error adding the other user to current user's friends collection: \(err.localizedDescription)")
+                } else {
+                    print("Successfully added \(otherUser.id) to current user's friends collection")
+                    self.db.collection("users").document(otherUser.id).collection("friends").document(me.id).setData([
+                        "uid": me.id,
+                        "email": me.email,
+                        "fullname": me.fullname,
+                        "thumbnailPicURL": me.thumbnailPicURL?.absoluteString ?? Constants.placeholder_pic,
+                        "normalPicURL": me.normalPicURL?.absoluteString ?? Constants.placeholder_pic,
+                    ]) { err in
+                        if let err = err {
+                            self.addingFriends = false
+                            print("Error adding the current user to the other user's friends collection: \(err.localizedDescription)")
+                        } else {
+                            self.addingFriends = false
+                            print("Successfully added \(me.id) to the other user's friends collection")
+                            self.declineFriendRequest(from: otherUser.id)
+                        }
+                    }
+                }
+            }
+            
         }
-        // remove both users' doc references from "requests" and "sentRequests" collections.
-        self.declineFriendRequest(from: theOtherUserID)
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    // -MARK: Helper functions
 
-    
-    private func addFriend(_ friendID: String, from myID: String) {
-        db.collection("users").document(myID).setData([
-            "friends": [friendID: 1]
-        ], merge: true) { err in
-            if let err = err {
-                print("Unable to add the other user from current user's friend list: \(err)")
-            } else {
-                print("Successfully added \(friendID) to \(myID)'s friend list")
-            }
-        }
-    }
-    
-    private func deleteFriend(_ friendID: String, from myID: String) {
-        db.collection("users").document(myID).updateData([
-            "friends.\(friendID)": FieldValue.delete(),
-        ]) { err in
-            if let err = err {
-                print("Unable to delete the other user from current user's friend list: \(err)")
-            } else {
-                print("Successfully deleted \(friendID) from \(myID)'s friend list")
-            }
-        }
-    }
     
 }
 

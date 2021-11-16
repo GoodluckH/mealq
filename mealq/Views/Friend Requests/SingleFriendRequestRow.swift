@@ -6,9 +6,11 @@
 //
 
 import SwiftUI
+import ActivityIndicatorView
 
 struct SingleFriendRequestRow: View {
     @EnvironmentObject var friendsManager: FriendsManager
+    @EnvironmentObject var sessionStore: SessionStore
     var user: MealqUser
     var body: some View {
         GeometryReader {geometry in
@@ -22,31 +24,40 @@ struct SingleFriendRequestRow: View {
                     }
                     
                     Spacer()
-                    Button(action: {
-                        friendsManager.declineFriendRequest(from: user.id)
-                    }) {
-                        Image(systemName: "xmark")
-                            .font(.title.bold())
-                            .foregroundColor(.white)
-                            .background(.red)
-                            .clipShape(Circle())
+                    
+                    if !friendsManager.addingFriends {
+                        Button(action: {
+                            friendsManager.declineFriendRequest(from: user.id)
+                        }) {
+                            Image(systemName: "xmark")
+                                .font(.title.bold())
+                                .foregroundColor(.white)
+                                .background(.red)
+                                .clipShape(Circle())
+                        }
+                        
+                        Button(action: {
+                            friendsManager.connectFriend(sessionStore.localUser!, with: user)
+                        }) {
+                            Image(systemName: "checkmark")
+                                .font(.title.bold())
+                                .foregroundColor(.white)
+                                .background(.green)
+                                
+                        }
+                        .clipShape(Circle()).frame(width: geometry.size.width/8, height: geometry.size.width/8)
+                        .padding()
+                    } else {
+                        ActivityIndicatorView(isVisible: .constant(true), type: .equalizer)
+                            .foregroundColor(.primary)
+                            .padding()
+                            .frame(width: geometry.size.width/6, height: geometry.size.width/10, alignment: .center)
                     }
                     
-                    Button(action: {
-                        friendsManager.connectFriend(with: user.id)
-                    }) {
-                        Image(systemName: "checkmark")
-                            .font(.title.bold())
-                            .foregroundColor(.white)
-                            .background(.green)
-                            
-                    }
-                    .clipShape(Circle()).frame(width: geometry.size.width/8, height: geometry.size.width/8)
-                    .padding()
                     
                 }.customFont(name: "Quicksand-SemiBold", style: .title2)
 
-        }.padding()
+        }//.padding()
    
     }
 }

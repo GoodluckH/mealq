@@ -25,7 +25,7 @@ struct AlertButton: View {
                     .onTapGesture{showNavLinkView = true}
                     .customFont(name: "Quicksand-SemiBold", style: .title2)
                     .symbolRenderingMode(.palette)
-                    .foregroundStyle(.red, .primary)
+                    .foregroundStyle(.red, Color("MyPrimary"))
             }
         }
  

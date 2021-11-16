@@ -16,13 +16,14 @@
 		802BC32627404E47004F1505 /* SearchButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802BC32527404E47004F1505 /* SearchButton.swift */; };
 		802BC32927405083004F1505 /* SearchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802BC32827405083004F1505 /* SearchScreen.swift */; };
 		802BC32C274063A3004F1505 /* FriendRequestsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802BC32B274063A3004F1505 /* FriendRequestsView.swift */; };
+		802BC32E27435472004F1505 /* FirebaseAppCheck in Frameworks */ = {isa = PBXBuildFile; productRef = 802BC32D27435472004F1505 /* FirebaseAppCheck */; };
+		802BC33027435561004F1505 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 802BC32F27435561004F1505 /* FirebaseAnalytics */; };
 		80964EAD2739ABEA00F54B6D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80964EAC2739ABEA00F54B6D /* AppDelegate.swift */; };
 		80C12067272E02CB006D125D /* mealqApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C12066272E02CB006D125D /* mealqApp.swift */; };
 		80C12069272E02CB006D125D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C12068272E02CB006D125D /* ContentView.swift */; };
 		80C1206B272E02CC006D125D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 80C1206A272E02CC006D125D /* Assets.xcassets */; };
 		80C1206E272E02CC006D125D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 80C1206D272E02CC006D125D /* Preview Assets.xcassets */; };
 		80C12075272E031C006D125D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 80C12074272E031B006D125D /* GoogleService-Info.plist */; };
-		80C12078272E0341006D125D /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 80C12077272E0341006D125D /* FirebaseAnalytics */; };
 		80C1207A272E0341006D125D /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 80C12079272E0341006D125D /* FirebaseAuth */; };
 		80C1207C272E0341006D125D /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 80C1207B272E0341006D125D /* FirebaseFirestore */; };
 		80C1207E272E0341006D125D /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 80C1207D272E0341006D125D /* FirebaseMessaging */; };
@@ -147,11 +148,12 @@
 				80C1207E272E0341006D125D /* FirebaseMessaging in Frameworks */,
 				80C12084272E06A1006D125D /* FacebookCore in Frameworks */,
 				80C120AF272F86C9006D125D /* ActivityIndicatorView in Frameworks */,
-				80C12078272E0341006D125D /* FirebaseAnalytics in Frameworks */,
 				80C1207A272E0341006D125D /* FirebaseAuth in Frameworks */,
 				80C12080272E0341006D125D /* FirebaseStorage in Frameworks */,
 				80C12086272E06A1006D125D /* FacebookLogin in Frameworks */,
+				802BC32E27435472004F1505 /* FirebaseAppCheck in Frameworks */,
 				80C1207C272E0341006D125D /* FirebaseFirestore in Frameworks */,
+				802BC33027435561004F1505 /* FirebaseAnalytics in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -400,7 +402,6 @@
 			);
 			name = mealq;
 			packageProductDependencies = (
-				80C12077272E0341006D125D /* FirebaseAnalytics */,
 				80C12079272E0341006D125D /* FirebaseAuth */,
 				80C1207B272E0341006D125D /* FirebaseFirestore */,
 				80C1207D272E0341006D125D /* FirebaseMessaging */,
@@ -408,6 +409,8 @@
 				80C12083272E06A1006D125D /* FacebookCore */,
 				80C12085272E06A1006D125D /* FacebookLogin */,
 				80C120AE272F86C9006D125D /* ActivityIndicatorView */,
+				802BC32D27435472004F1505 /* FirebaseAppCheck */,
+				802BC32F27435561004F1505 /* FirebaseAnalytics */,
 			);
 			productName = mealq;
 			productReference = 802BC30C273DC8BB004F1505 /* mealq.app */;
@@ -543,7 +546,7 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = AZ5YZ6A37J;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "notifications for mealq/Info.plist";
@@ -554,7 +557,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "li.xipu.mealq.notifications-for-mealq";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -569,7 +572,7 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = AZ5YZ6A37J;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "notifications for mealq/Info.plist";
@@ -580,7 +583,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "li.xipu.mealq.notifications-for-mealq";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -715,7 +718,7 @@
 				CODE_SIGN_ENTITLEMENTS = mealq/mealq.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"mealq/Preview Content\"";
 				DEVELOPMENT_TEAM = AZ5YZ6A37J;
 				ENABLE_PREVIEWS = YES;
@@ -731,7 +734,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = li.xipu.mealq;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -750,7 +753,7 @@
 				CODE_SIGN_ENTITLEMENTS = mealq/mealq.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"mealq/Preview Content\"";
 				DEVELOPMENT_TEAM = AZ5YZ6A37J;
 				ENABLE_PREVIEWS = YES;
@@ -766,7 +769,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = li.xipu.mealq;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -841,7 +844,12 @@
 			package = 80C12076272E0341006D125D /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseMessaging;
 		};
-		80C12077272E0341006D125D /* FirebaseAnalytics */ = {
+		802BC32D27435472004F1505 /* FirebaseAppCheck */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 80C12076272E0341006D125D /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAppCheck;
+		};
+		802BC32F27435561004F1505 /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 80C12076272E0341006D125D /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAnalytics;

@@ -11,6 +11,7 @@ import Firebase
 struct ConnectButton: View {
     var user: MealqUser
     @EnvironmentObject var friendsManager: FriendsManager
+    @EnvironmentObject var sessionStore: SessionStore
     @State private var showPendingSheet = false
     @State private var showUnfriendSheet = false
     
@@ -59,7 +60,7 @@ struct ConnectButton: View {
                     .background(Color.red)
                     .clipShape(Circle())
                     Button(action: {
-                        friendsManager.connectFriend(with: user.id)
+                        friendsManager.connectFriend(sessionStore.localUser!, with: user)
                     }) {
                       HStack{
                           Image(systemName: "checkmark")
