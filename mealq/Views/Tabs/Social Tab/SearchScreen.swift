@@ -10,6 +10,7 @@ import SwiftUI
 struct SearchScreen: View {
     @State private var searchText = ""
     @EnvironmentObject var friendsManager: FriendsManager
+    @EnvironmentObject var sessionStore: SessionStore
     @FocusState.Binding var focusedField: Bool
     @Binding var showNavLinkView: Bool
     var body: some View {
@@ -19,14 +20,14 @@ struct SearchScreen: View {
                         .padding(.top)
                         .onChange(of: searchText) { queryText in
                             if queryText == " " {searchText = ""}
-                            else {friendsManager.queryString(of: queryText)}
+                            else {friendsManager.queryString(of: searchText, currentUserId: sessionStore.localUser!.id)}
                         }
                 HStack {
                 
                     QueryScreen(searchText: $searchText, focusedField: $focusedField)
                         .onAppear{
                             if searchText == " " {searchText = ""}
-                            else {friendsManager.queryString(of: searchText)}
+                            else {friendsManager.queryString(of: searchText, currentUserId: sessionStore.localUser!.id)}
                         }
                 }
                

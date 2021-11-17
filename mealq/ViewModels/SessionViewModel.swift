@@ -146,7 +146,6 @@ class SessionStore: ObservableObject {
               "email": email,
               "thumbnailPicURL": thumbnailPicURL,
               "normalPicURL": normalPicURL,
-              "friends": [:],
               "fcmToken": token
             ]) {err in
                   if let err = err {print("Error writing document: \(err)")}

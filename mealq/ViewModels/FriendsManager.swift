@@ -13,28 +13,20 @@ import FirebaseAuth
 class FriendsManager: ObservableObject {
     
     private let db = Firestore.firestore()
-    private var currentUser = Auth.auth().currentUser
+   //  private var currentUser = Auth.auth().currentUser
     
-    
-    /// An array of user uids.
-    /// Use this variable to store friends of the other user of choice.
-    ///
-    /// - SeeAlso: `getFriendsFrom`
-    @Published var otherUserFriends = [String]()
     
     @Published var friends = [MealqUser]()
     @Published var pendingFriends = [MealqUser]()
     @Published var sentRequests = [MealqUser]()
-    
-    /// A flag to indicate whether query results from a previous async request should be stored.
-    private var stopQuery = false
+
     
     /// Fetches a list of the current user's friends and updates `friends`.
     ///
     /// Uses Firestore's snapshot listener to only fetch and update new changes.
     ///  - SeeAlso: `friends`.
     func fetchData() {
-        if let currentUser = Auth.auth().currentUser {
+        if let currentUser = Auth.auth().currentUser { // Synchronously get current user should be fine here because fetchData is only used when there's a valid user (see MainAppView)
             
             // update the friends list
             db.collection("users").document(currentUser.uid).collection("friends").addSnapshotListener { (querySnapshot, error) in
@@ -100,7 +92,8 @@ class FriendsManager: ObservableObject {
     
     
 
-    
+    /// A flag to indicate whether query results from a previous async request should be stored.
+    private var stopQuery = false
     @Published var resolvingQuery = true
     @Published var queryResult = ["friends": [MealqUser](), "others": [MealqUser]()]
 
@@ -109,7 +102,7 @@ class FriendsManager: ObservableObject {
     /// Performs filtering on the existing `friends` array first to optimize for user experience. The `friends` array should already been updated because `fetchData` is called before any query.
     ///
     /// - parameter text: the query string used for filtering.
-    func queryString(of text: String) {
+    func queryString(of text: String, currentUserId: String) {
         if text.isEmpty || text.trimmingCharacters(in: .whitespaces).isEmpty {
             queryResult = ["friends": [MealqUser](), "others": [MealqUser]()]
             stopQuery = true
@@ -124,7 +117,7 @@ class FriendsManager: ObservableObject {
         
         
         // Filters all other users.
-        if let currentUser = Auth.auth().currentUser {
+        //if let currentUser = Auth.auth().currentUser {
             self.db.collection("users").getDocuments { (snapshot, error) in
                 guard let documents = snapshot?.documents else {
                     self.resolvingQuery = false
@@ -136,7 +129,7 @@ class FriendsManager: ObservableObject {
                 var othersResult = [MealqUser]()
                 for document in documents {
                     if  !self.friends.contains(where:{$0.id == document.documentID})
-                        && document.documentID != currentUser.uid
+                        && document.documentID != currentUserId
                         && !self.stopQuery {
                         let docData = document.data()
                         let fullName = docData["fullname"] as! String
@@ -152,11 +145,15 @@ class FriendsManager: ObservableObject {
                 self.queryResult["others"]! = othersResult
                 self.resolvingQuery = false
                 }
-            }
+           // }
         }
     
     
-    
+    /// An array of user uids.
+    /// Use this variable to store friends of the other user of choice.
+    ///
+    /// - SeeAlso: `getFriendsFrom`
+    @Published var otherUserFriends = [String]()
     
     /// Fetches friends given a user's id and stores the result to `otherUserFriends`.
     ///
@@ -185,8 +182,8 @@ class FriendsManager: ObservableObject {
     ///
     /// - parameter theOtherUser: the User model of the other user to send the friend request to.
     func sendFriendRequest(to theOtherUser: MealqUser) {
-        if let currentUserId = currentUser?.uid {
-        
+        if let currentUserId = Auth.auth().currentUser?.uid  {
+
             db.collection("users").document(currentUserId).getDocument() {snapshot, error in
                 guard let data = snapshot?.data() else {
                     print ("cannot get data from user \(currentUserId)")
@@ -257,7 +254,7 @@ class FriendsManager: ObservableObject {
     /// Allows user to retract a sent friend request by removing the other user's doc ref from current user's "sentRequests" collection and by removing current user's doc ref from the other user's "requests" collection.
     /// - parameter otherUserID: the string representation of a user's uid.
     func unsendFriendRequest(to otherUserID: String) {
-        if let currentUserId = currentUser?.uid {
+        if let currentUserId = Auth.auth().currentUser?.uid {
             db.collection("users").document(currentUserId).collection("sentRequests").document(otherUserID).delete() { err in
                 if let err = err {
                     print("Error removing sent request: \(err)")
@@ -281,7 +278,7 @@ class FriendsManager: ObservableObject {
     /// Declines a friend request by removing the other user from current user's "requests" collection and by removing the current user from the other user's "sentRequests" collections.
     /// - parameter otherUserID: the string representation of a user's uid.
     func declineFriendRequest(from otherUserID: String) {
-        if let currentUserId = currentUser?.uid {
+        if let currentUserId = Auth.auth().currentUser?.uid {
             db.collection("users").document(currentUserId).collection("requests").document(otherUserID).delete() { err in
                 if let err = err {
                     print("Error declining friend request: \(err)")
@@ -304,7 +301,7 @@ class FriendsManager: ObservableObject {
     /// Removes friends from two users' "friends" field.
     /// - parameter theOtherUserID: the other user's uid.
     func unfriend(from theOtherUserID: String) {
-        if let currentUserId = currentUser?.uid {
+        if let currentUserId = Auth.auth().currentUser?.uid {
             self.db.collection("users").document(currentUserId).collection("friends").document(theOtherUserID).delete() {err in
                 if let err = err {
                     print("Error removing \(theOtherUserID) from the current user's friends collection: \(err)")
@@ -331,7 +328,7 @@ class FriendsManager: ObservableObject {
     /// - parameter me: the current user.
     /// - parameter otherUser: the other user.
     func connectFriend(_ me: MealqUser, with otherUser: MealqUser) {
-        if let _ = currentUser {
+        if let _ =  Auth.auth().currentUser {
         addingFriends = true
             self.db.collection("users").document(me.id).collection("friends").document(otherUser.id).setData([
             "uid": otherUser.id,
