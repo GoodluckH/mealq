@@ -6,20 +6,19 @@
 //
 
 import SwiftUI
+import Introspect
 
 struct SearchBarSymbols: View {
     @Binding var searchText: String
-    @FocusState.Binding var focusedField: Bool
     @Binding var showNavLinkView: Bool
     var body: some View {
        
             Button(action: {
-                focusedField = false
                 searchText = ""
                 showNavLinkView = false
             }){
             Image(systemName: "arrow.left")
-                .font(.body.weight(.bold))
+                .font(.title2.weight(.bold))
             }
             .foregroundColor(Color("SearchBarSymbolColor"))
         
@@ -28,18 +27,21 @@ struct SearchBarSymbols: View {
 
 struct CustomTextField: View {
     @Binding var searchText: String
-    @FocusState.Binding var focusedField: Bool
+    @FocusState private var focusedField: Bool
 
     var body: some View {
-        TextField("friend name", text: $searchText)
+        TextField("", text: $searchText)
+            .placeholder("friend name", when: searchText.isEmpty)
                 .frame(alignment: .leading)
                 .focused($focusedField)
-                .onTapGesture {
-                    focusedField = true
-                }
                 .foregroundColor(Color("SearchBarSymbolColor"))
                 .accentColor(Color("SearchBarSymbolColor"))
                 .disableAutocorrection(true)
+                .onAppear{
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        focusedField = true
+                    }
+                }
     }
 }
 
@@ -51,7 +53,7 @@ struct CancelButton: View {
         if !searchText.isEmpty {
             Button(action: {searchText = ""}){
             Image(systemName: "x.circle.fill")
-                .scaleEffect(0.8)
+                .scaleEffect(1)
                 .foregroundColor(.gray)
                 .symbolRenderingMode(.hierarchical)
             }
@@ -60,3 +62,68 @@ struct CancelButton: View {
 }
 
 
+
+extension View {
+    func placeholder(
+        _ text: String,
+        when shouldShow: Bool,
+        alignment: Alignment = .leading,
+        textColor: Color = .gray) -> some View {
+
+        placeholder(when: shouldShow, alignment: alignment) { Text(text).foregroundColor(textColor) }
+    }
+}
+
+
+
+
+extension View {
+    func placeholder<Content: View>(
+        when shouldShow: Bool,
+        alignment: Alignment = .leading,
+        @ViewBuilder placeholder: () -> Content) -> some View {
+
+        ZStack(alignment: alignment) {
+            placeholder().opacity(shouldShow ? 1 : 0)
+            self
+        }
+    }
+}
+
+//
+//struct MyTextField: UIViewRepresentable {
+//    @Binding var text: String
+//    let placeholder: String
+//
+//    class Coordinator: NSObject, UITextFieldDelegate {
+//        @Binding var text: String
+//        var becameFirstResponder = false
+//
+//        init(text: Binding<String>) {
+//            self._text = text
+//        }
+//
+//        func textFieldDidChangeSelection(_ textField: UITextField) {
+//            text = textField.text ?? ""
+//        }
+//    }
+//
+//    func makeCoordinator() -> Coordinator {
+//        return Coordinator(text: $text)
+//    }
+//
+//    func makeUIView(context: Context) -> some UIView {
+//        let textField = UITextField()
+//        textField.delegate = context.coordinator
+//        textField.placeholder = placeholder
+//        textField.textColor = UIColor(Color("SearchBarSymbolColor"))
+//        return textField
+//    }
+//
+//    func updateUIView(_ uiView: UIViewType, context: Context) {
+//        if  !context.coordinator.becameFirstResponder {
+//            uiView.becomeFirstResponder()
+//            context.coordinator.becameFirstResponder = true
+//        }
+//    }
+//}

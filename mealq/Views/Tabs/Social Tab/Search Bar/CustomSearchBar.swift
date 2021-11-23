@@ -6,16 +6,16 @@
 //
 
 import SwiftUI
+import Introspect
 
 struct CustomSearchBar: View {
     @Binding var searchText: String
-    @FocusState.Binding var focusedField: Bool
     @Binding var showNavLinkView: Bool
     var body: some View {
         VStack{
             HStack {
-                SearchBarSymbols(searchText: $searchText, focusedField: $focusedField, showNavLinkView: $showNavLinkView)
-                CustomTextField(searchText: $searchText, focusedField: $focusedField)
+                SearchBarSymbols(searchText: $searchText, showNavLinkView: $showNavLinkView)
+                CustomTextField(searchText: $searchText)
                 CancelButton(searchText: $searchText)
                 }
                 .padding(.vertical, 8.0)

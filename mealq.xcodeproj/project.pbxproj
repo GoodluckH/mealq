@@ -19,7 +19,13 @@
 		802BC32E27435472004F1505 /* FirebaseAppCheck in Frameworks */ = {isa = PBXBuildFile; productRef = 802BC32D27435472004F1505 /* FirebaseAppCheck */; };
 		802BC33027435561004F1505 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 802BC32F27435561004F1505 /* FirebaseAnalytics */; };
 		802BC3332743FAC9004F1505 /* SplashScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802BC3322743FAC9004F1505 /* SplashScreen.swift */; };
+		802BC3362745AA6E004F1505 /* Introspect in Frameworks */ = {isa = PBXBuildFile; productRef = 802BC3352745AA6E004F1505 /* Introspect */; };
+		8079DEEF2745F4C8001420CE /* Haptics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8079DEEE2745F4C8001420CE /* Haptics.swift */; };
 		80964EAD2739ABEA00F54B6D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80964EAC2739ABEA00F54B6D /* AppDelegate.swift */; };
+		80A48CE42746C61000063B57 /* FakeSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A48CE32746C61000063B57 /* FakeSearchBar.swift */; };
+		80A48CEA2746DCC500063B57 /* SingleFriendPane.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A48CE92746DCC500063B57 /* SingleFriendPane.swift */; };
+		80A48CEC274716E600063B57 /* FriendSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A48CEB274716E600063B57 /* FriendSelection.swift */; };
+		80A48D0A274D983A00063B57 /* BigUserPicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A48D09274D983A00063B57 /* BigUserPicView.swift */; };
 		80C12067272E02CB006D125D /* mealqApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C12066272E02CB006D125D /* mealqApp.swift */; };
 		80C12069272E02CB006D125D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C12068272E02CB006D125D /* ContentView.swift */; };
 		80C1206B272E02CC006D125D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 80C1206A272E02CC006D125D /* Assets.xcassets */; };
@@ -97,8 +103,13 @@
 		802BC32827405083004F1505 /* SearchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchScreen.swift; sourceTree = "<group>"; };
 		802BC32B274063A3004F1505 /* FriendRequestsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRequestsView.swift; sourceTree = "<group>"; };
 		802BC3322743FAC9004F1505 /* SplashScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreen.swift; sourceTree = "<group>"; };
+		8079DEEE2745F4C8001420CE /* Haptics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptics.swift; sourceTree = "<group>"; };
 		80964EAB2738AB4900F54B6D /* mealq.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = mealq.entitlements; sourceTree = "<group>"; };
 		80964EAC2739ABEA00F54B6D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		80A48CE32746C61000063B57 /* FakeSearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeSearchBar.swift; sourceTree = "<group>"; };
+		80A48CE92746DCC500063B57 /* SingleFriendPane.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleFriendPane.swift; sourceTree = "<group>"; };
+		80A48CEB274716E600063B57 /* FriendSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendSelection.swift; sourceTree = "<group>"; };
+		80A48D09274D983A00063B57 /* BigUserPicView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigUserPicView.swift; sourceTree = "<group>"; };
 		80C12066272E02CB006D125D /* mealqApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mealqApp.swift; sourceTree = "<group>"; };
 		80C12068272E02CB006D125D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		80C1206A272E02CC006D125D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -154,6 +165,7 @@
 				80C12080272E0341006D125D /* FirebaseStorage in Frameworks */,
 				80C12086272E06A1006D125D /* FacebookLogin in Frameworks */,
 				802BC32E27435472004F1505 /* FirebaseAppCheck in Frameworks */,
+				802BC3362745AA6E004F1505 /* Introspect in Frameworks */,
 				80C1207C272E0341006D125D /* FirebaseFirestore in Frameworks */,
 				802BC33027435561004F1505 /* FirebaseAnalytics in Frameworks */,
 			);
@@ -211,6 +223,23 @@
 				802BC311273DC926004F1505 /* notifications for mealq.appex */,
 			);
 			path = Products;
+			sourceTree = "<group>";
+		};
+		80A48CE52746C62600063B57 /* Fake Search Bar */ = {
+			isa = PBXGroup;
+			children = (
+				80A48CE32746C61000063B57 /* FakeSearchBar.swift */,
+			);
+			path = "Fake Search Bar";
+			sourceTree = "<group>";
+		};
+		80A48CE82746CE0700063B57 /* Friends Selection */ = {
+			isa = PBXGroup;
+			children = (
+				80A48CE92746DCC500063B57 /* SingleFriendPane.swift */,
+				80A48CEB274716E600063B57 /* FriendSelection.swift */,
+			);
+			path = "Friends Selection";
 			sourceTree = "<group>";
 		};
 		80C1205A272E02CB006D125D = {
@@ -296,6 +325,8 @@
 		80C12099272E504B006D125D /* Invite Components */ = {
 			isa = PBXGroup;
 			children = (
+				80A48CE82746CE0700063B57 /* Friends Selection */,
+				80A48CE52746C62600063B57 /* Fake Search Bar */,
 				80C1209A272E5066006D125D /* CreateMealButton.swift */,
 				80C1209C272E5080006D125D /* InviteSheet.swift */,
 			);
@@ -310,6 +341,7 @@
 				80C120B6272F98B8006D125D /* ResizeFont.swift */,
 				80EFC3742732EE38005520D3 /* GestureActions.swift */,
 				802BC31F273F6F74004F1505 /* Constants.swift */,
+				8079DEEE2745F4C8001420CE /* Haptics.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -370,6 +402,7 @@
 				80C120B4272F984C006D125D /* ProfilePicStyles.swift */,
 				80EFC38B27345423005520D3 /* UserProfileView.swift */,
 				80EFC38E273496FA005520D3 /* ConnectButton.swift */,
+				80A48D09274D983A00063B57 /* BigUserPicView.swift */,
 			);
 			path = "User Profile";
 			sourceTree = "<group>";
@@ -422,6 +455,7 @@
 				80C120AE272F86C9006D125D /* ActivityIndicatorView */,
 				802BC32D27435472004F1505 /* FirebaseAppCheck */,
 				802BC32F27435561004F1505 /* FirebaseAnalytics */,
+				802BC3352745AA6E004F1505 /* Introspect */,
 			);
 			productName = mealq;
 			productReference = 802BC30C273DC8BB004F1505 /* mealq.app */;
@@ -458,6 +492,7 @@
 				80C12076272E0341006D125D /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				80C12082272E06A1006D125D /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */,
 				80C120AD272F86C9006D125D /* XCRemoteSwiftPackageReference "ActivityIndicatorView" */,
+				802BC3342745AA6D004F1505 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
 			);
 			productRefGroup = 806B30C3273DC75E003FF495 /* Products */;
 			projectDirPath = "";
@@ -509,6 +544,7 @@
 				80EFC38C27345423005520D3 /* UserProfileView.swift in Sources */,
 				802BC322273F7394004F1505 /* SingleFriendRequestRow.swift in Sources */,
 				80C120B1272F8C54006D125D /* MakeColors.swift in Sources */,
+				80A48CEC274716E600063B57 /* FriendSelection.swift in Sources */,
 				802BC32C274063A3004F1505 /* FriendRequestsView.swift in Sources */,
 				80C120B5272F984D006D125D /* ProfilePicStyles.swift in Sources */,
 				80964EAD2739ABEA00F54B6D /* AppDelegate.swift in Sources */,
@@ -523,8 +559,11 @@
 				80C12069272E02CB006D125D /* ContentView.swift in Sources */,
 				80EFC38A27336984005520D3 /* ReferralView.swift in Sources */,
 				80EFC38627333D46005520D3 /* SectionView.swift in Sources */,
+				80A48CE42746C61000063B57 /* FakeSearchBar.swift in Sources */,
+				80A48CEA2746DCC500063B57 /* SingleFriendPane.swift in Sources */,
 				80C12067272E02CB006D125D /* mealqApp.swift in Sources */,
 				80C1209B272E5066006D125D /* CreateMealButton.swift in Sources */,
+				8079DEEF2745F4C8001420CE /* Haptics.swift in Sources */,
 				80EFC38F273496FA005520D3 /* ConnectButton.swift in Sources */,
 				80C12091272E4F62006D125D /* UserLoginView.swift in Sources */,
 				80C1208C272E472C006D125D /* UserModel.swift in Sources */,
@@ -537,6 +576,7 @@
 				80EFC38427331781005520D3 /* SectionHeader.swift in Sources */,
 				802BC32627404E47004F1505 /* SearchButton.swift in Sources */,
 				80EFC3752732EE38005520D3 /* GestureActions.swift in Sources */,
+				80A48D0A274D983A00063B57 /* BigUserPicView.swift in Sources */,
 				80EFC37D27330921005520D3 /* CustomSearchBar.swift in Sources */,
 				80EFC3792732EF5F005520D3 /* SocialView.swift in Sources */,
 			);
@@ -824,6 +864,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		802BC3342745AA6D004F1505 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/timbersoftware/SwiftUI-Introspect";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.3;
+			};
+		};
 		80C12076272E0341006D125D /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
@@ -865,6 +913,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 80C12076272E0341006D125D /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAnalytics;
+		};
+		802BC3352745AA6E004F1505 /* Introspect */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 802BC3342745AA6D004F1505 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */;
+			productName = Introspect;
 		};
 		80C12079272E0341006D125D /* FirebaseAuth */ = {
 			isa = XCSwiftPackageProductDependency;

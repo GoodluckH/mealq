@@ -11,25 +11,25 @@ struct SearchScreen: View {
     @State private var searchText = ""
     @EnvironmentObject var friendsManager: FriendsManager
     @EnvironmentObject var sessionStore: SessionStore
-    @FocusState.Binding var focusedField: Bool
     @Binding var showNavLinkView: Bool
     var body: some View {
         
             VStack{
-                CustomSearchBar(searchText:$searchText, focusedField: $focusedField, showNavLinkView: $showNavLinkView)
+                CustomSearchBar(searchText:$searchText, showNavLinkView: $showNavLinkView)
                         .padding(.top)
                         .onChange(of: searchText) { queryText in
                             if queryText == " " {searchText = ""}
                             else {friendsManager.queryString(of: searchText, currentUserId: sessionStore.localUser!.id)}
                         }
-                HStack {
+             
                 
-                    QueryScreen(searchText: $searchText, focusedField: $focusedField)
+                    QueryScreen(searchText: $searchText)
+                        // We need to do this so that our view clears the previous search result
                         .onAppear{
                             if searchText == " " {searchText = ""}
                             else {friendsManager.queryString(of: searchText, currentUserId: sessionStore.localUser!.id)}
                         }
-                }
+              
                
             }.navigationBarTitle("")
             .navigationBarHidden(true)
@@ -38,8 +38,3 @@ struct SearchScreen: View {
     }
 }
 
-//struct SearchScreen_Previews: PreviewProvider {
-//    static var previews: some View {
-//        SearchScreen().environmentObject(FriendsManager())
-//    }
-//}

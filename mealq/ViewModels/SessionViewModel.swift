@@ -33,12 +33,14 @@ class SessionStore: ObservableObject {
                                       email: user!.email!,
                                       thumbnailPicURL: user!.photoURL,
                                       normalPicURL: URL(string :"\(user!.photoURL?.absoluteString ?? "none")?type=large"))
+            
                     Messaging.messaging().token { token, error in
                         Firestore.firestore().collection("users").document(user!.uid).setData(["fcmToken": token ?? ""], merge: true) {err in
                            if let err = err {
                                print("Unable to add the new fcm token to Firestore db: \(err)")
                            } else {
                            print("Successfully sent fresh token Firestore")
+                               self.localUser!.fcmToken = token
                        }
                     }
                     
@@ -131,7 +133,6 @@ class SessionStore: ObservableObject {
                 "email": email,
                 "thumbnailPicURL": thumbnailPicURL,
                 "normalPicURL": normalPicURL,
-                "friends": [:],
                 "fcmToken": ""
               ]) {err in
                     if let err = err {print("Error writing document: \(err)")}
@@ -202,6 +203,8 @@ class SessionStore: ObservableObject {
                                     
                                     // ----------------------------------------------------------------------
                                     // --------- DELETE CURRENT USER FROM OTHER USER'S FRIEND LISTS ---------
+                                    
+                                    // TODO: Update this 
                                     self.db.collection("users").whereField("friends.\(currentUserUID!)", isEqualTo: 1).getDocuments {
                                        ( snapshot, error) in
                                         guard let documents = snapshot?.documents else {

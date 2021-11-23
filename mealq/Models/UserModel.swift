@@ -15,6 +15,7 @@ struct MealqUser: Identifiable, Codable, Hashable {
     var email: String
     var thumbnailPicURL: URL?
     var normalPicURL: URL?
+    var fcmToken: String?
     
     static func == (lhs: MealqUser, rhs: MealqUser) -> Bool {
         return lhs.id == rhs.id

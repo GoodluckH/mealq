@@ -42,7 +42,8 @@ class FriendsManager: ObservableObject {
                     let email = data["email"] as! String
                     let thumbnailPicURL = data["thumbnailPicURL"] as? String ?? ""
                     let normalPicURL = data["normalPicURL"] as? String ?? ""
-                    return MealqUser(id: FirebaseID, fullname: fullName, email: email, thumbnailPicURL: URL(string: thumbnailPicURL), normalPicURL: URL(string:normalPicURL))
+                    let fcmToken  = data["fcmToken"] as? String ?? ""
+                    return MealqUser(id: FirebaseID, fullname: fullName, email: email, thumbnailPicURL: URL(string: thumbnailPicURL), normalPicURL: URL(string:normalPicURL), fcmToken: fcmToken)
                 }
             }
             
@@ -61,7 +62,8 @@ class FriendsManager: ObservableObject {
                     let email = data["email"] as! String
                     let thumbnailPicURL = data["thumbnailPicURL"] as? String ?? ""
                     let normalPicURL = data["normalPicURL"] as? String ?? ""
-                    return MealqUser(id: FirebaseID, fullname: fullName, email: email, thumbnailPicURL: URL(string: thumbnailPicURL), normalPicURL: URL(string:normalPicURL))
+                    let fcmToken  = data["fcmToken"] as? String ?? ""
+                    return MealqUser(id: FirebaseID, fullname: fullName, email: email, thumbnailPicURL: URL(string: thumbnailPicURL), normalPicURL: URL(string:normalPicURL), fcmToken: fcmToken)
                 }
      
             }
@@ -81,7 +83,8 @@ class FriendsManager: ObservableObject {
                     let email = data["email"] as! String
                     let thumbnailPicURL = data["thumbnailPicURL"] as? String ?? ""
                     let normalPicURL = data["normalPicURL"] as? String ?? ""
-                    return MealqUser(id: FirebaseID, fullname: fullName, email: email, thumbnailPicURL: URL(string: thumbnailPicURL), normalPicURL: URL(string:normalPicURL))
+                    let fcmToken  = data["fcmToken"] as? String ?? ""
+                    return MealqUser(id: FirebaseID, fullname: fullName, email: email, thumbnailPicURL: URL(string: thumbnailPicURL), normalPicURL: URL(string:normalPicURL), fcmToken: fcmToken)
                 }
             }
         } else {
@@ -138,7 +141,8 @@ class FriendsManager: ObservableObject {
                             let email = docData["email"] as! String
                             let thumbnailPicURL = docData["thumbnailPicURL"] as? String ?? ""
                             let normalPicURL = docData["normalPicURL"] as? String ?? ""
-                            othersResult.append(MealqUser(id: FirebaseID, fullname: fullName, email: email, thumbnailPicURL: URL(string: thumbnailPicURL), normalPicURL: URL(string:normalPicURL)))
+                            let fcmToken = docData["fcmToken"] as? String ?? ""
+                            othersResult.append(MealqUser(id: FirebaseID, fullname: fullName, email: email, thumbnailPicURL: URL(string: thumbnailPicURL), normalPicURL: URL(string:normalPicURL), fcmToken: fcmToken))
                         }
                     }
                 }
@@ -176,6 +180,10 @@ class FriendsManager: ObservableObject {
     
     // -MARK: Friends Management
     
+    
+    
+    
+    @Published var sendingRequest = false
     /// Sends a friend request to the other user.
     ///
     /// Two writes to the database; one is to add the current user to the other user's "requests" collection, the other is to add the other user to the current user's "sentRequests" collection.
@@ -183,9 +191,10 @@ class FriendsManager: ObservableObject {
     /// - parameter theOtherUser: the User model of the other user to send the friend request to.
     func sendFriendRequest(to theOtherUser: MealqUser) {
         if let currentUserId = Auth.auth().currentUser?.uid  {
-
+            self.sendingRequest = true
             db.collection("users").document(currentUserId).getDocument() {snapshot, error in
                 guard let data = snapshot?.data() else {
+                    self.sendingRequest = false
                     print ("cannot get data from user \(currentUserId)")
                     return
                 }
@@ -205,6 +214,7 @@ class FriendsManager: ObservableObject {
                     "normalPicURL": curNormalPicURL ?? Constants.placeholder_pic
                 ]) { err in
                     if let err = err {
+                        self.sendingRequest = false
                         print("Error adding document: \(err)")
                     } else {
                         print("Friend request succesfully added to: \(theOtherUser.id)")
@@ -214,6 +224,7 @@ class FriendsManager: ObservableObject {
                 
                 self.db.collection("users").document(theOtherUser.id).getDocument() {snapshot, error in
                     guard let data = snapshot?.data() else {
+                        self.sendingRequest = false
                         print ("cannot get data from user \(currentUserId)")
                         return
                     }
@@ -240,6 +251,7 @@ class FriendsManager: ObservableObject {
                         if let err = err {
                             print("Error adding document: \(err)")
                         } else {
+                            self.sendingRequest = false
                             print("Sent request added to current users's sentRequests collection")
                         }
                     }
@@ -336,6 +348,7 @@ class FriendsManager: ObservableObject {
             "fullname": otherUser.fullname,
             "thumbnailPicURL": otherUser.thumbnailPicURL?.absoluteString ?? Constants.placeholder_pic,
             "normalPicURL": otherUser.normalPicURL?.absoluteString ?? Constants.placeholder_pic,
+            "fcmToken": otherUser.fcmToken ?? ""
             ]) { err in
                 if let err = err {
                     self.addingFriends = false
@@ -348,6 +361,7 @@ class FriendsManager: ObservableObject {
                         "fullname": me.fullname,
                         "thumbnailPicURL": me.thumbnailPicURL?.absoluteString ?? Constants.placeholder_pic,
                         "normalPicURL": me.normalPicURL?.absoluteString ?? Constants.placeholder_pic,
+                        "fcmToken": me.fcmToken ?? ""
                     ]) { err in
                         if let err = err {
                             self.addingFriends = false

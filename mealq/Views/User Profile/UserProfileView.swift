@@ -11,35 +11,53 @@ struct UserProfileView: View {
     var user: MealqUser
     @EnvironmentObject var friendsManager: FriendsManager
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    @State private var showBigPic = false
+    
+    // TODO: try to optimize this 
+    @State var cachedImage: Image?
+    
     
     var goBackButton: some View {
-        Button(action: { self.presentationMode.wrappedValue.dismiss()
+        Button(action: {self.presentationMode.wrappedValue.dismiss()
         }){
-            Text("go back")
+        Image(systemName: "xmark")
+            .font(.body.weight(.bold))
         }
+        .padding(.top)
+        .foregroundColor(Color("MyPrimary"))
+      
     }
 
     var body: some View {
-        
-           VStack {
-
-            ProfilePicView(picURL: user.normalPicURL)
-                   .frame(width: ProfilePicStyles.profilePicWidth, height: ProfilePicStyles.profilePicHeight)
-               Text(user.fullname)
-                   .customFont(name: "Quicksand-SemiBold", style: .title1, weight: .black)
-               Text("\(friendsManager.otherUserFriends.count) friends")
-                   .customFont(name: "Quicksand-SemiBold", style: .subheadline, weight: .semibold)
-                   
-                   
-               ConnectButton(user: user).padding(.top).padding(.horizontal)
-                   
-                   
+            if showBigPic {
+                BigUserPicView(image: cachedImage).onTapGesture{showBigPic = false}
+            }
+            else {
+                VStack {
+                    ProfilePicView(picURL: user.normalPicURL, cachedImage: $cachedImage)
+                        .onTapGesture{
+                            withAnimation(.easeOut) {
+                                showBigPic = true
+                            }
+                        }
+                       .frame(width: ProfilePicStyles.profilePicWidth, height: ProfilePicStyles.profilePicHeight)
+                       
+                   Text(user.fullname)
+                       .customFont(name: "Quicksand-SemiBold", style: .title1, weight: .black)
+                   Text("\(friendsManager.otherUserFriends.count) friends")
+                       .customFont(name: "Quicksand-SemiBold", style: .subheadline, weight: .semibold)
+                       
+                       
+                   ConnectButton(user: user).padding(.top).padding(.horizontal)
+                       
+                       
+                   Spacer()
+               }
+               .padding(.top)
+               .navigationBarBackButtonHidden(true)
+                .navigationBarItems(leading: goBackButton)
                
-               Spacer()
-           }
-           .padding(.top)
-           .navigationBarBackButtonHidden(true)
-            .navigationBarItems(leading: goBackButton)
+           } //else
     }
         
         

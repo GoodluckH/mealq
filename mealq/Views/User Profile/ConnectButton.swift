@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Firebase
+import ActivityIndicatorView
 
 struct ConnectButton: View {
     var user: MealqUser
@@ -81,12 +82,12 @@ struct ConnectButton: View {
                 HStack{
                     Spacer()
                     Button("pending") {showPendingSheet = true}
-                        .customFont(name: "Quicksand-SemiBold", style: .headline, weight: .bold)
-                       .foregroundColor(.blue)
-                       .padding(.vertical, 10.0)
-                       .frame(width: geometry.size.width/2)
-                       .background(Capsule().strokeBorder(Color.blue, lineWidth: 2))
-                       .confirmationDialog("Cancel friend request to \(user.fullname)?", isPresented: $showPendingSheet, titleVisibility: .visible) {
+                    .customFont(name: "Quicksand-SemiBold", style: .headline, weight: .bold)
+                   .foregroundColor(.blue)
+                   .padding(.vertical, 10.0)
+                   .frame(width: geometry.size.width/2)
+                   .background(Capsule().strokeBorder(Color.blue, lineWidth: 2))
+                   .confirmationDialog("Cancel friend request to \(user.fullname)?", isPresented: $showPendingSheet, titleVisibility: .visible) {
                        Button("Unsend friend request", role: .destructive) {
                            friendsManager.unsendFriendRequest(to: user.id)
                        }
@@ -104,12 +105,20 @@ struct ConnectButton: View {
                 HStack{
                     Spacer()
                     Button(action: {
+                        Haptics.heavy()
                         friendsManager.sendFriendRequest(to: user)
                     }) {
                       HStack{
-                          Image(systemName: "person.fill.badge.plus")
-                          Text("add friend")
+                          if friendsManager.sendingRequest {
+                              ActivityIndicatorView(isVisible: .constant(true), type: .equalizer)
+                                  .foregroundColor(.white)
+                                  .frame(width: geometry.size.width/10, height: geometry.size.width/20, alignment: .center)
+                          }
+                          else {
+                              Image(systemName: "person.fill.badge.plus")
+                              Text("add friend")
                               .customFont(name: "Quicksand-SemiBold", style: .headline, weight: .bold)
+                          }
                       }
                       }
                        .foregroundColor(.white)

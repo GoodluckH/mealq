@@ -10,8 +10,10 @@ import SwiftUI
 struct SocialView: View {
 
     @EnvironmentObject var friendsManager: FriendsManager
-    
-    
+//    init(){
+//            UINavigationBar.setAnimationsEnabled(false)
+//        }
+
     var body: some View {
         GeometryReader{ geometry in
             NavigationView{
@@ -35,6 +37,7 @@ struct SocialView: View {
                 }.navigationBarHidden(true)
                     .navigationBarTitle(Text(""))
                 }
+
             }
         }
     }

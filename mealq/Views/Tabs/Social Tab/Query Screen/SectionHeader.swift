@@ -21,6 +21,24 @@ struct SectionHeader: View {
     }
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 struct SectionHeader_Previews: PreviewProvider {
     static var previews: some View {
         SectionHeader(headerText: "my friends")
