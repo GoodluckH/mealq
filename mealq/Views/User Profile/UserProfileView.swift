@@ -34,7 +34,7 @@ struct UserProfileView: View {
             }
             else {
                 VStack {
-                    ProfilePicView(picURL: user.normalPicURL, cachedImage: $cachedImage)
+                    ProfilePicView(picURL: URL(string: "https://graph.facebook.com/3052875971654831/picture?width=1000&height=1000"), cachedImage: $cachedImage)
                         .onTapGesture{
                             withAnimation(.easeOut) {
                                 showBigPic = true

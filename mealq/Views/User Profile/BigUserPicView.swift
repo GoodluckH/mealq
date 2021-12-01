@@ -10,6 +10,7 @@ import SwiftUI
 struct BigUserPicView: View {
 //    var picURL: URL?
     @State var image: Image?
+    @StateObject var motionData = MotionObserver()
     
     var body: some View {
         ZStack {
@@ -36,8 +37,6 @@ struct BigUserPicView: View {
                 
                 GeometryReader {geo in
                     let size = geo.size
-                    
-                    
                     if let image = image {
                         image.resizable().aspectRatio(contentMode: .fill)
                             .frame(width: size.width, height: size.height)
@@ -47,17 +46,18 @@ struct BigUserPicView: View {
                                              .frame(width: size.width, height: size.height)
                                              .cornerRadius(picCornerRadius)
                     }
-                    
-                    
-                    
                 }
                 .frame(width: geo.size.width / picWidthFactor, height: geo.size.height/picHeightFactor)
-                .position(x: geo.size.width/2, y: geo.size.height/2 )
+                .position(x: geo.size.width/2, y: geo.size.height/2)
+                .offset(motionData.movingOffset)
+                
             }
            
             
             
-        }.environment(\.colorScheme, .dark)
+        }//.onAppear{motionData.fetchMotionData(duration: picHorizontalPadding)}
+        .zIndex(0)
+        .environment(\.colorScheme, .dark)
         
         
 
@@ -67,6 +67,7 @@ struct BigUserPicView: View {
     private let picWidthFactor: CGFloat = 1.2
     private let picCornerRadius: CGFloat = 25
     private let picHorizontalPadding: CGFloat = 30
+    private let picOffsetDurationHairCut: CGFloat = 0.8
     
     
 }

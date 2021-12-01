@@ -20,6 +20,7 @@
 		802BC33027435561004F1505 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 802BC32F27435561004F1505 /* FirebaseAnalytics */; };
 		802BC3332743FAC9004F1505 /* SplashScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802BC3322743FAC9004F1505 /* SplashScreen.swift */; };
 		802BC3362745AA6E004F1505 /* Introspect in Frameworks */ = {isa = PBXBuildFile; productRef = 802BC3352745AA6E004F1505 /* Introspect */; };
+		805F28FC274DA449002DEA8D /* BigUserPicMotionObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805F28FB274DA449002DEA8D /* BigUserPicMotionObserver.swift */; };
 		8079DEEF2745F4C8001420CE /* Haptics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8079DEEE2745F4C8001420CE /* Haptics.swift */; };
 		80964EAD2739ABEA00F54B6D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80964EAC2739ABEA00F54B6D /* AppDelegate.swift */; };
 		80A48CE42746C61000063B57 /* FakeSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A48CE32746C61000063B57 /* FakeSearchBar.swift */; };
@@ -103,6 +104,7 @@
 		802BC32827405083004F1505 /* SearchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchScreen.swift; sourceTree = "<group>"; };
 		802BC32B274063A3004F1505 /* FriendRequestsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRequestsView.swift; sourceTree = "<group>"; };
 		802BC3322743FAC9004F1505 /* SplashScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreen.swift; sourceTree = "<group>"; };
+		805F28FB274DA449002DEA8D /* BigUserPicMotionObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigUserPicMotionObserver.swift; sourceTree = "<group>"; };
 		8079DEEE2745F4C8001420CE /* Haptics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptics.swift; sourceTree = "<group>"; };
 		80964EAB2738AB4900F54B6D /* mealq.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = mealq.entitlements; sourceTree = "<group>"; };
 		80964EAC2739ABEA00F54B6D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -308,6 +310,7 @@
 			children = (
 				80C1208E272E4841006D125D /* SessionViewModel.swift */,
 				80EFC3722731DE8A005520D3 /* FriendsManager.swift */,
+				805F28FB274DA449002DEA8D /* BigUserPicMotionObserver.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -542,6 +545,7 @@
 				802BC32427404D87004F1505 /* AlertButton.swift in Sources */,
 				80C120A3272E55EE006D125D /* mealqButtonStyle.swift in Sources */,
 				80EFC38C27345423005520D3 /* UserProfileView.swift in Sources */,
+				805F28FC274DA449002DEA8D /* BigUserPicMotionObserver.swift in Sources */,
 				802BC322273F7394004F1505 /* SingleFriendRequestRow.swift in Sources */,
 				80C120B1272F8C54006D125D /* MakeColors.swift in Sources */,
 				80A48CEC274716E600063B57 /* FriendSelection.swift in Sources */,

@@ -20,13 +20,13 @@ struct ProfilePicView: View {
     
     var body: some View {
         
-        GeometryReader{ geometry in
-            if let image = cachedImage?.wrappedValue {
-                image.resizable().aspectRatio(1, contentMode: .fit)
-                    .background(Image("AppBackground").resizable().aspectRatio(1, contentMode: .fit)).clipShape(Circle())
-            }
-
-            else {
+     GeometryReader{ geometry in
+//            if let image = cachedImage?.wrappedValue {
+//                image.resizable().aspectRatio(1, contentMode: .fit)
+//                    .background(Image("AppBackground").resizable().aspectRatio(1, contentMode: .fit)).clipShape(Circle())
+//            }
+//
+//            else {
                 if let picURL = picURL {
                 AsyncImage(url: picURL) { phase in
                     if let image = phase.image {
@@ -49,7 +49,7 @@ struct ProfilePicView: View {
                     .position(x: geometry.size.width/2, y: geometry.size.height/2)
             }
                 
-            }
+           // }
         }//geomtry reader
         
     }
