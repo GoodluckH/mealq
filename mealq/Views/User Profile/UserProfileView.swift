@@ -10,37 +10,31 @@ import SwiftUI
 struct UserProfileView: View {
     var user: MealqUser
     @EnvironmentObject var friendsManager: FriendsManager
-    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+   // @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @State private var showBigPic = false
     
-    // TODO: try to optimize this 
-    @State var cachedImage: Image?
+
     
-    
-    var goBackButton: some View {
-        Button(action: {self.presentationMode.wrappedValue.dismiss()
-        }){
-        Image(systemName: "xmark")
-            .font(.body.weight(.bold))
-        }
-        .padding(.top)
-        .foregroundColor(Color("MyPrimary"))
-      
-    }
+//    var goBackButton: some View {
+//        Button(action: {self.presentationMode.wrappedValue.dismiss()
+//        }){Image(systemName: "xmark").font(.body.weight(.bold))}
+//        .padding(.top)
+//        .foregroundColor(Color("MyPrimary"))
+//
+//    }
 
     var body: some View {
-            if showBigPic {
-                BigUserPicView(image: cachedImage).onTapGesture{showBigPic = false}
-            }
-            else {
+     
                 VStack {
-                    ProfilePicView(picURL: URL(string: "https://graph.facebook.com/3052875971654831/picture?width=1000&height=1000"), cachedImage: $cachedImage)
+                    ProfilePicView(picURL: user.normalPicURL)
                         .onTapGesture{
                             withAnimation(.easeOut) {
-                                showBigPic = true
-                            }
+                                showBigPic = true                            }
                         }
                        .frame(width: ProfilePicStyles.profilePicWidth, height: ProfilePicStyles.profilePicHeight)
+                       .sheet(isPresented: $showBigPic) {
+                           BigUserPicView(picURL: URL(string: ((user.thumbnailPicURL?.absoluteString) != nil) ? user.thumbnailPicURL!.absoluteString + "?width=1000&height=1000" : ""))
+                       }
                        
                    Text(user.fullname)
                        .customFont(name: "Quicksand-SemiBold", style: .title1, weight: .black)
@@ -54,10 +48,10 @@ struct UserProfileView: View {
                    Spacer()
                }
                .padding(.top)
-               .navigationBarBackButtonHidden(true)
-                .navigationBarItems(leading: goBackButton)
+               //.navigationBarBackButtonHidden(true)
+               // .navigationBarItems(leading: goBackButton)
                
-           } //else
+         
     }
         
         

@@ -46,10 +46,7 @@ struct QueryScreen: View {
                             
                     }
                     .frame(alignment: .topLeading)
-                }//.gesture(drag)
-//                .onTapGesture{
-//                    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to:nil, from:nil, for:nil)
-//                }
+                }
                 #warning("TODO: pan gesture to extend the pop gesture recognizer area: https://stackoverflow.com/questions/32914006/swipe-to-go-back-only-works-on-edge-of-screen/60598558#60598558")
 
             if !searchText.isEmpty &&

@@ -22,6 +22,7 @@ struct FriendSelection: View {
             HStack {
                 ForEach(friendsManager.friends, id: \.id) { friend in
                     SingleFriendPane(user: friend, selectedFriends: $selectedFriends)
+                        
                        
                 }.frame(width: paneWidth, height: paneHeight, alignment: .center)
                     //.padding()

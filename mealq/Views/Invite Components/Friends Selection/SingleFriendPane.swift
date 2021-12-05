@@ -16,6 +16,7 @@ struct SingleFriendPane: View {
         GeometryReader { geo in
             
             Button (action: {
+                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to:nil, from:nil, for:nil)
                 if selected {
                 Haptics.rigid()
                 selected = false

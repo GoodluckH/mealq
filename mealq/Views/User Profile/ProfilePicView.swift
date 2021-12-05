@@ -13,25 +13,15 @@ import FacebookCore
 /// A view for current user's profile picture.
 struct ProfilePicView: View {
     var picURL: URL?
-    var cachedImage: Binding<Image?>?
-    
-    
-    
     
     var body: some View {
         
      GeometryReader{ geometry in
-//            if let image = cachedImage?.wrappedValue {
-//                image.resizable().aspectRatio(1, contentMode: .fit)
-//                    .background(Image("AppBackground").resizable().aspectRatio(1, contentMode: .fit)).clipShape(Circle())
-//            }
 //
-//            else {
                 if let picURL = picURL {
                 AsyncImage(url: picURL) { phase in
                     if let image = phase.image {
                         image.resizable().aspectRatio(1, contentMode: .fit)
-                            .onAppear{cachedImage?.wrappedValue = image}
                 } else if phase.error != nil {
                     Text("").font(resizeFont(in: geometry.size, scale: ProfilePicStyles.errorTextFontScaleFactor))
                         .position(x: geometry.size.width/2, y: geometry.size.height/2)
