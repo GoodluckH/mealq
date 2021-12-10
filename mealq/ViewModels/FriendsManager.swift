@@ -121,34 +121,34 @@ class FriendsManager: ObservableObject {
         
         // Filters all other users.
         //if let currentUser = Auth.auth().currentUser {
-            self.db.collection("users").getDocuments { (snapshot, error) in
-                guard let documents = snapshot?.documents else {
-                    self.resolvingQuery = false
-                    print("Couldn't fetch documents")
-                    return
-                }
-                
+        self.db.collection("users").getDocuments { (snapshot, error) in
+            guard let documents = snapshot?.documents else {
+                self.resolvingQuery = false
+                print("Couldn't fetch documents")
+                return
+            }
             
-                var othersResult = [MealqUser]()
-                for document in documents {
-                    if  !self.friends.contains(where:{$0.id == document.documentID})
-                        && document.documentID != currentUserId
-                        && !self.stopQuery {
-                        let docData = document.data()
-                        let fullName = docData["fullname"] as! String
-                        if fullName.lowercased().contains(text.lowercased()) {
-                            let FirebaseID = docData["uid"] as! String
-                            let email = docData["email"] as! String
-                            let thumbnailPicURL = docData["thumbnailPicURL"] as? String ?? ""
-                            let normalPicURL = docData["normalPicURL"] as? String ?? ""
-                            let fcmToken = docData["fcmToken"] as? String ?? ""
-                            othersResult.append(MealqUser(id: FirebaseID, fullname: fullName, email: email, thumbnailPicURL: URL(string: thumbnailPicURL), normalPicURL: URL(string:normalPicURL), fcmToken: fcmToken))
-                        }
+        
+            var othersResult = [MealqUser]()
+            for document in documents {
+                if  !self.friends.contains(where:{$0.id == document.documentID})
+                    && document.documentID != currentUserId
+                    && !self.stopQuery {
+                    let docData = document.data()
+                    let fullName = docData["fullname"] as! String
+                    if fullName.lowercased().contains(text.lowercased()) {
+                        let FirebaseID = docData["uid"] as! String
+                        let email = docData["email"] as! String
+                        let thumbnailPicURL = docData["thumbnailPicURL"] as? String ?? ""
+                        let normalPicURL = docData["normalPicURL"] as? String ?? ""
+                        let fcmToken = docData["fcmToken"] as? String ?? ""
+                        othersResult.append(MealqUser(id: FirebaseID, fullname: fullName, email: email, thumbnailPicURL: URL(string: thumbnailPicURL), normalPicURL: URL(string:normalPicURL), fcmToken: fcmToken))
                     }
                 }
-                self.queryResult["others"]! = othersResult
-                self.resolvingQuery = false
-                }
+            }
+            self.queryResult["others"]! = othersResult
+            self.resolvingQuery = false
+            }
            // }
         }
     

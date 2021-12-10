@@ -14,6 +14,8 @@ struct LottieView: UIViewRepresentable {
     
     /// The file name for the JSON file.
     var fileName: String
+    var loopMode: LottieLoopMode?
+    var speed: CGFloat?
     
     func makeUIView(context: UIViewRepresentableContext<LottieView>) -> UIView {
         let view =  UIView(frame: .zero)
@@ -22,7 +24,8 @@ struct LottieView: UIViewRepresentable {
         let animationView = AnimationView()
         animationView.animation = Animation.named(fileName)
         animationView.contentMode = .scaleAspectFit
-        animationView.loopMode = .loop
+        animationView.loopMode = loopMode ?? .loop
+        animationView.animationSpeed = speed ?? 1.0
         animationView.play()
         view.addSubview(animationView)
         

@@ -10,7 +10,7 @@ import SwiftUI
 /// A button to wake up the `InviteSheet`
 struct CreateMealButton: View {
     @State var showInviteModalView: Bool = false
-
+    @EnvironmentObject var mealsManager: MealsManager
     
     var body: some View {
         GeometryReader {geometry in
@@ -23,7 +23,7 @@ struct CreateMealButton: View {
                 .buttonStyle(mealqButtonStyle(clipShape: Circle()))
                 .position(x: geoX - MealButtonConstants.xOffset, y: geoY - MealButtonConstants.yOffset)
                 .sheet(isPresented: $showInviteModalView) {
-                    InviteSheet()
+                    InviteSheet(showSheet: $showInviteModalView)
                 }
                 
         

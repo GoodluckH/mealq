@@ -16,12 +16,13 @@ enum Tab {
 struct MainAppView: View {
     @State var selection: Tab = .social
     @StateObject var friendsManager = FriendsManager()
+    @StateObject var mealsManager = MealsManager()
     @EnvironmentObject var sessionStore: SessionStore
     
     
     
     var body: some View {
-        TabView(selection: $selection) {
+            TabView(selection: $selection) {
             ZStack{
                 CreateMealButton().zIndex(1)
                 SocialView()
@@ -44,15 +45,10 @@ struct MainAppView: View {
                         friendsManager.fetchData()
                     }
                 }
-            }
-            .environmentObject(friendsManager)
+            }.environmentObject(friendsManager)
+            .environmentObject(mealsManager)
         
 
-        //.onAppear{
-//            let apparence = UITabBarAppearance()
-//            apparence.configureWithOpaqueBackground()
-//            if #available(iOS 15.0, *) {UITabBar.appearance().scrollEdgeAppearance = apparence}
-       // }
         
     }
 }

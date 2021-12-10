@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		801257792763D1DF00DE1160 /* colorfulCheckmark.json in Resources */ = {isa = PBXBuildFile; fileRef = 801257782763D1DF00DE1160 /* colorfulCheckmark.json */; };
 		802BC314273DC926004F1505 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802BC313273DC926004F1505 /* NotificationService.swift */; };
 		802BC318273DC926004F1505 /* notifications for mealq.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 802BC311273DC926004F1505 /* notifications for mealq.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		802BC31E273DC92F004F1505 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 802BC31D273DC92F004F1505 /* FirebaseMessaging */; };
@@ -24,6 +25,9 @@
 		802E560B275C5A3000464CA6 /* bearLoader.json in Resources */ = {isa = PBXBuildFile; fileRef = 802E560A275C5A3000464CA6 /* bearLoader.json */; };
 		802E560D275C5CF200464CA6 /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802E560C275C5CF200464CA6 /* LottieView.swift */; };
 		802E5611275D371200464CA6 /* DateSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802E5610275D371200464CA6 /* DateSelection.swift */; };
+		802E5613275FA74300464CA6 /* MealsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802E5612275FA74300464CA6 /* MealsManager.swift */; };
+		802E56152763C67600464CA6 /* rainbowLoader.json in Resources */ = {isa = PBXBuildFile; fileRef = 802E56142763C67500464CA6 /* rainbowLoader.json */; };
+		802E56172763CA0E00464CA6 /* error.json in Resources */ = {isa = PBXBuildFile; fileRef = 802E56162763CA0E00464CA6 /* error.json */; };
 		805F28FC274DA449002DEA8D /* BigUserPicMotionObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805F28FB274DA449002DEA8D /* BigUserPicMotionObserver.swift */; };
 		8079DEEF2745F4C8001420CE /* Haptics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8079DEEE2745F4C8001420CE /* Haptics.swift */; };
 		80964EAD2739ABEA00F54B6D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80964EAC2739ABEA00F54B6D /* AppDelegate.swift */; };
@@ -97,6 +101,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		801257782763D1DF00DE1160 /* colorfulCheckmark.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = colorfulCheckmark.json; sourceTree = "<group>"; };
 		802BC30C273DC8BB004F1505 /* mealq.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = mealq.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		802BC311273DC926004F1505 /* notifications for mealq.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "notifications for mealq.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		802BC313273DC926004F1505 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
@@ -111,6 +116,9 @@
 		802E560A275C5A3000464CA6 /* bearLoader.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = bearLoader.json; sourceTree = "<group>"; };
 		802E560C275C5CF200464CA6 /* LottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
 		802E5610275D371200464CA6 /* DateSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateSelection.swift; sourceTree = "<group>"; };
+		802E5612275FA74300464CA6 /* MealsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealsManager.swift; sourceTree = "<group>"; };
+		802E56142763C67500464CA6 /* rainbowLoader.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = rainbowLoader.json; sourceTree = "<group>"; };
+		802E56162763CA0E00464CA6 /* error.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = error.json; sourceTree = "<group>"; };
 		805F28FB274DA449002DEA8D /* BigUserPicMotionObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigUserPicMotionObserver.swift; sourceTree = "<group>"; };
 		8079DEEE2745F4C8001420CE /* Haptics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptics.swift; sourceTree = "<group>"; };
 		80964EAB2738AB4900F54B6D /* mealq.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = mealq.entitlements; sourceTree = "<group>"; };
@@ -229,7 +237,10 @@
 		802E560E275C5F3D00464CA6 /* LottieAnimations */ = {
 			isa = PBXGroup;
 			children = (
+				801257782763D1DF00DE1160 /* colorfulCheckmark.json */,
 				802E560A275C5A3000464CA6 /* bearLoader.json */,
+				802E56142763C67500464CA6 /* rainbowLoader.json */,
+				802E56162763CA0E00464CA6 /* error.json */,
 			);
 			path = LottieAnimations;
 			sourceTree = "<group>";
@@ -336,6 +347,7 @@
 				80C1208E272E4841006D125D /* SessionViewModel.swift */,
 				80EFC3722731DE8A005520D3 /* FriendsManager.swift */,
 				805F28FB274DA449002DEA8D /* BigUserPicMotionObserver.swift */,
+				802E5612275FA74300464CA6 /* MealsManager.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -549,8 +561,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				80C120A5272F4B7A006D125D /* Fonts in Resources */,
+				802E56172763CA0E00464CA6 /* error.json in Resources */,
 				802E560B275C5A3000464CA6 /* bearLoader.json in Resources */,
 				80C1206E272E02CC006D125D /* Preview Assets.xcassets in Resources */,
+				802E56152763C67600464CA6 /* rainbowLoader.json in Resources */,
+				801257792763D1DF00DE1160 /* colorfulCheckmark.json in Resources */,
 				80C1206B272E02CC006D125D /* Assets.xcassets in Resources */,
 				80C12075272E031C006D125D /* GoogleService-Info.plist in Resources */,
 			);
@@ -571,6 +586,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				802E5613275FA74300464CA6 /* MealsManager.swift in Sources */,
 				802BC3332743FAC9004F1505 /* SplashScreen.swift in Sources */,
 				802BC32427404D87004F1505 /* AlertButton.swift in Sources */,
 				802E560D275C5CF200464CA6 /* LottieView.swift in Sources */,

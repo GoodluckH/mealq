@@ -15,13 +15,29 @@ struct InviteSheet: View {
     @State var selectedFriends: [MealqUser] = []
     @State var selectedDate: Int?
     @State var mealName = ""
+    
+    @Binding var showSheet: Bool
+    @State var showMainContent: Bool = true
     @EnvironmentObject var friendsManager: FriendsManager
-    @State var isDragging = false
-
+    @EnvironmentObject var mealsManager: MealsManager
     
     var body: some View {
-    
-        ScrollView ([], showsIndicators: false) { // pass in an empty set to disable the scrolling
+        if mealsManager.sendingMealRequest == .done {
+            LottieView(fileName: "colorfulCheckmark", loopMode: .playOnce, speed: 1.5)
+                .task {
+                    showMainContent = false
+                    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to:nil, from:nil, for:nil)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.65) {
+                        if mealsManager.sendingMealRequest == .done {
+                            showSheet = false
+                            mealsManager.sendingMealRequest = .idle                            
+                        }
+                    }
+                }
+                
+        }
+        else if showMainContent && mealsManager.sendingMealRequest == .idle {
+           ScrollView ([], showsIndicators: false) { // pass in an empty set to disable the scrolling
             VStack {
                 Header(mealName: $mealName, selectedFriends: selectedFriends).padding(.top).padding(.top)
                 FakeSearchBar().shadow(color: .gray, radius: searchBarShadowRadius, y: searchBarShadowYOffset)
@@ -40,11 +56,11 @@ struct InviteSheet: View {
                 
                 // Date selection
                 HStack{Text("tap to select a date (optional)").bold(); Spacer()}.padding(.horizontal).offset(y: 16)
-                DateSelection(selectedDate: $selectedDate).padding(.bottom)
+                DateSelection(selectedDate: $selectedDate)
                 
                 
                 // Send invite!
-                SendInviteButton(selectedFriends: selectedFriends, selectedDate: selectedDate, mealName: mealName)
+                SendInviteButton(selectedFriends: selectedFriends, selectedDate: selectedDate, mealName: mealName, showSheet: $showSheet)
                     .padding(.top)
                 
                 Spacer()
@@ -54,6 +70,8 @@ struct InviteSheet: View {
             .gesture(drag)
             
         }.onTapGesture {UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to:nil, from:nil, for:nil)}
+           
+       } //else
         
 
     }
@@ -63,7 +81,7 @@ struct InviteSheet: View {
     private let searchBarShadowYOffset: CGFloat = 2
     
     
-    
+    @State var isDragging = false
     var drag: some Gesture {
         DragGesture(minimumDistance: 50)
             .onChanged { _ in
@@ -102,9 +120,6 @@ struct Header: View {
                 .frame(alignment: .leading)
                 .font(.largeTitle.weight(.black))
                 .minimumScaleFactor(0.1)
- 
-
-            
         }
         .padding()
         
@@ -124,14 +139,34 @@ struct SendInviteButton: View {
     var selectedFriends: [MealqUser]
     var selectedDate: Int?
     var mealName: String
+    @State var showAlert: Bool = false
+    @Binding var showSheet: Bool
+    
+    @EnvironmentObject var mealsManager: MealsManager
+    @EnvironmentObject var sessionStore: SessionStore
     var body: some View {
-            Button(action:{}) {
-                Image(systemName: "paperplane.circle.fill")
-                    .foregroundColor(selectedFriends.isEmpty ? .gray : .primary)
-                    .font(.largeTitle.weight(.black))
+            Button(action:{
+                mealsManager.sendMealRequest(to: selectedFriends, from: sessionStore.localUser!, on: selectedDate, mealName: mealName)
+           
+            }) {
+                if mealsManager.sendingMealRequest == .idle {
+                    Image(systemName: "paperplane.circle.fill")
+                        .foregroundColor(selectedFriends.isEmpty ? .gray : .primary)
+                        .font(.largeTitle.weight(.black))
+                } else if mealsManager.sendingMealRequest == .loading {
+                    LottieView(fileName: "rainbowLoader")
+                } else if mealsManager.sendingMealRequest == .error {
+                    LottieView(fileName: "error", loopMode: .playOnce)
+                        .onTapGesture{showAlert = true}
+                        .alert("Something went wrong", isPresented: $showAlert) {
+                            Button("Cancel", role: .cancel) {showSheet = false}
+                            Button("Retry") {
+                                mealsManager.sendMealRequest(to: selectedFriends, from: sessionStore.localUser!, on: selectedDate, mealName: mealName)
+                            }
+                        }
+                }
             }
             .disabled(selectedFriends.isEmpty)
-
     }
 }
 
@@ -159,10 +194,10 @@ struct SendInviteButton: View {
 
 
 
-
-struct InviteSheet_Previews: PreviewProvider {
-    static var previews: some View {
-        InviteSheet()
-            .preferredColorScheme(.light)
-    }
-}
+//
+//struct InviteSheet_Previews: PreviewProvider {
+//    static var previews: some View {
+//        InviteSheet()
+//            .preferredColorScheme(.light)
+//    }
+//}
