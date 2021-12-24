@@ -36,7 +36,8 @@ struct InviteSheet: View {
                 }
                 
         }
-        else if showMainContent && mealsManager.sendingMealRequest == .idle {
+        else if showMainContent && mealsManager.sendingMealRequest == .idle ||
+                    mealsManager.sendingMealRequest == .loading {
            ScrollView ([], showsIndicators: false) { // pass in an empty set to disable the scrolling
             VStack {
                 Header(mealName: $mealName, selectedFriends: selectedFriends).padding(.top).padding(.top)
@@ -60,10 +61,12 @@ struct InviteSheet: View {
                 
                 
                 // Send invite!
-                SendInviteButton(selectedFriends: selectedFriends, selectedDate: selectedDate, mealName: mealName, showSheet: $showSheet)
-                    .padding(.top)
-                
-                Spacer()
+                VStack{
+                    SendInviteButton(selectedFriends: selectedFriends, selectedDate: selectedDate, mealName: mealName, showSheet: $showSheet)
+                        .padding(.top)
+                    Spacer()
+                    
+                }
       
             } // VStack
             .introspectViewController{vc in if let sheet = vc.sheetPresentationController {sheet.prefersGrabberVisible = true}}
@@ -145,29 +148,52 @@ struct SendInviteButton: View {
     @EnvironmentObject var mealsManager: MealsManager
     @EnvironmentObject var sessionStore: SessionStore
     var body: some View {
-            Button(action:{
+            VStack{
+                Button(action:{
                 mealsManager.sendMealRequest(to: selectedFriends, from: sessionStore.localUser!, on: selectedDate, mealName: mealName)
            
             }) {
-                if mealsManager.sendingMealRequest == .idle {
-                    Image(systemName: "paperplane.circle.fill")
-                        .foregroundColor(selectedFriends.isEmpty ? .gray : .primary)
-                        .font(.largeTitle.weight(.black))
-                } else if mealsManager.sendingMealRequest == .loading {
-                    LottieView(fileName: "rainbowLoader")
-                } else if mealsManager.sendingMealRequest == .error {
-                    LottieView(fileName: "error", loopMode: .playOnce)
-                        .onTapGesture{showAlert = true}
-                        .alert("Something went wrong", isPresented: $showAlert) {
-                            Button("Cancel", role: .cancel) {showSheet = false}
-                            Button("Retry") {
-                                mealsManager.sendMealRequest(to: selectedFriends, from: sessionStore.localUser!, on: selectedDate, mealName: mealName)
+                
+                ZStack {
+                    Capsule()
+                        .fill(selectedFriends.isEmpty ? .gray : Color("MyPrimary"))
+                        .shadow(color: .gray, radius: shadowRadius, y: shadowYOffset)
+                        .padding()
+                        .frame(width: rectMaxWidth, height: rectMaxHeight, alignment: .center)
+                        
+                    
+                    if mealsManager.sendingMealRequest == .idle {
+                        Image(systemName: "paperplane.fill")
+                            .foregroundColor(Color("QueryLoaderStartingColor"))
+                            .font(.largeTitle.weight(.black))
+
+                    } else if mealsManager.sendingMealRequest == .loading {
+                        LottieView(fileName: "rainbowLoader").frame(maxHeight: rectMaxHeight * 0.9, alignment: .center)
+                    } else if mealsManager.sendingMealRequest == .error {
+                        LottieView(fileName: "error", loopMode: .playOnce)
+                            .onTapGesture{showAlert = true}
+                            .alert("Something went wrong", isPresented: $showAlert) {
+                                Button("Cancel", role: .cancel) {showSheet = false}
+                                Button("Retry") {
+                                    mealsManager.sendMealRequest(to: selectedFriends, from: sessionStore.localUser!, on: selectedDate, mealName: mealName)
+                                }
                             }
-                        }
-                }
+                    }
+                    
+                } // zstack
+
             }
             .disabled(selectedFriends.isEmpty)
+                
+            }
     }
+                    
+        
+    private let cornerRadius: CGFloat = 10
+    private let shadowRadius: CGFloat = 7
+    private let shadowYOffset: CGFloat = 1
+    private let rectMaxWidth: CGFloat = 200
+    private let rectMaxHeight: CGFloat = 90
 }
 
 
