@@ -8,16 +8,17 @@
 import Foundation
 import Combine
 
-
 /// A data model for meals.
 struct Meal: Identifiable, Codable, Hashable {
-    
+     
     var id: String
     var name: String
-    var from: String // the uid of the meal invitor
+    var from: MealqUser
     var to: [MealqUser: String]
     var weekday: Int
+    var createdAt: Date
     
+
     static func == (lhs: Meal, rhs: Meal) -> Bool {
         return lhs.id == rhs.id
     }
@@ -25,4 +26,5 @@ struct Meal: Identifiable, Codable, Hashable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
+
 }

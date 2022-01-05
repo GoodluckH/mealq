@@ -31,16 +31,19 @@ struct CustomTextField: View {
 
     var body: some View {
         TextField("", text: $searchText)
-            .placeholder("friend name", when: searchText.isEmpty)
+            .placeholder("search people", when: searchText.isEmpty)
                 .frame(alignment: .leading)
                 .focused($focusedField)
                 .foregroundColor(Color("SearchBarSymbolColor"))
                 .accentColor(Color("SearchBarSymbolColor"))
                 .disableAutocorrection(true)
                 .onAppear{
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    print("hi")
+                    // TODO: optimize for keyboard popup when come back from the navigationview
+                    DispatchQueue.main.asyncAfter(deadline: .now()) {
                         focusedField = true
                     }
+                    
                 }
     }
 }

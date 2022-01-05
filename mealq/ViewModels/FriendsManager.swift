@@ -17,7 +17,7 @@ class FriendsManager: ObservableObject {
     
     
     @Published var friends = [MealqUser]()
-    @Published var pendingFriends = [MealqUser]()
+    @Published var pendingFriends = [MealqUser: Date]()
     @Published var sentRequests = [MealqUser]()
 
     
@@ -55,7 +55,9 @@ class FriendsManager: ObservableObject {
                     return
                 }
                 
-                self.pendingFriends = documents.map { docSnapshot in
+                self.pendingFriends = [MealqUser: Date]()
+                
+                for docSnapshot in documents {
                     let data = docSnapshot.data()
                     let FirebaseID = data["uid"] as! String
                     let fullName = data["fullname"] as! String
@@ -63,8 +65,21 @@ class FriendsManager: ObservableObject {
                     let thumbnailPicURL = data["thumbnailPicURL"] as? String ?? ""
                     let normalPicURL = data["normalPicURL"] as? String ?? ""
                     let fcmToken  = data["fcmToken"] as? String ?? ""
-                    return MealqUser(id: FirebaseID, fullname: fullName, email: email, thumbnailPicURL: URL(string: thumbnailPicURL), normalPicURL: URL(string:normalPicURL), fcmToken: fcmToken)
+                    let createdAt = data["createdAt"] as! Timestamp
+                    self.pendingFriends[MealqUser(id: FirebaseID, fullname: fullName, email: email, thumbnailPicURL: URL(string: thumbnailPicURL), normalPicURL: URL(string:normalPicURL), fcmToken: fcmToken)] = createdAt.dateValue()
                 }
+//                self.pendingFriends = documents.map { docSnapshot in
+//                    let data = docSnapshot.data()
+//                    let FirebaseID = data["uid"] as! String
+//                    let fullName = data["fullname"] as! String
+//                    let email = data["email"] as! String
+//                    let thumbnailPicURL = data["thumbnailPicURL"] as? String ?? ""
+//                    let normalPicURL = data["normalPicURL"] as? String ?? ""
+//                    let fcmToken  = data["fcmToken"] as? String ?? ""
+//                    let createdAt = data["createdAt"] as! Date
+//                    print(createdAt)
+//                    return
+//                }
      
             }
             
@@ -210,6 +225,7 @@ class FriendsManager: ObservableObject {
                     "fcmToken": curFcmToken,
                     "email": curEmail,
                     "uid": curUid,
+                    "createdAt": FieldValue.serverTimestamp(),
                     "thumbnailPicURL": curThumbnailPicURL ?? Constants.placeholder_pic,
                     "normalPicURL": curNormalPicURL ?? Constants.placeholder_pic
                 ]) { err in
@@ -228,7 +244,7 @@ class FriendsManager: ObservableObject {
                         print ("cannot get data from user \(currentUserId)")
                         return
                     }
-               
+                    
                     let fullname = data["fullname"] as! String
                     let fcmToken = data["fcmToken"] as! String
                     let uid = data["uid"] as! String
@@ -241,6 +257,7 @@ class FriendsManager: ObservableObject {
                         "fcmToken": fcmToken,
                         "email": email,
                         "uid": uid,
+                        "createdAt": FieldValue.serverTimestamp(),
                         "thumbnailPicURL": thumbnailPicURL ?? Constants.placeholder_pic,
                         "normalPicURL": normalPicURL ?? Constants.placeholder_pic,
                         // these should show the current user's info so that notification works logically

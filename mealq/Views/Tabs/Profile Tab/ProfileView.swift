@@ -16,7 +16,15 @@ struct ProfileView: View {
     
     var body: some View {
             
-        if sessionStore.deletingUser {
+        VStack{
+            HStack {
+                Text("my profile")
+                    .customFont(name: "Quicksand-SemiBold", style: .title1, weight: .black)
+                Spacer()
+            }
+            .padding()
+            
+            if sessionStore.deletingUser {
           
             GeometryReader{ geometry in
                 VStack{
@@ -61,7 +69,7 @@ struct ProfileView: View {
         }
         
         
-           
+        }.frame(maxHeight: .infinity, alignment: .top)
         }
 }
 

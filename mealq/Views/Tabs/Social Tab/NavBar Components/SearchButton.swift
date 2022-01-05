@@ -10,12 +10,20 @@ import SwiftUI
 
 struct SearchButton: View {
     @State var showNavLinkView = false
-      
+
     var body: some View {
         NavigationLink(destination: SearchScreen(showNavLinkView: $showNavLinkView)
                         ,isActive: $showNavLinkView) {
             
-            Button(action: {showNavLinkView = true}) {
+            Button(action: {
+                var transaction = Transaction()
+                transaction.disablesAnimations  = true
+                withTransaction(transaction) {
+                    showNavLinkView = true
+                }
+                
+                
+            }) {
                  Image(systemName: "magnifyingglass")
                     .customFont(name: "Quicksand-SemiBold", style: .title2)
                     .foregroundColor(.primary)

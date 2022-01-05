@@ -29,23 +29,15 @@ struct QueryScreen: View {
             ZStack{
                 ScrollView ([.vertical], showsIndicators: false){
                     LazyVStack(alignment: .leading, pinnedViews: [.sectionHeaders]) {
-                        if !friendsManager.queryResult["friends"]!.isEmpty {
-                            SectionView(headerText: "My Friends", users: friendsManager.queryResult["friends"]!)
-                        }
+                        if !friendsManager.queryResult["friends"]!.isEmpty {SectionView(headerText: "My Friends", users: friendsManager.queryResult["friends"]!)}
                         else if searchText.isEmpty {
-                            if friendsManager.friends.isEmpty {
-                                SectionView(headerText: "You don't have any friend... yet", users: [MealqUser]())
-                            }
-                            else {
-                                SectionView(headerText: "My Friends", users:friendsManager.friends)
-                            }
+                            if friendsManager.friends.isEmpty {SectionView(headerText: "You don't have any friend... yet", users: [MealqUser]())}
+                            else { SectionView(headerText: "My Friends", users:friendsManager.friends) }
                         }
                         if !friendsManager.queryResult["others"]!.isEmpty {
                             SectionView(headerText: "Other People", users: friendsManager.queryResult["others"]!)
                         }
-                            
-                    }
-                    .frame(alignment: .topLeading)
+                    }.frame(alignment: .topLeading)
                 }
                 #warning("TODO: pan gesture to extend the pop gesture recognizer area: https://stackoverflow.com/questions/32914006/swipe-to-go-back-only-works-on-edge-of-screen/60598558#60598558")
 

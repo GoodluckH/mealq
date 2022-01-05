@@ -27,10 +27,7 @@ struct UserProfileView: View {
      
                 VStack {
                     ProfilePicView(picURL: user.normalPicURL)
-                        .onTapGesture{
-                            withAnimation(.easeOut) {
-                                showBigPic = true                            }
-                        }
+                        .onTapGesture{showBigPic = true}
                        .frame(width: ProfilePicStyles.profilePicWidth, height: ProfilePicStyles.profilePicHeight)
                        .sheet(isPresented: $showBigPic) {
                            BigUserPicView(picURL: URL(string: ((user.thumbnailPicURL?.absoluteString) != nil) ? user.thumbnailPicURL!.absoluteString + "?width=1000&height=1000" : ""))
@@ -41,12 +38,10 @@ struct UserProfileView: View {
                    Text("\(friendsManager.otherUserFriends.count) friends")
                        .customFont(name: "Quicksand-SemiBold", style: .subheadline, weight: .semibold)
                        
-                       
                    ConnectButton(user: user).padding(.top).padding(.horizontal)
                        
-                       
                    Spacer()
-               }
+                }.onAppear{friendsManager.getFriendsFrom(user: user.id)}
                .padding(.top)
                //.navigationBarBackButtonHidden(true)
                // .navigationBarItems(leading: goBackButton)

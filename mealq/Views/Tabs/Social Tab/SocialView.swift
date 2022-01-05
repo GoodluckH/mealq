@@ -15,15 +15,15 @@ struct SocialView: View {
 //        }
 
     var body: some View {
-        GeometryReader{ geometry in
+       // GeometryReader{ geometry in
             NavigationView{
             VStack{
                 HStack {
                     Text("activities")
                         .customFont(name: "Quicksand-SemiBold", style: .title1, weight: .black)
                     Spacer()
-                    AlertButton()
-                        .padding(.horizontal)
+                    // AlertButton()
+                      //  .padding(.horizontal)
                     SearchButton()
                 }
                 .padding()
@@ -31,14 +31,14 @@ struct SocialView: View {
           
                     // TODO: implement the friend activity stream
                     Text("no friend activity to display (coming up...)")
-                        .frame(maxHeight: geometry.size.height, alignment: .top)
+                    .frame(maxHeight: .infinity, alignment: .top)
                         .ignoresSafeArea(.keyboard)
                         
                 }.navigationBarHidden(true)
                     .navigationBarTitle(Text(""))
-                }
+                }.navigationViewStyle(.stack)
 
-            }
+          //  }
         }
     }
 

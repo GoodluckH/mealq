@@ -44,7 +44,7 @@ struct ConnectButton: View {
             }
             
             // if this user has sent a friend request to current user, show the accept and reject pair
-            else if friendsManager.pendingFriends.contains(user) {
+            else if friendsManager.pendingFriends[user] != nil {
                 HStack{
                     Spacer()
                     

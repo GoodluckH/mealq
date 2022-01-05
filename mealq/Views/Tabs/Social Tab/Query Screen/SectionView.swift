@@ -17,8 +17,7 @@ struct SectionView: View {
         Section(header: SectionHeader(headerText: headerText)) {
             ForEach(users, id: \.id) { user in
                
-                NavigationLink(destination: UserProfileView(user: user)
-                                .onAppear{friendsManager.getFriendsFrom(user: user.id)}) {
+                NavigationLink(destination: UserProfileView(user: user)) {
                         HStack {
                             ProfilePicView(picURL: user.thumbnailPicURL)
                             .frame(width: 35, height: 35, alignment: .leading)
