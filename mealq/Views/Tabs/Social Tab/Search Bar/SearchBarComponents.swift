@@ -38,12 +38,8 @@ struct CustomTextField: View {
                 .accentColor(Color("SearchBarSymbolColor"))
                 .disableAutocorrection(true)
                 .onAppear{
-                    print("hi")
                     // TODO: optimize for keyboard popup when come back from the navigationview
-                    DispatchQueue.main.asyncAfter(deadline: .now()) {
                         focusedField = true
-                    }
-                    
                 }
     }
 }

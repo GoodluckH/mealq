@@ -53,7 +53,7 @@ struct MealDetailView: View {
                             }
                             Spacer()
                             Text(meal.to[user]!)
-                        }.padding()
+                        }.padding(.horizontal)
                         
                     }
                     }

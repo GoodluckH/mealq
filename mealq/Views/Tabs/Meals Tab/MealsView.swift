@@ -14,6 +14,8 @@ struct MealsView: View {
     @EnvironmentObject var showMealButton: ShowMealButton
 
     @State private var searchText = ""
+    
+
      var body: some View {
          NavigationView{
              VStack{
@@ -35,8 +37,10 @@ struct MealsView: View {
                                             MessageView(meal: meal)
                                             .onAppear{
                                               messagesManager.fetchMessages(from: meal.id)
-                                              showMealButton.showMealButton = false
-                          }.onDisappear{showMealButton.showMealButton = true}
+                              withAnimation{ showMealButton.showMealButton = false}
+                          }.onDisappear {
+                              withAnimation{showMealButton.showMealButton = true}
+                          }
 
                           ){
                               MealChatRow(meal: meal)
@@ -46,8 +50,12 @@ struct MealsView: View {
                  }
              }
          }.navigationBarTitle("").navigationBarHidden(true)
+    
+               
          
         }.navigationViewStyle(.stack)
+   
+             
          
      }
 }

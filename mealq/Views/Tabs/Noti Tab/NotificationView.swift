@@ -28,11 +28,11 @@ struct NotificationView: View {
                 }
                 .padding()
                 
-               HStack{
+              HStack{
                    
-                   if friendsManager.pendingFriends.isEmpty && mealsManager.pendingMeals.isEmpty{
+                   if friendsManager.pendingFriends.isEmpty && mealsManager.pendingMeals.isEmpty {
                        // TODO: make this pretty
-                    Text("you have no requests for now")
+                       LottieView(fileName: "astronaut")
                    }
                 else {
                     ScrollView(){
@@ -62,7 +62,7 @@ struct NotificationView: View {
                    }
                 }
                    
-               }.frame(maxHeight:.infinity, alignment: .top)
+              }.frame(maxHeight:.infinity)
             
             }.navigationBarTitle("")
                 .navigationBarHidden(true)

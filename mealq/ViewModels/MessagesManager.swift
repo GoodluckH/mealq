@@ -57,17 +57,19 @@ class MessagesManager: ObservableObject {
             
             self.messages.append(Message(id: message.documentID, senderID:sender.id, senderName: sender.fullname, timeStamp: date, content: self.messageContent))
             self.messageContent = ""
-            
-            message.setData(payload) {err in
-                if let err = err {
-                    self.sendingMessage = .error
-                    self.failedMessages.append(Message(id: message.documentID, senderID:sender.id, senderName: sender.fullname, timeStamp: date, content: self.messageContent, failed: true))
-                    print("Something went wrong while sending message: \(err.localizedDescription)")
-                } else  {
-                    self.sendingMessage = .done
-                    print("Successfully sent message!")
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                message.setData(payload) {err in
+                    if let err = err {
+                        self.sendingMessage = .error
+                        self.failedMessages.append(Message(id: message.documentID, senderID:sender.id, senderName: sender.fullname, timeStamp: date, content: self.messageContent, failed: true))
+                        print("Something went wrong while sending message: \(err.localizedDescription)")
+                    } else  {
+                        self.sendingMessage = .done
+                        print("Successfully sent message!")
+                    }
                 }
             }
+  
         } else {self.sendingMessage = .idle}
     }
     

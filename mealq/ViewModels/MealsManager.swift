@@ -68,7 +68,23 @@ class MealsManager: ObservableObject {
 //                }
             }
             
+            self.db.collection("chats").whereField("from", isEqualTo: currentUser.uid).addSnapshotListener { (querySnapshot, error) in
+                guard let snapshot = querySnapshot else {
+                    print("failed to retrieve meals snapshot")
+                    return
+                }
+                
+                snapshot.documentChanges.forEach {diff in
+                    if (diff.type == .added) {
+                        self.addMeal(diff.document.documentID, by: "accepted")
+                    }
+                    if (diff.type == .modified) {
+                        self.modifyMeal(diff.document.documentID, by: "accepted")
+                        // TODO: add the logic for rejected meals
+                    }
+                }
             
+            }
         }
     }
     
@@ -295,6 +311,7 @@ class MealsManager: ObservableObject {
             for user in users {
                 batch.setData(["status": "pending"], forDocument: self.db.collection("users").document(user.id).collection("meals").document(newMeal.documentID))
             }
+            batch.setData(["status": "accepted"], forDocument: self.db.collection("users").document(me.id).collection("meals").document(newMeal.documentID))
             batch.commit() { err in
                 if let err = err {
                     print("Error writing batch \(err)")

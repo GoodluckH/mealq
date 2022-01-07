@@ -12,25 +12,41 @@ struct ChatRow: View {
     var users: [MealqUser]
     var message: Message
     var currentUser: MealqUser
+    var invitor: MealqUser
     var sender: MealqUser
-    init (users: [MealqUser], message: Message, currentUser: MealqUser) {
+    var showAvatar: Bool
+    @State private var showTimeStamp = false
+    init (users: [MealqUser], message: Message, currentUser: MealqUser, invitor: MealqUser, showAvatar: Bool) {
         self.users = users
         self.message = message
         self.currentUser = currentUser
-        
+        self.invitor = invitor
         let senderID = message.senderID
-        self.sender = users[users.firstIndex(where: {$0.id == senderID})!]
+        if let idx = users.firstIndex(where: {$0.id == senderID}) {
+            self.sender = users[idx]
+        } else {self.sender = invitor}
+        self.showAvatar = showAvatar 
+        
     }
     
     
     var body: some View {
-        HStack (alignment: .bottom, spacing: 0) {
-            if sender != currentUser {
+        HStack (alignment: showAvatar ? .bottom : .center,spacing: 0) {
+            if sender != currentUser && showAvatar {
+                
+                    
+               
                 NavigationLink (destination: UserProfileView(user: sender)){
-                   ProfilePicView(picURL: sender.normalPicURL)
-                    .padding(.vertical)
+                    ProfilePicView(picURL: sender.normalPicURL)
+                         .padding(.leading).padding(.bottom, 5)
+                     .frame(width: UIScreen.main.bounds.width / 6, height: UIScreen.main.bounds.width / 10)
+                }
+            
+               
+            } else  {
+                HStack{}.padding(.vertical)
                     .padding(.leading)
-                    .frame(width: UIScreen.main.bounds.width / 6, height: UIScreen.main.bounds.width / 6)}
+                    .frame(width: UIScreen.main.bounds.width / 6, height: UIScreen.main.bounds.width / 12)
             }
             
             if sender == currentUser {Spacer(minLength: UIScreen.main.bounds.width / 6)}
@@ -39,17 +55,26 @@ struct ChatRow: View {
                 Text(message.content)
                     .customFont(name: "Quicksand-Regular", style: .callout)
                     .foregroundColor(sender == currentUser ? .white : .black)
-                    .padding(10)
+                    .padding(8)
                     .background(sender == currentUser ? .blue : Color("SearchBarBackgroundColor"))
                     .clipShape(ChatBubble(myMsg: sender == currentUser))
-                Text(message.timeStamp, style: .time)
+                    .onTapGesture {
+                        if !showAvatar {
+                            withAnimation(.easeOut(duration: 0.2)){showTimeStamp.toggle()}
+                        }
+                    }
+                
+                if showAvatar || showTimeStamp {
+                    Text(message.timeStamp, style: .time)
                     .customFont(name: "Quicksand-Regular", style: .caption2)
                     .foregroundColor(.gray)
-                    //.padding(sender == currentUser ? .leading : .trailing, 10)
+                    .transition(.move(edge: .top))
+                }
+                    
             }
             if sender != currentUser {Spacer(minLength: UIScreen.main.bounds.width / 6)}
             else {
-                VStack{}.padding(.leading, UIScreen.main.bounds.width / 24).padding(.vertical)
+                VStack{}.padding(.trailing, UIScreen.main.bounds.width / 24).padding(.vertical)
             }
         }.id(message.id)
     }

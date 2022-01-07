@@ -21,19 +21,20 @@ struct MainAppView: View {
     @StateObject var showMealButton = ShowMealButton()
     
     @EnvironmentObject var sessionStore: SessionStore
-    
+   
     @State var visitedNoti = false
     
-    
+
     
     var body: some View {
+//        SwiftUIView()
             TabView(selection: $selection) {
                 ZStack {
                     CreateMealButton().zIndex(1)
                     SocialView()
                 }.tabItem{Image(systemName: "person.2")}.tag(Tab.social)
                 ZStack {
-                    if showMealButton.showMealButton {CreateMealButton().zIndex(1)}
+                    if showMealButton.showMealButton {CreateMealButton().zIndex(1).transition(.opacity)}
                     MealsView()
                 }.tabItem{Image(systemName: "mail.stack")}.tag(Tab.meals)
                 ZStack {
@@ -47,7 +48,7 @@ struct MainAppView: View {
                     ProfileView()
                 }.tabItem{Image(systemName: "person")}.tag(Tab.profile)
 
-            
+
         }.customFont(name: "Quicksand-SemiBold", style: .body)
             .task{
                 Auth.auth().addStateDidChangeListener {_, user in
@@ -60,9 +61,9 @@ struct MainAppView: View {
             .environmentObject(mealsManager)
             .environmentObject(messagesManager)
             .environmentObject(showMealButton)
-        
 
-        
+
+
     }
 }
 
