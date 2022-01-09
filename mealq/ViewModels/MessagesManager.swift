@@ -14,10 +14,16 @@ class MessagesManager: ObservableObject {
     private var db = Firestore.firestore()
     private let user = Auth.auth().currentUser
     
+    
+    
+    @Published var fetchingMessages = Status.idle
     func fetchMessages(from mealID: String) {
+        fetchingMessages = .loading
+        
         if let _ = user {
             self.db.collection("chats").document(mealID).collection("messages").order(by: "timeStamp", descending: false).addSnapshotListener { snapshot, error in
                 guard let documents = snapshot?.documents else {
+                    self.fetchingMessages = .error
                     print("Something went wrong when fetching messages: \(String(describing: error?.localizedDescription))")
                     return
                 }
@@ -31,8 +37,8 @@ class MessagesManager: ObservableObject {
                     let content = data["content"] as! String
                     return Message(id: id, senderID: senderID, senderName: senderName, timeStamp: timeStamp.dateValue(), content: content)
                 }
-                //self.messages.sort(by: {$0.timeStamp > $1.timeStamp})
                 
+                self.fetchingMessages = .idle
             }
         }
     }

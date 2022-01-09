@@ -12,16 +12,16 @@ struct ToBottomMessageButton: View {
     var lastMessageID: String
     
     var body: some View {    
-        GeometryReader {geometry in
-            let (geoX, geoY) = computeScreenSize(with: geometry.size)
+       // GeometryReader {geometry in
+          //  let (geoX, geoY) = computeScreenSize(with: geometry.size)
             Button(action: {
                 Haptics.rigid()
                 withAnimation {reader.scrollTo(lastMessageID, anchor: .bottom)}
             }, label: {Image(systemName: "arrow.down")})
                 .buttonStyle(mealqButtonStyle(clipShape: Circle(), backgroundColor: .white, foregroundColor: .black))
-                .position(x: geoX - MealButtonConstants.xOffset, y: geoY - MealButtonConstants.yOffset)
+               // .position(x: geoX, y: geoY)
             
-        }
+       // }
     }
     
     
@@ -32,7 +32,7 @@ struct ToBottomMessageButton: View {
     private struct MealButtonConstants {
         static let xOffset: CGFloat = 50
         static let yOffset: CGFloat = 50
-        static let inviteViewCornerRadius: CGFloat = 15
+        static let inviteViewCornerRadius: CGFloat = 10
     }
 }
 

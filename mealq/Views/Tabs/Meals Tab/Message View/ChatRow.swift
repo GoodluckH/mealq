@@ -76,7 +76,7 @@ struct ChatRow: View {
             else {
                 VStack{}.padding(.trailing, UIScreen.main.bounds.width / 24).padding(.vertical)
             }
-        }.id(message.id)
+        }
     }
 }
 

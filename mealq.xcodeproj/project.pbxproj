@@ -22,7 +22,6 @@
 		8023FDCA27868728003E728E /* FieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8023FDC927868728003E728E /* FieldView.swift */; };
 		8023FDCC278692D9003E728E /* Observer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8023FDCB278692D9003E728E /* Observer.swift */; };
 		8023FDCE27875106003E728E /* DynamicHeightTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8023FDCD27875105003E728E /* DynamicHeightTextField.swift */; };
-		8023FDD027879E43003E728E /* ObservableScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8023FDCF27879E43003E728E /* ObservableScrollView.swift */; };
 		8023FDD22787AC98003E728E /* ToBottomMessageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8023FDD12787AC98003E728E /* ToBottomMessageButton.swift */; };
 		8023FDD42787D3E5003E728E /* SmartTimeStamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8023FDD32787D3E5003E728E /* SmartTimeStamp.swift */; };
 		802BC314273DC926004F1505 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802BC313273DC926004F1505 /* NotificationService.swift */; };
@@ -137,7 +136,6 @@
 		8023FDC927868728003E728E /* FieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldView.swift; sourceTree = "<group>"; };
 		8023FDCB278692D9003E728E /* Observer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observer.swift; sourceTree = "<group>"; };
 		8023FDCD27875105003E728E /* DynamicHeightTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicHeightTextField.swift; sourceTree = "<group>"; };
-		8023FDCF27879E43003E728E /* ObservableScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservableScrollView.swift; sourceTree = "<group>"; };
 		8023FDD12787AC98003E728E /* ToBottomMessageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToBottomMessageButton.swift; sourceTree = "<group>"; };
 		8023FDD32787D3E5003E728E /* SmartTimeStamp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartTimeStamp.swift; sourceTree = "<group>"; };
 		802BC30C273DC8BB004F1505 /* mealq.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = mealq.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -459,7 +457,6 @@
 				8079DEEE2745F4C8001420CE /* Haptics.swift */,
 				80F41FF62776C18F0080C67D /* General.swift */,
 				8023FDC927868728003E728E /* FieldView.swift */,
-				8023FDCF27879E43003E728E /* ObservableScrollView.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -712,7 +709,6 @@
 				80A48CE42746C61000063B57 /* FakeSearchBar.swift in Sources */,
 				80A48CEA2746DCC500063B57 /* SingleFriendPane.swift in Sources */,
 				80C12067272E02CB006D125D /* mealqApp.swift in Sources */,
-				8023FDD027879E43003E728E /* ObservableScrollView.swift in Sources */,
 				80F41FFE2780FFF40080C67D /* UserMealStatus.swift in Sources */,
 				802E5611275D371200464CA6 /* DateSelection.swift in Sources */,
 				8023FDBA2784D0FA003E728E /* ChatRow.swift in Sources */,

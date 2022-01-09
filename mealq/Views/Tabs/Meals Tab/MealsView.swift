@@ -14,8 +14,8 @@ struct MealsView: View {
     @EnvironmentObject var showMealButton: ShowMealButton
 
     @State private var searchText = ""
-    
-
+    @State private var showMessageView = false
+    @State private var lastVisitedMealID = ""
      var body: some View {
          NavigationView{
              VStack{
@@ -36,15 +36,17 @@ struct MealsView: View {
                           NavigationLink (destination:
                                             MessageView(meal: meal)
                                             .onAppear{
-                                              messagesManager.fetchMessages(from: meal.id)
-                              withAnimation{ showMealButton.showMealButton = false}
+                              messagesManager.fetchMessages(from: meal.id)
+                              showMealButton.showMealButton = false
                           }.onDisappear {
-                              withAnimation{showMealButton.showMealButton = true}
-                          }
-
-                          ){
-                              MealChatRow(meal: meal)
+                              if lastVisitedMealID != meal.id {
+                                  messagesManager.messages = [Message]()
                               }
+                              lastVisitedMealID = meal.id
+                              showMealButton.showMealButton = true
+                          }
+                          ){ MealChatRow(meal: meal) }
+                          
                               
                       }.listStyle(.plain)
                  }
@@ -54,6 +56,7 @@ struct MealsView: View {
                
          
         }.navigationViewStyle(.stack)
+           
    
              
          
