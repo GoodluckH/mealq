@@ -41,28 +41,36 @@ func dateToString(from date: Date, to now: Date) -> String {
 
 func getTimeStampBetween(lastDate: Date, and newDate: Date) -> String? {
     let today = Date()
-    let diffComponents = Calendar.autoupdatingCurrent.dateComponents([.hour, .day], from: lastDate, to: newDate)
+//    let diffComponents = Calendar.autoupdatingCurrent.dateComponents([.hour, .day], from: lastDate, to: newDate)
     let diffFromToday =  Calendar.autoupdatingCurrent.dateComponents([.day], from: newDate, to: today)
     
-    let days  = diffComponents.day ?? 0
-    let hour = diffComponents.hour ?? 0
+    let lastDateHour = Calendar.autoupdatingCurrent.component(.hour, from: lastDate)
+    let newDateHour = Calendar.autoupdatingCurrent.component(.hour, from: newDate)
+    let lastDateDay = Calendar.autoupdatingCurrent.component(.day, from: lastDate)
+    let newDateDay = Calendar.autoupdatingCurrent.component(.day, from: newDate)
+    
+    
+//    let days  = diffComponents.day ?? 0
+//    let hour = diffComponents.hour ?? 0
   
     let daysToToday = diffFromToday.day ?? 0
     
     let dateFormatter = DateFormatter()
     
-    if Calendar.autoupdatingCurrent.isDateInToday(lastDate) {
-        if hour >= 1 {return "Today"}
-    } else if Calendar.autoupdatingCurrent.isDateInYesterday(lastDate) {
-        if hour >= 1 {return "Yesterday"}
-    } else if daysToToday < 7{
+    if Calendar.autoupdatingCurrent.isDateInToday(newDate) {
+        if lastDateDay == newDateDay {
+            if lastDateHour != newDateHour {return "Today"}
+        } else {return "Today"}
+    } else if Calendar.autoupdatingCurrent.isDateInYesterday(newDate) {
+        if lastDateDay == newDateDay {if lastDateHour != newDateHour {return "Yesterday"}}
+        else  {return "Yesterday"}
+    } else if daysToToday < 7 {
         dateFormatter.dateFormat = "EEEE"
-        if hour >= 1 {return dateFormatter.string(from: lastDate)}
-    } else if days >= 1 {
-        return "FULLDATE"
+        if lastDateDay == newDateDay {if lastDateHour != newDateHour {return dateFormatter.string(from: newDate)}}
+        else {return dateFormatter.string(from: newDate)}
+    } else {
+        if lastDateDay == newDateDay {if lastDateHour != newDateHour  {return "FULLDATE"}}
+        else {return "FULLDATE"}
     }
-    
-    
     return nil
 }
-

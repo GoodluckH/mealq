@@ -20,6 +20,7 @@ struct MessageView: View {
     @State private var scrolled = false
     @State private var reFocus = false
     @State private var textHeight: CGFloat = 0
+    @State private var lastTextHeight: CGFloat = 0
     @State private var showClickToBottomButton: Bool = false
     @State private var scrollView: UIScrollView? = nil
     
@@ -66,25 +67,18 @@ struct MessageView: View {
                         VStack{
         
                             ForEach(Array(messagesManager.messages.enumerated()), id: \.offset) {i, msg in
-                                if i != 0 {
-                                    if let date = getTimeStampBetween(lastDate: messagesManager.messages[i-1].timeStamp, and: msg.timeStamp) {
-                                        HStack{
-                                            Text(date)
-                                            if date != "FULLDATE" {
-                                                Text(msg.timeStamp, style: .time)
-                                            }
-                                            
-                                        }.padding()
+                                    if let date = getTimeStampBetween(lastDate: i == 0 ? Date() : messagesManager.messages[i-1].timeStamp, and: msg.timeStamp) {
+                                        SmartTimeStamp(date: date, timeStamp:msg.timeStamp)
                                     }
-                                                        
-                                }
+                                    
+                                
                                             
                                 ChatRow(users: Array(meal.to.keys), message: msg, currentUser: sessionStore.localUser!,
                                         invitor: meal.from, showAvatar: !(i != messagesManager.messages.count - 1 && messagesManager.messages[i + 1].senderID == msg.senderID)).id(msg.id)
                                     .onAppear{
                                         if reFocus {
                                             reFocus = false
-                                            withAnimation(.spring()){reader.scrollTo(messagesManager.messages.last!.id, anchor: .bottom)}
+                                            withAnimation(.easeOut.speed(3)){reader.scrollTo(messagesManager.messages.last!.id, anchor: .bottom)}
                                         }
                                     }
                                 }
@@ -162,7 +156,7 @@ struct MessageView: View {
                        .background(Color.primary.opacity(0.06))
                        .clipShape(TextEditorBubble())
                        .frame(height: textFieldHeight)
-                       .animation(.easeOut.speed(3), value: textHeight)
+                       
              
                     // Send button
                     Button (action: {
@@ -180,13 +174,16 @@ struct MessageView: View {
                     .disabled(messagesManager.messageContent == "")
             }.padding()
  
-        }
+        }.animation(.easeOut.speed(3), value: textHeight)
     }
     .onReceive(keyboard.$currentHeight) { height in
-        print(textHeight)
+        if lastTextHeight == CGFloat(0) || !isFocused || textHeight < lastTextHeight {lastTextHeight = textHeight}
         if let _ = scrollView {
-            if height > 0 && !isFocused && messagesManager.messageContent == ""  {
+            if height > 0 && !isFocused && (keyboardHeight == 0 || messagesManager.messageContent == "")  {
                 self.scrollView!.setContentOffset(CGPoint(x: 0, y: self.scrollView!.contentOffset.y + height), animated: true)
+            } else if isFocused && textHeight > lastTextHeight {
+                self.scrollView!.setContentOffset(CGPoint(x: 0, y: self.scrollView!.contentOffset.y + textHeight - lastTextHeight), animated: true)
+                lastTextHeight = textHeight
             }
              
             keyboardHeight = height

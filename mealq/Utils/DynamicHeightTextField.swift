@@ -59,15 +59,11 @@ class Coordinator: NSObject, UITextViewDelegate, NSLayoutManagerDelegate {
     }
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-//        if (text == "\n") {
-//            textView.resignFirstResponder()
-//            return false
-//        }
         return true
     }
     
     func layoutManager(_ layoutManager: NSLayoutManager, didCompleteLayoutFor textContainer: NSTextContainer?, atEnd layoutFinishedFlag: Bool) {
-        
+
         DispatchQueue.main.async { [weak self] in
             guard let textView = self?.textView else {
                 return
