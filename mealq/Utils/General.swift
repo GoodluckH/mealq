@@ -74,3 +74,10 @@ func getTimeStampBetween(lastDate: Date, and newDate: Date) -> String? {
     }
     return nil
 }
+
+
+func getAllMealParticipantsExSelf(to: [MealqUser], from: MealqUser, me: MealqUser) -> [MealqUser] {
+    var toUsers = to
+    toUsers.append(from)
+    return toUsers.filter{$0 != me}
+}

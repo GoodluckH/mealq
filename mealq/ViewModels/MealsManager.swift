@@ -286,7 +286,7 @@ class MealsManager: ObservableObject {
             let payload = ["mealID": newMeal.documentID,
                            "from": me.id,
                            "to": users.map{$0.id},
-                           "name": mealName.isEmpty ? "a meal" : mealName,
+                           "name": mealName.isEmpty ? Constants.defaultMealName : mealName,
                            "userStatus": users.reduce(into: [String: String]()){$0[$1.id] = "pending"},
                            "weekday": weekday ?? 0,
                            "createdAt": Date()

@@ -19,4 +19,8 @@ struct Constants {
     static let textFieldBubbleCornerRadius : CGSize = CGSize(width: 15, height: 15)
     static let dynamicTextFieldMinHeight: CGFloat = 35
     static let dynamicTextFieldMaxHeight: CGFloat = 300
+    
+    static let defaultMealName: String = "a meal"
+    
+    static let tightStackSpacing: CGFloat = 2
 }

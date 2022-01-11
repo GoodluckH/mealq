@@ -28,3 +28,6 @@ struct Meal: Identifiable, Codable, Hashable {
     }
 
 }
+
+
+// status: accepted, pending, declined

@@ -68,7 +68,7 @@ struct MessageView: View {
         
                             ForEach(Array(messagesManager.messages.enumerated()), id: \.offset) {i, msg in
                                     if let date = getTimeStampBetween(lastDate: i == 0 ? Date() : messagesManager.messages[i-1].timeStamp, and: msg.timeStamp) {
-                                        SmartTimeStamp(date: date, timeStamp:msg.timeStamp)
+                                        ChatTimeStamp(date: date, timeStamp:msg.timeStamp)
                                     }
                                     
                                 

@@ -1,5 +1,5 @@
 //
-//  SmartTimeStamp.swift
+//  ChatTimeStamp.swift
 //  mealq
 //
 //  Created by Xipu Li on 1/6/22.
@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct SmartTimeStamp: View {
+struct ChatTimeStamp: View {
     
     var date: String
     var timeStamp: Date
@@ -33,3 +33,5 @@ struct SmartTimeStamp: View {
 //        SmartTimeStamp()
 //    }
 //}
+
+

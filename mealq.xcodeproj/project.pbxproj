@@ -23,7 +23,7 @@
 		8023FDCC278692D9003E728E /* Observer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8023FDCB278692D9003E728E /* Observer.swift */; };
 		8023FDCE27875106003E728E /* DynamicHeightTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8023FDCD27875105003E728E /* DynamicHeightTextField.swift */; };
 		8023FDD22787AC98003E728E /* ToBottomMessageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8023FDD12787AC98003E728E /* ToBottomMessageButton.swift */; };
-		8023FDD42787D3E5003E728E /* SmartTimeStamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8023FDD32787D3E5003E728E /* SmartTimeStamp.swift */; };
+		8023FDD42787D3E5003E728E /* ChatTimeStamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8023FDD32787D3E5003E728E /* ChatTimeStamp.swift */; };
 		802BC314273DC926004F1505 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802BC313273DC926004F1505 /* NotificationService.swift */; };
 		802BC318273DC926004F1505 /* notifications for mealq.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 802BC311273DC926004F1505 /* notifications for mealq.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		802BC31E273DC92F004F1505 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 802BC31D273DC92F004F1505 /* FirebaseMessaging */; };
@@ -77,6 +77,8 @@
 		80C120B3272F93CE006D125D /* test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C120B2272F93CD006D125D /* test.swift */; };
 		80C120B5272F984D006D125D /* ProfilePicStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C120B4272F984C006D125D /* ProfilePicStyles.swift */; };
 		80C120B7272F98B8006D125D /* ResizeFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C120B6272F98B8006D125D /* ResizeFont.swift */; };
+		80E72158278CA76700FBB6E3 /* MealTimeStamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E72157278CA76700FBB6E3 /* MealTimeStamp.swift */; };
+		80E7215B278CADEC00FBB6E3 /* RowProfilePicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E7215A278CADEC00FBB6E3 /* RowProfilePicView.swift */; };
 		80EFC3732731DE8B005520D3 /* FriendsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EFC3722731DE8A005520D3 /* FriendsManager.swift */; };
 		80EFC3752732EE38005520D3 /* GestureActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EFC3742732EE38005520D3 /* GestureActions.swift */; };
 		80EFC3792732EF5F005520D3 /* SocialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EFC3782732EF5F005520D3 /* SocialView.swift */; };
@@ -137,7 +139,7 @@
 		8023FDCB278692D9003E728E /* Observer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observer.swift; sourceTree = "<group>"; };
 		8023FDCD27875105003E728E /* DynamicHeightTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicHeightTextField.swift; sourceTree = "<group>"; };
 		8023FDD12787AC98003E728E /* ToBottomMessageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToBottomMessageButton.swift; sourceTree = "<group>"; };
-		8023FDD32787D3E5003E728E /* SmartTimeStamp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartTimeStamp.swift; sourceTree = "<group>"; };
+		8023FDD32787D3E5003E728E /* ChatTimeStamp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTimeStamp.swift; sourceTree = "<group>"; };
 		802BC30C273DC8BB004F1505 /* mealq.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = mealq.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		802BC311273DC926004F1505 /* notifications for mealq.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "notifications for mealq.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		802BC313273DC926004F1505 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
@@ -183,6 +185,8 @@
 		80C120B2272F93CD006D125D /* test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = test.swift; sourceTree = "<group>"; };
 		80C120B4272F984C006D125D /* ProfilePicStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePicStyles.swift; sourceTree = "<group>"; };
 		80C120B6272F98B8006D125D /* ResizeFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResizeFont.swift; sourceTree = "<group>"; };
+		80E72157278CA76700FBB6E3 /* MealTimeStamp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealTimeStamp.swift; sourceTree = "<group>"; };
+		80E7215A278CADEC00FBB6E3 /* RowProfilePicView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RowProfilePicView.swift; sourceTree = "<group>"; };
 		80EFC3722731DE8A005520D3 /* FriendsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsManager.swift; sourceTree = "<group>"; };
 		80EFC3742732EE38005520D3 /* GestureActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureActions.swift; sourceTree = "<group>"; };
 		80EFC3782732EF5F005520D3 /* SocialView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocialView.swift; sourceTree = "<group>"; };
@@ -236,6 +240,8 @@
 			isa = PBXGroup;
 			children = (
 				8023FDB42784C6F4003E728E /* MealChatRow.swift */,
+				80E7215A278CADEC00FBB6E3 /* RowProfilePicView.swift */,
+				80E72157278CA76700FBB6E3 /* MealTimeStamp.swift */,
 			);
 			path = "Meal Chat Row";
 			sourceTree = "<group>";
@@ -248,7 +254,7 @@
 				8023FDBD2784E915003E728E /* ChatBubble.swift */,
 				8023FDC7278685CC003E728E /* TextEditorBubble.swift */,
 				8023FDD12787AC98003E728E /* ToBottomMessageButton.swift */,
-				8023FDD32787D3E5003E728E /* SmartTimeStamp.swift */,
+				8023FDD32787D3E5003E728E /* ChatTimeStamp.swift */,
 			);
 			path = "Message View";
 			sourceTree = "<group>";
@@ -673,6 +679,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				802E5613275FA74300464CA6 /* MealsManager.swift in Sources */,
+				80E72158278CA76700FBB6E3 /* MealTimeStamp.swift in Sources */,
 				8023FDCC278692D9003E728E /* Observer.swift in Sources */,
 				8023FDC8278685CC003E728E /* TextEditorBubble.swift in Sources */,
 				802BC3332743FAC9004F1505 /* SplashScreen.swift in Sources */,
@@ -682,7 +689,8 @@
 				80EFC38C27345423005520D3 /* UserProfileView.swift in Sources */,
 				805F28FC274DA449002DEA8D /* BigUserPicMotionObserver.swift in Sources */,
 				8023FDCE27875106003E728E /* DynamicHeightTextField.swift in Sources */,
-				8023FDD42787D3E5003E728E /* SmartTimeStamp.swift in Sources */,
+				8023FDD42787D3E5003E728E /* ChatTimeStamp.swift in Sources */,
+				80E7215B278CADEC00FBB6E3 /* RowProfilePicView.swift in Sources */,
 				802BC322273F7394004F1505 /* SingleNotificationView.swift in Sources */,
 				80C120B1272F8C54006D125D /* MakeColors.swift in Sources */,
 				80A48CEC274716E600063B57 /* FriendSelection.swift in Sources */,
