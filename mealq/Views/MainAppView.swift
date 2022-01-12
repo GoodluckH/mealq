@@ -35,6 +35,7 @@ struct MainAppView: View {
                 }.tabItem{Image(systemName: "person.2")}.tag(Tab.social)
                 ZStack {
                     if showMealButton.showMealButton {CreateMealButton().zIndex(1)}
+                   // DebugView()
                     MealsView()
                 }.tabItem{Image(systemName: "mail.stack")}.tag(Tab.meals)
                 ZStack {

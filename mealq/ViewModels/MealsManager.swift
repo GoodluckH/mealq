@@ -101,6 +101,9 @@ class MealsManager: ObservableObject {
                 let weekday = data["weekday"] as! Int
                 let userStatus = data["userStatus"] as! [String: String]
                 let createdAt = data["createdAt"] as! Timestamp
+                let recentMessageContent = data["recentMessage.content"] as? String ?? ""
+                let sentByName = data["recentMessage.sentByName"] as? String ?? ""
+                let messageTimeStamp = data["recentMessage.timeStamp"] as? Timestamp ?? createdAt
                 
                 // fetch user detail info
                 self.db.collection("users").document(from).getDocument { (document, error) in
@@ -132,7 +135,7 @@ class MealsManager: ObservableObject {
                                              fcmToken: userData["fcmToken"] as? String ?? "")] = userStatus[document.documentID]
                             }
                             
-                            let meal = Meal(id: id, name: name, from: fromUser, to: to, weekday: weekday, createdAt: createdAt.dateValue())
+                            let meal = Meal(id: id, name: name, from: fromUser, to: to, weekday: weekday, createdAt: createdAt.dateValue(), recentMessageContent: recentMessageContent, sentByName: sentByName, messageTimeStamp: messageTimeStamp.dateValue())
                             
                            
                             if status == "pending" {
@@ -142,6 +145,7 @@ class MealsManager: ObservableObject {
                                     }
                                 }
                                 
+                                
                             }
                             else if status == "accepted" {
                                 for idx in self.acceptedMeals.indices {
@@ -149,6 +153,7 @@ class MealsManager: ObservableObject {
                                         self.acceptedMeals[idx] = meal
                                     }
                                 }
+                                self.acceptedMeals.sort(by: {$0.messageTimeStamp.compare($1.messageTimeStamp) == .orderedDescending})
                             }
                         }
                         
@@ -181,6 +186,9 @@ class MealsManager: ObservableObject {
                 let weekday = data["weekday"] as! Int
                 let userStatus = data["userStatus"] as! [String: String]
                 let createdAt = data["createdAt"] as! Timestamp
+                let recentMessageContent = data["recentMessage.content"] as? String ?? ""
+                let sentByName = data["recentMessage.sentByName"] as? String ?? ""
+                let messageTimeStamp = data["recentMessage.timeStamp"] as? Timestamp ?? createdAt
                 
                 // fetch user detail info
                 self.db.collection("users").document(from).getDocument { (document, error) in
@@ -212,11 +220,14 @@ class MealsManager: ObservableObject {
                                              fcmToken: userData["fcmToken"] as? String ?? "")] = userStatus[document.documentID]
                             }
                             
-                            let meal = Meal(id: id, name: name, from: fromUser, to: to, weekday: weekday, createdAt: createdAt.dateValue())
+                            let meal = Meal(id: id, name: name, from: fromUser, to: to, weekday: weekday, createdAt: createdAt.dateValue(), recentMessageContent: recentMessageContent, sentByName: sentByName, messageTimeStamp: messageTimeStamp.dateValue())
                             
                            
                             if status == "pending" { self.pendingMeals.append(meal)}
-                            else if status == "accepted" { self.acceptedMeals.append(meal) }
+                            else if status == "accepted" {
+                                self.acceptedMeals.append(meal)
+                                self.acceptedMeals.sort(by: {$0.messageTimeStamp.compare($1.messageTimeStamp) == .orderedDescending})
+                            }
                         
                         }
                         
@@ -282,14 +293,17 @@ class MealsManager: ObservableObject {
             
             
             let newMeal = self.db.collection("chats").document()
-            
+            let date = Date()
             let payload = ["mealID": newMeal.documentID,
                            "from": me.id,
                            "to": users.map{$0.id},
                            "name": mealName.isEmpty ? Constants.defaultMealName : mealName,
                            "userStatus": users.reduce(into: [String: String]()){$0[$1.id] = "pending"},
                            "weekday": weekday ?? 0,
-                           "createdAt": Date()
+                           "createdAt": date,
+                           "recentMessage.content": "",
+                           "recentMessage.sentByName": "",
+                           "recentMessage.timeStamp": date
             ] as [String : Any]
             
             

@@ -17,7 +17,9 @@ struct Meal: Identifiable, Codable, Hashable {
     var to: [MealqUser: String]
     var weekday: Int
     var createdAt: Date
-    
+    var recentMessageContent: String
+    var sentByName: String
+    var messageTimeStamp: Date
 
     static func == (lhs: Meal, rhs: Meal) -> Bool {
         return lhs.id == rhs.id

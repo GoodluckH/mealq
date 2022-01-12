@@ -50,31 +50,48 @@ class MessagesManager: ObservableObject {
     func sendMessage(from sender: MealqUser, for mealID: String) {
         self.sendingMessage = .loading
         if let _ = user {
+            
+            let tempMessageContent = self.messageContent
+            self.messageContent = ""
+            
             let message = self.db.collection("chats").document(mealID).collection("messages").document()
+            let meal = self.db.collection("chats").document(mealID)
             let date = Date()
             let payload = [
                 "id": message.documentID,
                 "senderID": sender.id,
                 "senderName": sender.fullname,
-                "content": self.messageContent,
+                "content": tempMessageContent,
                 "timeStamp": date
             ] as [String: Any]
             
+            self.messages.append(Message(id: message.documentID, senderID:sender.id, senderName: sender.fullname, timeStamp: date, content: tempMessageContent))
             
-            self.messages.append(Message(id: message.documentID, senderID:sender.id, senderName: sender.fullname, timeStamp: date, content: self.messageContent))
-            self.messageContent = ""
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
-                message.setData(payload) {err in
-                    if let err = err {
-                        self.sendingMessage = .error
-                        self.failedMessages.append(Message(id: message.documentID, senderID:sender.id, senderName: sender.fullname, timeStamp: date, content: self.messageContent, failed: true))
-                        print("Something went wrong while sending message: \(err.localizedDescription)")
-                    } else  {
-                        self.sendingMessage = .done
-                        print("Successfully sent message!")
+            meal.setData([
+                "recentMessage.content": tempMessageContent,
+                "recentMessage.sentByName": sender.fullname,
+                "recentMessage.timeStamp": date
+            ], merge: true) {err in
+                if let err = err {
+                    print("something went wrong when updating the recent message on meal: \(err.localizedDescription)")
+                    self.sendingMessage = .error
+                    self.failedMessages.append(Message(id: message.documentID, senderID:sender.id, senderName: sender.fullname, timeStamp: date, content: tempMessageContent, failed: true))
+                } else {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                        message.setData(payload) {err in
+                            if let err = err {
+                                self.sendingMessage = .error
+                                self.failedMessages.append(Message(id: message.documentID, senderID:sender.id, senderName: sender.fullname, timeStamp: date, content: tempMessageContent, failed: true))
+                                print("Something went wrong while sending message: \(err.localizedDescription)")
+                            } else  {
+                                self.sendingMessage = .done
+                                print("Successfully sent message!")
+                            }
+                        }
                     }
                 }
             }
+
   
         } else {self.sendingMessage = .idle}
     }

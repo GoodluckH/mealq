@@ -8,12 +8,13 @@
 import SwiftUI
 
 struct MealChatRow: View {
-    var meal: Meal
+    @Binding var meal: Meal
     @EnvironmentObject var sessionStore: SessionStore
     var body: some View {
         HStack {
             VStack (alignment: .leading, spacing: Constants.tightStackSpacing) {
                 Text(getMealName(from: meal)).font(.headline).fontWeight(.bold).lineLimit(1)
+                Text("\(meal.sentByName): \(meal.recentMessageContent)")
                 RowProfilePicView(meal: meal)
                 MealTimeStamp(timeStamp: meal.createdAt)
             }

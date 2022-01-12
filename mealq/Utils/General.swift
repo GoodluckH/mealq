@@ -81,3 +81,9 @@ func getAllMealParticipantsExSelf(to: [MealqUser], from: MealqUser, me: MealqUse
     toUsers.append(from)
     return toUsers.filter{$0 != me}
 }
+
+
+
+
+
+
