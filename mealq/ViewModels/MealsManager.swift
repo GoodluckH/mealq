@@ -104,6 +104,8 @@ class MealsManager: ObservableObject {
                 let recentMessageContent = data["recentMessage.content"] as? String ?? ""
                 let sentByName = data["recentMessage.sentByName"] as? String ?? ""
                 let messageTimeStamp = data["recentMessage.timeStamp"] as? Timestamp ?? createdAt
+                let isMessageViewed = data["recentMessage.viewed"] as? Bool ?? true
+                let recentMessageID = data["recentMessage.messageID"] as? String ?? ""
                 
                 // fetch user detail info
                 self.db.collection("users").document(from).getDocument { (document, error) in
@@ -135,7 +137,7 @@ class MealsManager: ObservableObject {
                                              fcmToken: userData["fcmToken"] as? String ?? "")] = userStatus[document.documentID]
                             }
                             
-                            let meal = Meal(id: id, name: name, from: fromUser, to: to, weekday: weekday, createdAt: createdAt.dateValue(), recentMessageContent: recentMessageContent, sentByName: sentByName, messageTimeStamp: messageTimeStamp.dateValue())
+                            let meal = Meal(id: id, name: name, from: fromUser, to: to, weekday: weekday, createdAt: createdAt.dateValue(), recentMessageID: recentMessageID, recentMessageContent: recentMessageContent, sentByName: sentByName, messageTimeStamp: messageTimeStamp.dateValue(), isMessageViewed: isMessageViewed)
                             
                            
                             if status == "pending" {
@@ -189,6 +191,8 @@ class MealsManager: ObservableObject {
                 let recentMessageContent = data["recentMessage.content"] as? String ?? ""
                 let sentByName = data["recentMessage.sentByName"] as? String ?? ""
                 let messageTimeStamp = data["recentMessage.timeStamp"] as? Timestamp ?? createdAt
+                let isMessageViewed = data["recentMessage.viewed"] as? Bool ?? true
+                let recentMessageID = data["recentMessage.messageID"] as? String ?? ""
                 
                 // fetch user detail info
                 self.db.collection("users").document(from).getDocument { (document, error) in
@@ -220,7 +224,7 @@ class MealsManager: ObservableObject {
                                              fcmToken: userData["fcmToken"] as? String ?? "")] = userStatus[document.documentID]
                             }
                             
-                            let meal = Meal(id: id, name: name, from: fromUser, to: to, weekday: weekday, createdAt: createdAt.dateValue(), recentMessageContent: recentMessageContent, sentByName: sentByName, messageTimeStamp: messageTimeStamp.dateValue())
+                            let meal = Meal(id: id, name: name, from: fromUser, to: to, weekday: weekday, createdAt: createdAt.dateValue(), recentMessageID: recentMessageID, recentMessageContent: recentMessageContent, sentByName: sentByName, messageTimeStamp: messageTimeStamp.dateValue(), isMessageViewed: isMessageViewed)
                             
                            
                             if status == "pending" { self.pendingMeals.append(meal)}
@@ -303,7 +307,9 @@ class MealsManager: ObservableObject {
                            "createdAt": date,
                            "recentMessage.content": "",
                            "recentMessage.sentByName": "",
-                           "recentMessage.timeStamp": date
+                           "recentMessage.timeStamp": date,
+                           "recentMessage.viewed": true,
+                           "recentMessage.messageID": "",
             ] as [String : Any]
             
             
@@ -387,11 +393,29 @@ class MealsManager: ObservableObject {
             
             
         }
-        
-        
-        
-        
+       
     }
+    
+    
+    
+    func setMessageAsViewed(messageID: String, mealID: String) {
+        if let _ = user {
+            self.db.collection("chats").document(mealID).setData([
+                "recentMessage.viewed": true
+            ], merge: true) { err in
+                if let err = err {
+                    print("Unable to set message's read status: \(err.localizedDescription)")
+                } else {
+                    print("Successfully set message as read")
+                }
+                
+            }
+        }
+    }
+    
+    
+    
+    
     
     
     

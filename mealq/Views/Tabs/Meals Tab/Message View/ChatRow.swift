@@ -16,6 +16,7 @@ struct ChatRow: View {
     var sender: MealqUser
     var showAvatar: Bool
     @State private var showTimeStamp = false
+    @State private var isLinkActive = false
     init (users: [MealqUser], message: Message, currentUser: MealqUser, invitor: MealqUser, showAvatar: Bool) {
         self.users = users
         self.message = message
@@ -28,19 +29,35 @@ struct ChatRow: View {
         self.showAvatar = showAvatar 
         
     }
-    
+
     
     var body: some View {
         HStack (alignment: showAvatar ? .bottom : .center,spacing: 0) {
             if sender != currentUser && showAvatar {
                 
-                    
-               
-                NavigationLink (destination: UserProfileView(user: sender)){
+             NavigationLink(destination: UserProfileView(user: sender)) {
+                
+                //Button(action: {isLinkActive = true}){
                     ProfilePicView(picURL: sender.normalPicURL)
                          .padding(.leading).padding(.bottom, 5)
-                     .frame(width: UIScreen.main.bounds.width / 6, height: UIScreen.main.bounds.width / 10)
-                }
+                         .frame(width: UIScreen.main.bounds.width / 6, height: UIScreen.main.bounds.width / 10)
+                
+                //}
+                  
+             }.isDetailLink(false)
+                
+                
+                
+
+
+
+//                NavigationLink (""){
+//                    if let activeSender = activeSender {
+//                        UserProfileView(user: bindingForSender(sender: activeSender).wrappedValue)
+//                    } else {
+//                        EmptyView()
+//                    }
+//                }
             
                
             } else  {

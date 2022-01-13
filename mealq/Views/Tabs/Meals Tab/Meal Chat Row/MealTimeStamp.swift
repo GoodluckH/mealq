@@ -18,8 +18,8 @@ struct MealTimeStamp: View {
                 }
                 else  {
                     Text(date)
+                    Text(timeStamp, style: .time)
                 }
-                Text(timeStamp, style: .time)
             }
             .font(.custom("Quicksand-Medium", size: 12))
         }

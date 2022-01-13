@@ -76,6 +76,9 @@ struct MessageView: View {
                                 ChatRow(users: Array(meal.to.keys), message: msg, currentUser: sessionStore.localUser!,
                                         invitor: meal.from, showAvatar: !(i != messagesManager.messages.count - 1 && messagesManager.messages[i + 1].senderID == msg.senderID)).id(msg.id)
                                     .onAppear{
+                                        if meal.recentMessageID == msg.id && !meal.isMessageViewed {
+                                            mealsManager.setMessageAsViewed(messageID: msg.id, mealID: meal.id)
+                                        }
                                         if reFocus {
                                             reFocus = false
                                             withAnimation(.easeOut.speed(3)){reader.scrollTo(messagesManager.messages.last!.id, anchor: .bottom)}
@@ -176,42 +179,26 @@ struct MessageView: View {
  
         }.animation(.easeOut.speed(3), value: textHeight)
     }
-    .onReceive(keyboard.$currentHeight) { height in
-        if lastTextHeight == CGFloat(0) || !isFocused || textHeight < lastTextHeight {lastTextHeight = textHeight}
-        if let _ = scrollView {
-            if height > 0 && !isFocused && (keyboardHeight == 0 || messagesManager.messageContent == "")  {
-                self.scrollView!.setContentOffset(CGPoint(x: 0, y: self.scrollView!.contentOffset.y + height), animated: true)
-            } else if isFocused && textHeight > lastTextHeight {
-                self.scrollView!.setContentOffset(CGPoint(x: 0, y: self.scrollView!.contentOffset.y + textHeight - lastTextHeight), animated: true)
-                lastTextHeight = textHeight
+        .onReceive(keyboard.$currentHeight) { height in
+            if lastTextHeight == CGFloat(0) || !isFocused || textHeight < lastTextHeight {lastTextHeight = textHeight}
+            if let _ = scrollView {
+                if height > 0 && !isFocused && (keyboardHeight == 0 || messagesManager.messageContent == "")  {
+                    self.scrollView!.setContentOffset(CGPoint(x: 0, y: self.scrollView!.contentOffset.y + height), animated: true)
+                } else if isFocused && textHeight > lastTextHeight {
+                    self.scrollView!.setContentOffset(CGPoint(x: 0, y: self.scrollView!.contentOffset.y + textHeight - lastTextHeight), animated: true)
+                    lastTextHeight = textHeight
+                }
+                 
+                keyboardHeight = height
             }
-             
-            keyboardHeight = height
         }
-    }
-    .navigationBarTitle(messagesManager.fetchingMessages == .loading ? "loading..." : meal.name, displayMode: .inline)
-    .toolbar {
-        NavigationLink (destination: MealDetailView(meal: meal).navigationBarTitle("")){
-            Image(systemName: "info.circle")
-                .foregroundColor(Color("MyPrimary"))
+        .navigationBarTitle(messagesManager.fetchingMessages == .loading ? "loading..." : meal.name, displayMode: .inline)
+        .toolbar {
+            NavigationLink (destination: MealDetailView(meal: meal).navigationBarTitle("")){
+                Image(systemName: "info.circle")
+                    .foregroundColor(Color("MyPrimary"))
+            }
         }
-    }
     
     }
 }
-
-
-
-//        .onReceive(keyboardHeight) { height in
-//            print(height)
-//        }
-//        .onReceive(keyboardHeight) {height in
-//            if height > 0 {
-//                self.scrollView!.setContentOffset(CGPoint(x: 0, y: self.scrollView!.contentOffset.y + height), animated: true)
-//            } else {
-//                self.scrollView!.contentOffset.y = max(self.scrollView!.contentOffset.y - keyboardHeight, 0)
-//            }
-
-//            keyboardHeight = height
-//
-//        }

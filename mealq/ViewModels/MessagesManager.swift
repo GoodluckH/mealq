@@ -70,7 +70,9 @@ class MessagesManager: ObservableObject {
             meal.setData([
                 "recentMessage.content": tempMessageContent,
                 "recentMessage.sentByName": sender.fullname,
-                "recentMessage.timeStamp": date
+                "recentMessage.timeStamp": date,
+                "recentMessage.viewed": true,
+                "recentMessage.messageID": message.documentID
             ], merge: true) {err in
                 if let err = err {
                     print("something went wrong when updating the recent message on meal: \(err.localizedDescription)")

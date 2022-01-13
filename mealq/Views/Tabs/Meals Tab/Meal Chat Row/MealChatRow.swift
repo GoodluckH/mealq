@@ -10,16 +10,39 @@ import SwiftUI
 struct MealChatRow: View {
     @Binding var meal: Meal
     @EnvironmentObject var sessionStore: SessionStore
+   // @State private var isMessageViewed = false
+    
+    init(meal: Binding<Meal>) {
+        self._meal = meal
+    }
+
     var body: some View {
         HStack {
             VStack (alignment: .leading, spacing: Constants.tightStackSpacing) {
-                Text(getMealName(from: meal)).font(.headline).fontWeight(.bold).lineLimit(1)
-                Text("\(meal.sentByName): \(meal.recentMessageContent)")
+                Text(getMealName(from: meal))
+                    .customFont(name: "Quicksand-Bold", style: .headline, weight: (meal.isMessageViewed) ? .semibold : .bold)
+                    .lineLimit(1)
+                       
+                    
+                    Text(meal.recentMessageContent == "" ?  " " : "\(meal.sentByName): \(meal.recentMessageContent)")
+                    .customFont(name: "Quicksand-SemiBold", style: .subheadline, weight: (meal.isMessageViewed) ? .semibold : .bold)
+                    .foregroundColor((meal.isMessageViewed) ? .gray : Color("MyPrimary"))
+                    .lineLimit(3)
+                    .padding(.vertical, Constants.tightStackSpacing)
+                  
+                
                 RowProfilePicView(meal: meal)
-                MealTimeStamp(timeStamp: meal.createdAt)
+                // MealTimeStamp(timeStamp: meal.createdAt)
+                
             }
+            
             Spacer()
+            if meal.weekday != 0 {
+                CalendarBadge(weekday: meal.weekday)
+            }
+            
         }
+        
     }
     
     private func getMealName(from meal: Meal) -> String {

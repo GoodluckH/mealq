@@ -87,7 +87,7 @@ struct MealsView: View {
                  
          }.navigationBarTitle("").navigationBarHidden(true)
              
-        }.navigationViewStyle(.stack)
+         }.navigationViewStyle(.stack)
            
    
              

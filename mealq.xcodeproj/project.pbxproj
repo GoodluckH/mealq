@@ -80,6 +80,9 @@
 		80E72158278CA76700FBB6E3 /* MealTimeStamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E72157278CA76700FBB6E3 /* MealTimeStamp.swift */; };
 		80E7215B278CADEC00FBB6E3 /* RowProfilePicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E7215A278CADEC00FBB6E3 /* RowProfilePicView.swift */; };
 		80E7215D278E374C00FBB6E3 /* DebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E7215C278E374C00FBB6E3 /* DebugView.swift */; };
+		80E72161278F472600FBB6E3 /* CustomNavigationLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E72160278F472600FBB6E3 /* CustomNavigationLink.swift */; };
+		80E72163278F707B00FBB6E3 /* CalendarBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E72162278F707B00FBB6E3 /* CalendarBadge.swift */; };
+		80E72165278FA30100FBB6E3 /* DateUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E72164278FA30100FBB6E3 /* DateUtils.swift */; };
 		80EFC3732731DE8B005520D3 /* FriendsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EFC3722731DE8A005520D3 /* FriendsManager.swift */; };
 		80EFC3752732EE38005520D3 /* GestureActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EFC3742732EE38005520D3 /* GestureActions.swift */; };
 		80EFC3792732EF5F005520D3 /* SocialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EFC3782732EF5F005520D3 /* SocialView.swift */; };
@@ -189,6 +192,9 @@
 		80E72157278CA76700FBB6E3 /* MealTimeStamp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealTimeStamp.swift; sourceTree = "<group>"; };
 		80E7215A278CADEC00FBB6E3 /* RowProfilePicView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RowProfilePicView.swift; sourceTree = "<group>"; };
 		80E7215C278E374C00FBB6E3 /* DebugView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugView.swift; sourceTree = "<group>"; };
+		80E72160278F472600FBB6E3 /* CustomNavigationLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationLink.swift; sourceTree = "<group>"; };
+		80E72162278F707B00FBB6E3 /* CalendarBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarBadge.swift; sourceTree = "<group>"; };
+		80E72164278FA30100FBB6E3 /* DateUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateUtils.swift; sourceTree = "<group>"; };
 		80EFC3722731DE8A005520D3 /* FriendsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsManager.swift; sourceTree = "<group>"; };
 		80EFC3742732EE38005520D3 /* GestureActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureActions.swift; sourceTree = "<group>"; };
 		80EFC3782732EF5F005520D3 /* SocialView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocialView.swift; sourceTree = "<group>"; };
@@ -244,6 +250,7 @@
 				8023FDB42784C6F4003E728E /* MealChatRow.swift */,
 				80E7215A278CADEC00FBB6E3 /* RowProfilePicView.swift */,
 				80E72157278CA76700FBB6E3 /* MealTimeStamp.swift */,
+				80E72162278F707B00FBB6E3 /* CalendarBadge.swift */,
 			);
 			path = "Meal Chat Row";
 			sourceTree = "<group>";
@@ -465,6 +472,8 @@
 				8079DEEE2745F4C8001420CE /* Haptics.swift */,
 				80F41FF62776C18F0080C67D /* General.swift */,
 				8023FDC927868728003E728E /* FieldView.swift */,
+				80E72160278F472600FBB6E3 /* CustomNavigationLink.swift */,
+				80E72164278FA30100FBB6E3 /* DateUtils.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -689,6 +698,7 @@
 				802BC32427404D87004F1505 /* AlertButton.swift in Sources */,
 				802E560D275C5CF200464CA6 /* LottieView.swift in Sources */,
 				80C120A3272E55EE006D125D /* mealqButtonStyle.swift in Sources */,
+				80E72161278F472600FBB6E3 /* CustomNavigationLink.swift in Sources */,
 				80EFC38C27345423005520D3 /* UserProfileView.swift in Sources */,
 				805F28FC274DA449002DEA8D /* BigUserPicMotionObserver.swift in Sources */,
 				8023FDCE27875106003E728E /* DynamicHeightTextField.swift in Sources */,
@@ -729,6 +739,7 @@
 				80EFC38F273496FA005520D3 /* ConnectButton.swift in Sources */,
 				8023FDB2278387F4003E728E /* MessagesManager.swift in Sources */,
 				80C12091272E4F62006D125D /* UserLoginView.swift in Sources */,
+				80E72165278FA30100FBB6E3 /* DateUtils.swift in Sources */,
 				80C1208C272E472C006D125D /* UserModel.swift in Sources */,
 				80C1209D272E5080006D125D /* InviteSheet.swift in Sources */,
 				8012577F27755E6400DE1160 /* MealModel.swift in Sources */,
@@ -739,6 +750,7 @@
 				80EFC38827334D35005520D3 /* NoMatchView.swift in Sources */,
 				80C12096272E5024006D125D /* MealsView.swift in Sources */,
 				80EFC38427331781005520D3 /* SectionHeader.swift in Sources */,
+				80E72163278F707B00FBB6E3 /* CalendarBadge.swift in Sources */,
 				802BC32627404E47004F1505 /* SearchButton.swift in Sources */,
 				8023FDD22787AC98003E728E /* ToBottomMessageButton.swift in Sources */,
 				8023FDB72784CA05003E728E /* MessageView.swift in Sources */,

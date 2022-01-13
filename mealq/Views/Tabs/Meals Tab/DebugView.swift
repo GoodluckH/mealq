@@ -38,23 +38,25 @@ struct DebugView: View {
                   VStack{
                       List() {
                           ForEach($chatsManager.chats, id: \.id) { $chat in
-                              Button(action: {
-                                  activeChat = chat.id
-                              }) {
-                                  DemoChatRow(chat: $chat)
-                              }
+                           
+                              
+//                              Button(action: {
+//                                  activeChat = chat.id
+//                              }) {
+//                                  DemoChatRow(chat: $chat)
+//                              }
                           }
                       }.listStyle(.plain)
                   }
-                  .background {
-                      NavigationLink("", isActive: activeChatBinding(id: activeChat)) {
-                          if let activeChat = activeChat {
-                              ChatDetailView(chat: bindingForChat(id: activeChat).wrappedValue)
-                          } else {
-                              EmptyView()
-                          }
-                      }
-                  }
+//                  .background {
+//                      NavigationLink("", isActive: activeChatBinding(id: activeChat)) {
+//                          if let activeChat = activeChat {
+//                              ChatDetailView(chat: bindingForChat(id: activeChat).wrappedValue)
+//                          } else {
+//                              EmptyView()
+//                          }
+//                      }
+//                  }
               }.navigationBarTitle("").navigationBarHidden(true)
               
           }.navigationViewStyle(.stack)
