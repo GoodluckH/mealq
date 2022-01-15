@@ -10,6 +10,9 @@ import Introspect
 
 struct MessageView: View {
     let meal: Meal
+    @State var fromNoti: Bool
+    let lastMealID: String
+    
     @EnvironmentObject var messagesManager: MessagesManager
     @EnvironmentObject var mealsManager: MealsManager
     @EnvironmentObject var sessionStore: SessionStore
@@ -24,10 +27,11 @@ struct MessageView: View {
     @State private var showClickToBottomButton: Bool = false
     @State private var scrollView: UIScrollView? = nil
     
+    
     @FocusState private var isFocused: Bool
    
     
-    init(meal: Meal) {
+    init(meal: Meal, fromNoti: Bool, lastMealID: String) {
         //Use this if NavigationBarTitle is with Large Font
         //UINavigationBar.appearance().largeTitleTextAttributes = [.font : UIFont(name: "Quicksand-Bold", size: 20)!]
 
@@ -39,6 +43,8 @@ struct MessageView: View {
         UITextView.appearance().backgroundColor = .clear
         
         self.meal = meal
+        self._fromNoti = State(initialValue: fromNoti)
+        self.lastMealID = lastMealID
     }
     
     
@@ -112,9 +118,12 @@ struct MessageView: View {
                         .coordinateSpace(name: "frameLayer")
                         .onAppear {
                             UIScrollView.appearance().keyboardDismissMode = .interactive
-                            if !scrolled{
+                            if !scrolled || (fromNoti && lastMealID == meal.id) {
+                                fromNoti = false
                                 reader.scrollTo(messagesManager.messages.last!.id, anchor: .bottom)
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { scrolled = true }
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                                    scrolled = true
+                                }
                             }
                         }
                         .introspectScrollView { scrollView = $0 }

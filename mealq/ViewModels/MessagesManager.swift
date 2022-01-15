@@ -7,14 +7,15 @@
 
 import Foundation
 import Firebase
+import FirebaseFunctions
 
 class MessagesManager: ObservableObject {
     @Published var messageContent = ""
     @Published var messages = [Message]()
     private var db = Firestore.firestore()
     private let user = Auth.auth().currentUser
-    
-    
+    lazy var functions = Functions.functions()
+
     
     @Published var fetchingMessages = Status.idle
     func fetchMessages(from mealID: String) {

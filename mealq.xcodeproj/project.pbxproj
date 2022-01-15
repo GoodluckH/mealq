@@ -83,6 +83,8 @@
 		80E72161278F472600FBB6E3 /* CustomNavigationLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E72160278F472600FBB6E3 /* CustomNavigationLink.swift */; };
 		80E72163278F707B00FBB6E3 /* CalendarBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E72162278F707B00FBB6E3 /* CalendarBadge.swift */; };
 		80E72165278FA30100FBB6E3 /* DateUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E72164278FA30100FBB6E3 /* DateUtils.swift */; };
+		80E721672790AA4A00FBB6E3 /* FirebaseFunctions in Frameworks */ = {isa = PBXBuildFile; productRef = 80E721662790AA4A00FBB6E3 /* FirebaseFunctions */; };
+		80E721692792185C00FBB6E3 /* ViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E721682792185B00FBB6E3 /* ViewManager.swift */; };
 		80EFC3732731DE8B005520D3 /* FriendsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EFC3722731DE8A005520D3 /* FriendsManager.swift */; };
 		80EFC3752732EE38005520D3 /* GestureActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EFC3742732EE38005520D3 /* GestureActions.swift */; };
 		80EFC3792732EF5F005520D3 /* SocialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EFC3782732EF5F005520D3 /* SocialView.swift */; };
@@ -195,6 +197,7 @@
 		80E72160278F472600FBB6E3 /* CustomNavigationLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationLink.swift; sourceTree = "<group>"; };
 		80E72162278F707B00FBB6E3 /* CalendarBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarBadge.swift; sourceTree = "<group>"; };
 		80E72164278FA30100FBB6E3 /* DateUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateUtils.swift; sourceTree = "<group>"; };
+		80E721682792185B00FBB6E3 /* ViewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewManager.swift; sourceTree = "<group>"; };
 		80EFC3722731DE8A005520D3 /* FriendsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsManager.swift; sourceTree = "<group>"; };
 		80EFC3742732EE38005520D3 /* GestureActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureActions.swift; sourceTree = "<group>"; };
 		80EFC3782732EF5F005520D3 /* SocialView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocialView.swift; sourceTree = "<group>"; };
@@ -230,6 +233,7 @@
 				80C1207E272E0341006D125D /* FirebaseMessaging in Frameworks */,
 				80C12084272E06A1006D125D /* FacebookCore in Frameworks */,
 				80C120AF272F86C9006D125D /* ActivityIndicatorView in Frameworks */,
+				80E721672790AA4A00FBB6E3 /* FirebaseFunctions in Frameworks */,
 				80C1207A272E0341006D125D /* FirebaseAuth in Frameworks */,
 				80C12080272E0341006D125D /* FirebaseStorage in Frameworks */,
 				80C12086272E06A1006D125D /* FacebookLogin in Frameworks */,
@@ -431,6 +435,7 @@
 				8023FDB1278387F4003E728E /* MessagesManager.swift */,
 				8023FDBB2784D908003E728E /* ShowMealButton.swift */,
 				8023FDCB278692D9003E728E /* Observer.swift */,
+				80E721682792185B00FBB6E3 /* ViewManager.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -601,6 +606,7 @@
 				802BC32F27435561004F1505 /* FirebaseAnalytics */,
 				802BC3352745AA6E004F1505 /* Introspect */,
 				802E5608275C592900464CA6 /* Lottie */,
+				80E721662790AA4A00FBB6E3 /* FirebaseFunctions */,
 			);
 			productName = mealq;
 			productReference = 802BC30C273DC8BB004F1505 /* mealq.app */;
@@ -702,6 +708,7 @@
 				80EFC38C27345423005520D3 /* UserProfileView.swift in Sources */,
 				805F28FC274DA449002DEA8D /* BigUserPicMotionObserver.swift in Sources */,
 				8023FDCE27875106003E728E /* DynamicHeightTextField.swift in Sources */,
+				80E721692792185C00FBB6E3 /* ViewManager.swift in Sources */,
 				8023FDD42787D3E5003E728E /* ChatTimeStamp.swift in Sources */,
 				80E7215B278CADEC00FBB6E3 /* RowProfilePicView.swift in Sources */,
 				802BC322273F7394004F1505 /* SingleNotificationView.swift in Sources */,
@@ -1148,6 +1155,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 80C120AD272F86C9006D125D /* XCRemoteSwiftPackageReference "ActivityIndicatorView" */;
 			productName = ActivityIndicatorView;
+		};
+		80E721662790AA4A00FBB6E3 /* FirebaseFunctions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 80C12076272E0341006D125D /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFunctions;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

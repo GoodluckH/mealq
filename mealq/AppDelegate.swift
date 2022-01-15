@@ -12,6 +12,9 @@ import FacebookCore
 import FacebookLogin
 
 class AppDelegate: NSObject, UIApplicationDelegate {
+    
+    let sharedViewManager = ViewManager.sharedViewManager
+    
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         
@@ -38,6 +41,11 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         }
 
         application.registerForRemoteNotifications()
+        
+        let _ = UNNotificationAction(identifier: "SEND_MESSAGE", title: "Type", options: [])
+        let messageReceivedCategory = UNNotificationCategory (identifier: "MESSAGE_RECEIVED", actions: [], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: "", options: .customDismissAction)
+        
+        UNUserNotificationCenter.current().setNotificationCategories([messageReceivedCategory])
 
         return true
     }
@@ -113,20 +121,71 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
 
     // Print full message.
     print(userInfo)
+     
+      
+      var notificationType: UNNotificationPresentationOptions = []
+      
+      let application = UIApplication.shared
+      
+      
+      if (application.applicationState == .active) {
+          // TODO: Deliver in-app notification bar
+      }
+      
+      
+      if (application.applicationState == .inactive) {
+          notificationType = [.banner, .list, .badge, .sound]
+          
+//          if let mealID = userInfo["MEAL_ID"] as? String {
+//              if let currentMealID = sharedViewManager.currentMealChatSession {
+//                  if mealID == currentMealID {
+//                      notificationType = []
+//                  }
+//              }
+//          }
+          
+      }
 
-    // Change this to your preferred presentation option
-      completionHandler([.banner, .list, .badge, .sound])
+      
+      
+    completionHandler(notificationType)
+
   }
 
   func userNotificationCenter(_ center: UNUserNotificationCenter,
                               didReceive response: UNNotificationResponse,
                               withCompletionHandler completionHandler: @escaping () -> Void) {
-    let userInfo = response.notification.request.content.userInfo
+      let userInfo = response.notification.request.content.userInfo
 
-    // With swizzling disabled you must let Messaging know about the message, for Analytics
-    // Messaging.messaging().appDidReceiveMessage(userInfo)
-    // Print full message.
-    print(userInfo)
+      print(userInfo)
+      
+      
+      let title = response.notification.request.content.title
+      let body = response.notification.request.content.body
+      let category = response.notification.request.content.categoryIdentifier
+      
+      switch category {
+      case "MESSAGE_RECEIVED":
+          sharedViewManager.toggleChatView(of: userInfo["MEAL_ID"] as! String)
+      default:
+          break
+      }
+      
+      
+      if category == "MESSAGE_RECEIVED" {
+          print("COrrect!")
+      }
+      
+      
+      switch response.actionIdentifier {
+      case "SEND_MESSAGE":
+          print("HAHAH")
+          print(title)
+          print(body)
+          break
+      default: break
+      }
+      
 
     completionHandler()
   }

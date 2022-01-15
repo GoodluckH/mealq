@@ -17,10 +17,14 @@ struct MealsView: View {
     @State private var showMessageView = false
     @State private var lastVisitedMealID = ""
     @State private var activeChat : String?
+    @State private var fromNoti = false
     
+
+    
+    @ObservedObject private var sharedViewManager = ViewManager.sharedViewManager
     private func activeChatBinding(id: String?) -> Binding<Bool> {
         .init {
-            activeChat != nil && activeChat == id
+             return activeChat != nil && activeChat == id
         } set: { newValue in
             activeChat = newValue ? id : nil
         }
@@ -33,8 +37,6 @@ struct MealsView: View {
             mealsManager.acceptedMeals = mealsManager.acceptedMeals.map { $0.id == id ? newValue : $0 }
         }
     }
-    
-    
     
      var body: some View {
          NavigationView{
@@ -54,7 +56,10 @@ struct MealsView: View {
                      else {
                          List() {
                              ForEach($mealsManager.acceptedMeals, id: \.id){ $meal in
-                                 Button(action: {activeChat = meal.id}) {
+                                 Button(action: {
+                                     activeChat = meal.id
+                                     fromNoti = false
+                                 }) {
                                      MealChatRow(meal: $meal)
                                  }
                                 }
@@ -64,15 +69,17 @@ struct MealsView: View {
                  }.background {
                      NavigationLink("", isActive: activeChatBinding(id: activeChat)) {
                          if let activeChat = activeChat {
-                             MessageView(meal: bindingForChat(id: activeChat).wrappedValue)
+                             MessageView(meal: bindingForChat(id: activeChat).wrappedValue, fromNoti: fromNoti, lastMealID: lastVisitedMealID == "" ? activeChat : lastVisitedMealID)
                                  .onAppear{
-                                   messagesManager.fetchMessages(from: bindingForChat(id: activeChat).wrappedValue.id)
-                                   showMealButton.showMealButton = false
+                                     if lastVisitedMealID != activeChat {
+                                         messagesManager.messages = [Message]()
+                                     }
+                                     messagesManager.fetchMessages(from: bindingForChat(id: activeChat).wrappedValue.id)
+                                     sharedViewManager.currentMealChatSession = activeChat
+                                     lastVisitedMealID = activeChat
+                                     showMealButton.showMealButton = false
+
                                    }.onDisappear {
-                                       if lastVisitedMealID != bindingForChat(id: activeChat).wrappedValue.id {
-                                           messagesManager.messages = [Message]()
-                                       }
-                                       lastVisitedMealID = bindingForChat(id: activeChat).wrappedValue.id
                                        showMealButton.showMealButton = true
                                    }
                              
@@ -85,9 +92,22 @@ struct MealsView: View {
                  
                  
                  
-         }.navigationBarTitle("").navigationBarHidden(true)
+         }.navigationBarTitle("").navigationBarHidden(true).onReceive(sharedViewManager.$selectedMealSession) { mealID in
+             if mealID != nil {
+                 activeChat = mealID
+                 //sharedViewManager.selectedMealSession = nil
+                 messagesManager.messages = [Message]()
+                 messagesManager.fetchMessages(from: mealID!)
+                 lastVisitedMealID = mealID!
+                 fromNoti = true
+             }
              
-         }.navigationViewStyle(.stack)
+         }
+             
+         }
+             .navigationViewStyle(.stack)
+      
+                
            
    
              

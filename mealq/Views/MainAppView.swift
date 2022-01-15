@@ -14,21 +14,22 @@ enum Tab {
 }
 
 struct MainAppView: View {
-    @State var selection: Tab = .social
+  //  @State var selection: Tab = .social
     @StateObject var friendsManager = FriendsManager()
     @StateObject var mealsManager = MealsManager()
     @StateObject var messagesManager = MessagesManager()
     @StateObject var showMealButton = ShowMealButton()
     
     @EnvironmentObject var sessionStore: SessionStore
-   
+    
+    @ObservedObject private var sharedViewManager = ViewManager.sharedViewManager
     @State var visitedNoti = false
     
 
     
     var body: some View {
 //        SwiftUIView()
-            TabView(selection: $selection) {
+        TabView(selection: $sharedViewManager.selectedTab) {
                 ZStack {
                     CreateMealButton().zIndex(1)
                     SocialView()
