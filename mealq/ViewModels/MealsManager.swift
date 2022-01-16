@@ -101,11 +101,17 @@ class MealsManager: ObservableObject {
                 let weekday = data["weekday"] as! Int
                 let userStatus = data["userStatus"] as! [String: String]
                 let createdAt = data["createdAt"] as! Timestamp
-                let recentMessageContent = data["recentMessage.content"] as? String ?? ""
-                let sentByName = data["recentMessage.sentByName"] as? String ?? ""
-                let messageTimeStamp = data["recentMessage.timeStamp"] as? Timestamp ?? createdAt
-                let isMessageViewed = data["recentMessage.viewed"] as? Bool ?? true
-                let recentMessageID = data["recentMessage.messageID"] as? String ?? ""
+                
+                let recentMessage = data["recentMessage"] as? [String: Any] ?? [:]
+                let unreadMessagesMap = data["unreadMessages"] as? [String: Any] ?? [:]
+                
+                let recentMessageContent = recentMessage["content"] as? String ?? ""
+                let sentByName = recentMessage["sentByName"] as? String ?? ""
+                let messageTimeStamp = recentMessage["timeStamp"] as? Timestamp ?? createdAt
+//                let isMessageViewed = data["recentMessage.viewed"] as? Bool ?? true
+                let recentMessageID = recentMessage["messageID"] as? String ?? ""
+                
+                let unreadMessages = unreadMessagesMap[self.user!.uid] as? Int ?? 0
                 
                 // fetch user detail info
                 self.db.collection("users").document(from).getDocument { (document, error) in
@@ -137,7 +143,7 @@ class MealsManager: ObservableObject {
                                              fcmToken: userData["fcmToken"] as? String ?? "")] = userStatus[document.documentID]
                             }
                             
-                            let meal = Meal(id: id, name: name, from: fromUser, to: to, weekday: weekday, createdAt: createdAt.dateValue(), recentMessageID: recentMessageID, recentMessageContent: recentMessageContent, sentByName: sentByName, messageTimeStamp: messageTimeStamp.dateValue(), isMessageViewed: isMessageViewed)
+                            let meal = Meal(id: id, name: name, from: fromUser, to: to, weekday: weekday, createdAt: createdAt.dateValue(), recentMessageID: recentMessageID, recentMessageContent: recentMessageContent, sentByName: sentByName, messageTimeStamp: messageTimeStamp.dateValue(), unreadMessages: unreadMessages)
                             
                            
                             if status == "pending" {
@@ -188,11 +194,17 @@ class MealsManager: ObservableObject {
                 let weekday = data["weekday"] as! Int
                 let userStatus = data["userStatus"] as! [String: String]
                 let createdAt = data["createdAt"] as! Timestamp
-                let recentMessageContent = data["recentMessage.content"] as? String ?? ""
-                let sentByName = data["recentMessage.sentByName"] as? String ?? ""
-                let messageTimeStamp = data["recentMessage.timeStamp"] as? Timestamp ?? createdAt
-                let isMessageViewed = data["recentMessage.viewed"] as? Bool ?? true
-                let recentMessageID = data["recentMessage.messageID"] as? String ?? ""
+                
+                let recentMessage = data["recentMessage"] as? [String: Any] ?? [:]
+                let unreadMessagesMap = data["unreadMessages"] as? [String: Any] ?? [:]
+                
+                let recentMessageContent = recentMessage["content"] as? String ?? ""
+                let sentByName = recentMessage["sentByName"] as? String ?? ""
+                let messageTimeStamp = recentMessage["timeStamp"] as? Timestamp ?? createdAt
+//                let isMessageViewed = data["recentMessage.viewed"] as? Bool ?? true
+                let recentMessageID = recentMessage["messageID"] as? String ?? ""
+                
+                let unreadMessages = unreadMessagesMap[self.user!.uid] as? Int ?? 0
                 
                 // fetch user detail info
                 self.db.collection("users").document(from).getDocument { (document, error) in
@@ -224,7 +236,7 @@ class MealsManager: ObservableObject {
                                              fcmToken: userData["fcmToken"] as? String ?? "")] = userStatus[document.documentID]
                             }
                             
-                            let meal = Meal(id: id, name: name, from: fromUser, to: to, weekday: weekday, createdAt: createdAt.dateValue(), recentMessageID: recentMessageID, recentMessageContent: recentMessageContent, sentByName: sentByName, messageTimeStamp: messageTimeStamp.dateValue(), isMessageViewed: isMessageViewed)
+                            let meal = Meal(id: id, name: name, from: fromUser, to: to, weekday: weekday, createdAt: createdAt.dateValue(), recentMessageID: recentMessageID, recentMessageContent: recentMessageContent, sentByName: sentByName, messageTimeStamp: messageTimeStamp.dateValue(), unreadMessages: unreadMessages)
                             
                            
                             if status == "pending" { self.pendingMeals.append(meal)}
@@ -267,9 +279,6 @@ class MealsManager: ObservableObject {
                 }
                 
 
-                
-
-
             } else {
                 print("The document for meal \(docID) does not exist")
             }
@@ -295,7 +304,6 @@ class MealsManager: ObservableObject {
         
         if let _ = user  {
             
-            
             let newMeal = self.db.collection("chats").document()
             let date = Date()
             let payload = ["mealID": newMeal.documentID,
@@ -305,11 +313,11 @@ class MealsManager: ObservableObject {
                            "userStatus": users.reduce(into: [String: String]()){$0[$1.id] = "pending"},
                            "weekday": weekday ?? 0,
                            "createdAt": date,
-                           "recentMessage.content": "",
-                           "recentMessage.sentByName": "",
-                           "recentMessage.timeStamp": date,
-                           "recentMessage.viewed": true,
-                           "recentMessage.messageID": "",
+                           "recentMessage": ["content": ""],
+                           "recentMessage": ["sentByName": ""],
+                           "recentMessage": ["timeStamp": date],
+                           //"recentMessage": ["viewed": true],
+                           "recentMessage": ["messageID": ""],
             ] as [String : Any]
             
             
@@ -398,11 +406,11 @@ class MealsManager: ObservableObject {
     
     
     
-    func setMessageAsViewed(messageID: String, mealID: String) {
-        if let _ = user {
-            self.db.collection("chats").document(mealID).setData([
-                "recentMessage.viewed": true
-            ], merge: true) { err in
+    func setMessageAsViewed(mealID: String, count: Int) {
+        if let user = user {
+            self.db.collection("chats").document(mealID).updateData([
+                "unreadMessages.\(user.uid)": FieldValue.increment(Int64(-count))
+            ]) { err in
                 if let err = err {
                     print("Unable to set message's read status: \(err.localizedDescription)")
                 } else {

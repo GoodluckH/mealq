@@ -19,16 +19,27 @@ struct MealChatRow: View {
     var body: some View {
         HStack {
             VStack (alignment: .leading, spacing: Constants.tightStackSpacing) {
+                HStack {
+                    if meal.unreadMessages != 0 {
+                        Text("\(meal.unreadMessages)")
+                            .padding(.horizontal, Constants.tightStackSpacing * 3)
+                            .foregroundColor(.white)
+                            .background(.red)
+                            .clipShape(Capsule())                            
+                    }
                 Text(getMealName(from: meal))
-                    .customFont(name: "Quicksand-Bold", style: .headline, weight: (meal.isMessageViewed) ? .semibold : .bold)
+                    .customFont(name: "Quicksand-Bold", style: .headline, weight: meal.unreadMessages == 0 ? .semibold : .bold)
                     .lineLimit(1)
-                       
-                    
-                    Text(meal.recentMessageContent == "" ?  " " : "\(meal.sentByName): \(meal.recentMessageContent)")
-                    .customFont(name: "Quicksand-SemiBold", style: .subheadline, weight: (meal.isMessageViewed) ? .semibold : .bold)
-                    .foregroundColor((meal.isMessageViewed) ? .gray : Color("MyPrimary"))
+                }
+                
+                        
+                Text(meal.recentMessageContent == "" ?  " " : "\(meal.sentByName): \(meal.recentMessageContent)")
+                    .customFont(name: "Quicksand-SemiBold", style: .subheadline, weight: meal.unreadMessages == 0 ? .semibold : .bold)
+                    .foregroundColor(meal.unreadMessages == 0 ? .gray : Color("MyPrimary"))
                     .lineLimit(3)
                     .padding(.vertical, Constants.tightStackSpacing)
+                        
+                    
                   
                 
                 RowProfilePicView(meal: meal)

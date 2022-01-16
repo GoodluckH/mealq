@@ -82,8 +82,11 @@ struct MessageView: View {
                                 ChatRow(users: Array(meal.to.keys), message: msg, currentUser: sessionStore.localUser!,
                                         invitor: meal.from, showAvatar: !(i != messagesManager.messages.count - 1 && messagesManager.messages[i + 1].senderID == msg.senderID)).id(msg.id)
                                     .onAppear{
-                                        if meal.recentMessageID == msg.id && !meal.isMessageViewed {
-                                            mealsManager.setMessageAsViewed(messageID: msg.id, mealID: meal.id)
+                                        if meal.recentMessageID == msg.id && meal.unreadMessages > 0 {
+                                            // TODO: Need to add a logic here, otherwise it will scroll down
+                                            UIApplication.shared.applicationIconBadgeNumber = UIApplication.shared.applicationIconBadgeNumber - meal.unreadMessages
+                                            mealsManager.setMessageAsViewed(mealID: meal.id, count: meal.unreadMessages)
+                                            withAnimation(.easeOut.speed(3)){reader.scrollTo(messagesManager.messages.last!.id, anchor: .bottom)}
                                         }
                                         if reFocus {
                                             reFocus = false
@@ -97,11 +100,15 @@ struct MessageView: View {
                                     let offset = proxy.frame(in: .named("frameLayer")).maxY
                                     withAnimation {if offset > 650 {showClickToBottomButton = true}
                                     else {showClickToBottomButton = false}}
+                                    
                                     }
                                     return Color.clear
                                 }.frame(width: 0, height: 0)
                             
-                    }
+                        }.background(GeometryReader {
+                            Color.clear.preference(key: ViewOffsetKey.self,
+                                value: -$0.frame(in: .named("frameLayer")).origin.y)
+                        })
             
                         }
                         .overlay(
@@ -115,7 +122,14 @@ struct MessageView: View {
                                         .disabled(!(showClickToBottomButton && scrolled))
                                 }
                             })
-                        .coordinateSpace(name: "frameLayer")
+                        .coordinateSpace(name: "frameLayer").onPreferenceChange(ViewOffsetKey.self) {
+                            print("offset >> \($0)")
+                            if $0 < -80 {
+                                if messagesManager.fetchingMessages == .idle {
+                                    messagesManager.fetchMoreMessages()
+                                }
+                            }
+                        }
                         .onAppear {
                             UIScrollView.appearance().keyboardDismissMode = .interactive
                             if !scrolled || (fromNoti && lastMealID == meal.id) {
@@ -172,7 +186,7 @@ struct MessageView: View {
              
                     // Send button
                     Button (action: {
-                        messagesManager.sendMessage(from: sessionStore.localUser!, for: meal.id)
+                        messagesManager.sendMessage(from: sessionStore.localUser!, for: meal)
                         reFocus = true
                     }) {
                         Image(systemName: "paperplane.fill")
@@ -209,5 +223,14 @@ struct MessageView: View {
             }
         }
     
+    }
+}
+
+
+struct ViewOffsetKey: PreferenceKey {
+    typealias Value = CGFloat
+    static var defaultValue = CGFloat.zero
+    static func reduce(value: inout Value, nextValue: () -> Value) {
+ 
     }
 }

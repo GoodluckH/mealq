@@ -36,28 +36,12 @@ struct ChatRow: View {
             if sender != currentUser && showAvatar {
                 
              NavigationLink(destination: UserProfileView(user: sender)) {
-                
-                //Button(action: {isLinkActive = true}){
                     ProfilePicView(picURL: sender.normalPicURL)
                          .padding(.leading).padding(.bottom, 5)
                          .frame(width: UIScreen.main.bounds.width / 6, height: UIScreen.main.bounds.width / 10)
-                
-                //}
-                  
+   
              }.isDetailLink(false)
-                
-                
-                
-
-
-
-//                NavigationLink (""){
-//                    if let activeSender = activeSender {
-//                        UserProfileView(user: bindingForSender(sender: activeSender).wrappedValue)
-//                    } else {
-//                        EmptyView()
-//                    }
-//                }
+            
             
                
             } else  {

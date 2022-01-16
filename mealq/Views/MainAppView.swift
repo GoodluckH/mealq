@@ -23,7 +23,7 @@ struct MainAppView: View {
     @EnvironmentObject var sessionStore: SessionStore
     
     @ObservedObject private var sharedViewManager = ViewManager.sharedViewManager
-    @State var visitedNoti = false
+    // @State var visitedNoti = false
     
 
     
@@ -39,12 +39,13 @@ struct MainAppView: View {
                    // DebugView()
                     MealsView()
                 }.tabItem{Image(systemName: "mail.stack")}.tag(Tab.meals)
+                .badge(mealsManager.acceptedMeals.reduce(0){$0 + $1.unreadMessages})
                 ZStack {
                     CreateMealButton().zIndex(1)
                     NotificationView()
-                }.onAppear{visitedNoti = true}.tabItem{Image(systemName: "bell")}.tag(Tab.noti)
+                }.tabItem{Image(systemName: "bell")}.tag(Tab.noti)
                 // TODO: Figure out a way to optimize the badges
-                .badge(visitedNoti ? 0: (friendsManager.pendingFriends.count + mealsManager.pendingMeals.count))
+                .badge(friendsManager.pendingFriends.count + mealsManager.pendingMeals.count)
                 ZStack {
                     CreateMealButton().zIndex(1)
                     ProfileView()
