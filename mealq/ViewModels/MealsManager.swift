@@ -15,7 +15,8 @@ class MealsManager: ObservableObject {
     private var db = Firestore.firestore()
     private let user = Auth.auth().currentUser
 
-    @Published var pendingMeals = [Meal]()
+    @Published var pendingMeals = [NotificationItem]()
+    
     @Published var acceptedMeals = [Meal]()
     // @Published var rejectedMeals = [Meal]()
     
@@ -33,11 +34,15 @@ class MealsManager: ObservableObject {
                 }
                 
                 snapshot.documentChanges.forEach {diff in
+                    
+                    // NEWLY ADDED MEALS
                     if (diff.type == .added) {
                         let data = diff.document.data()
                         let status = data["userStatus"] as! [String: String]
                         self.addMeal(diff.document.documentID, by: status[currentUser.uid]!)
                     }
+                    
+                    // MEAL INFO CHANGED
                     if (diff.type == .modified) {
                         let data = diff.document.data()
                         let status = data["userStatus"] as! [String: String]
@@ -48,7 +53,7 @@ class MealsManager: ObservableObject {
                         }
 
                         if status[currentUser.uid]! == "accepted" {
-                            if let idx = self.pendingMeals.firstIndex(where: {$0.id == mealID}) {
+                            if let idx = self.pendingMeals.firstIndex(where: {($0.payload as! Meal).id == mealID}) {
                                 self.pendingMeals.remove(at: idx)
                                 self.addMeal(diff.document.documentID, by: status[currentUser.uid]!)
                             } else {
@@ -58,6 +63,17 @@ class MealsManager: ObservableObject {
                         
                         // TODO: add the logic for rejected meals
                     }
+                    
+                    if (diff.type == .removed) {
+                        let data = diff.document.data()
+                        let mealID  = data["mealID"] as! String
+                        
+                        self.pendingMeals = self.pendingMeals.filter{($0.payload as! Meal).id != mealID}
+                        self.acceptedMeals = self.acceptedMeals.filter{$0.id != mealID}
+                        self.acceptedMeals.sort(by: {$0.messageTimeStamp.compare($1.messageTimeStamp) == .orderedDescending})
+                    }
+                    
+                    
                 }
                 
 //                self.pendingMeals = [Meal]()
@@ -148,8 +164,10 @@ class MealsManager: ObservableObject {
                            
                             if status == "pending" {
                                 for idx in self.pendingMeals.indices {
-                                    if self.pendingMeals[idx] == meal {
-                                        self.pendingMeals[idx] = meal
+                                    if self.pendingMeals[idx].payload as! Meal == meal {
+                                        let oldID = self.pendingMeals[idx].id
+                                        let oldTimeStamp = self.pendingMeals[idx].timeStamp
+                                        self.pendingMeals[idx] = NotificationItem(id: oldID, payload: meal, timeStamp: oldTimeStamp)
                                     }
                                 }
                                 
@@ -239,7 +257,7 @@ class MealsManager: ObservableObject {
                             let meal = Meal(id: id, name: name, from: fromUser, to: to, weekday: weekday, createdAt: createdAt.dateValue(), recentMessageID: recentMessageID, recentMessageContent: recentMessageContent, sentByName: sentByName, messageTimeStamp: messageTimeStamp.dateValue(), unreadMessages: unreadMessages)
                             
                            
-                            if status == "pending" { self.pendingMeals.append(meal)}
+                            if status == "pending" { self.pendingMeals.append(NotificationItem(id: UUID(), payload: meal, timeStamp: meal.createdAt))}
                             else if status == "accepted" {
                                 self.acceptedMeals.append(meal)
                                 self.acceptedMeals.sort(by: {$0.messageTimeStamp.compare($1.messageTimeStamp) == .orderedDescending})
@@ -313,11 +331,11 @@ class MealsManager: ObservableObject {
                            "userStatus": users.reduce(into: [String: String]()){$0[$1.id] = "pending"},
                            "weekday": weekday ?? 0,
                            "createdAt": date,
-                           "recentMessage": ["content": ""],
-                           "recentMessage": ["sentByName": ""],
-                           "recentMessage": ["timeStamp": date],
-                           //"recentMessage": ["viewed": true],
-                           "recentMessage": ["messageID": ""],
+                           "recentMessage": ["content": "", "sentByName": "", "timeStamp": date],
+//                           "recentMessage": [],
+//                           "recentMessage": [],
+//                           "recentMessage": ["viewed": true],
+//                           "recentMessage": [],
             ] as [String : Any]
             
             
@@ -383,9 +401,15 @@ class MealsManager: ObservableObject {
                 } else {
                     print("Successfully updated user \(currentUser.uid)'s meal status to \(status)!")
                     
-                    self.db.collection("chats").document(mealID).updateData([
-                        "userStatus.\(currentUser.uid)": status
-                    ]) {err in
+                    
+                    
+                    var payload: [String: Any] = ["userStatus.\(currentUser.uid)": status]
+                    if (status == "accepted") {
+                        payload["recentMessage.content"] = "\(currentUser.displayName!) has joined the chat!"
+                        payload["recentMessage.timeStamp"] = Date()
+                    }
+                    
+                    self.db.collection("chats").document(mealID).updateData(payload) {err in
                         if let err = err {
                             print("Error updating meal \(mealID)'s userStatus for \(currentUser.uid) status to \(status)\(err.localizedDescription)")
                             self.acceptingMeal = .error
@@ -417,6 +441,27 @@ class MealsManager: ObservableObject {
                     print("Successfully set message as read")
                 }
                 
+            }
+        }
+    }
+    
+    
+    func deleteMealForAll(mealID: String) {
+        if let _ = user {
+            self.db.collection("chats").document(mealID).collection("messages").document().delete() { err in
+                if let err = err {
+                    print("MealsManager.deleteMealForAll -- Unable to delete the messages collection from the meal: \(err.localizedDescription)")
+                } else {
+                    print("MealsManager.deleteMealForAll -- Successfully deleted the messages in collection \(mealID)")
+                    self.db.collection("chats").document(mealID).delete() { err in
+                        if let err = err {
+                            print("MealsManager.deleteMealForAll -- Unable to delete the meal: \(err.localizedDescription)")
+                        } else {
+                            print("MealsManager.deleteMealForAll -- Successfully deleted the meal \(mealID)")
+                        }
+                        
+                    }
+                }
             }
         }
     }

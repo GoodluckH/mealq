@@ -18,11 +18,12 @@ class MessagesManager: ObservableObject {
     private var lastDoc: QueryDocumentSnapshot? = nil
     private var lastMealID = ""
     
+    @Published var fetchingMoreMessages = Status.idle
     @Published var fetchingMessages = Status.idle
     func fetchMessages(from mealID: String) {
         self.lastDoc = nil
         self.lastMealID = ""
-        
+        fetchingMoreMessages = .idle
         fetchingMessages = .loading
         let first = db.collection("chats").document(mealID).collection("messages").order(by: "timeStamp", descending: true).limit(to: 20)
         if let _ = user {
@@ -33,7 +34,10 @@ class MessagesManager: ObservableObject {
                     return
                 }
 
-                guard let lastSnapshot = documents.last else {return}
+                guard let lastSnapshot = documents.last else {
+                    self.fetchingMessages = .idle
+                    return
+                }
 
                 
                 var tempMessages: [Message] = documents.map {doc in
@@ -56,18 +60,21 @@ class MessagesManager: ObservableObject {
         }
     }
     
-    
+
     func fetchMoreMessages() {
         if let lastDoc = lastDoc {
             self.fetchingMessages = .loading
+            self.fetchingMoreMessages = .loading
             self.db.collection("chats").document(lastMealID).collection("messages").order(by: "timeStamp", descending: true).start(afterDocument: lastDoc).limit(to: 20).getDocuments {snap, err in
                 guard let documents = snap?.documents else {
                     print ("error updating new messages: \(err?.localizedDescription ?? "")")
                     self.fetchingMessages = .error
+                    self.fetchingMoreMessages = .error
                     return
                 }
                 guard let lastSnapshot = documents.last else {
                     self.fetchingMessages = .idle
+                    self.fetchingMoreMessages = .idle
                     self.lastDoc = nil
                     self.lastMealID = ""
                     return
@@ -87,6 +94,7 @@ class MessagesManager: ObservableObject {
                 self.messages = tempMessages
                 self.lastDoc = lastSnapshot
                 self.fetchingMessages = .idle
+                self.fetchingMoreMessages = .done
             }
         }
     }

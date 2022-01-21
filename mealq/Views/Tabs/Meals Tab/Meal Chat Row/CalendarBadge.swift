@@ -17,7 +17,7 @@ struct CalendarBadge: View {
 
             RoundedRectangle(cornerRadius: Constants.roundedRectCornerRadius / 2,
                              style: .continuous)
-                .foregroundColor(.white)
+                .foregroundColor(Color("QueryLoaderStartingColor"))
                 
 
                Rectangle()
@@ -27,8 +27,8 @@ struct CalendarBadge: View {
                 .clipped()
                
                Text(getShortWeekday(from: weekday))
-                .font(Font.custom("Quicksand-SemiBold", size: 14))
-                .foregroundColor(.black)
+                    .font(Font.custom("Quicksand-SemiBold", size: weekday == 1 ? 12 : 14))
+                .foregroundColor(Color("MyPrimary"))
                 .offset(y: 9)
 
 

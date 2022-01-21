@@ -15,8 +15,6 @@ func getAllMealParticipantsExSelf(to: [MealqUser], from: MealqUser, me: MealqUse
     return toUsers.filter{$0 != me}
 }
 
-
-
-
-
-
+func combineArrays<T> (_ arrays: [T]...) -> [T] {
+    return arrays.flatMap { $0 }
+}

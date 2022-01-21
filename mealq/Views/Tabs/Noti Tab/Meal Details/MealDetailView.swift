@@ -13,6 +13,10 @@ struct MealDetailView: View {
     var meal: Meal
     @State private var showBigPic = false
     @EnvironmentObject var sessionStore: SessionStore
+    @EnvironmentObject var mealsManager: MealsManager
+    @EnvironmentObject var messagseManager: MessagesManager
+    
+    @State private var showAlert = false
     
     init(meal: Meal) {
         //Use this if NavigationBarTitle is with Large Font
@@ -29,7 +33,29 @@ struct MealDetailView: View {
             ProfilePicView(picURL: meal.from.normalPicURL)
                 .onTapGesture{showBigPic = true}
                 .frame(width: ProfilePicStyles.profilePicWidth, height: ProfilePicStyles.profilePicHeight)
-                .navigationBarTitle(Text(meal.name), displayMode: .inline)
+                .navigationBarItems(trailing:
+                                        Button(action: { showAlert = true }) {
+                    
+                        // TODO: Figure out a server side solution for deleting the meal
+                                                if meal.from == sessionStore.localUser! && false {
+                                                    Image(systemName: "trash.fill").foregroundColor(.red)
+                                                }
+                                        }
+                                        .disabled(meal.from != sessionStore.localUser!)
+                                        .alert(isPresented: $showAlert) {
+                    Alert(title: Text("Delete the chat"),
+                          message: Text("This will permanently delete the meal session for everyone"),
+                          primaryButton: .default(Text("Cancel"), action: {showAlert = false}),
+                          secondaryButton: .destructive(Text("Delete"), action: {
+                            mealsManager.deleteMealForAll(mealID: meal.id)
+                            messagseManager.messages = [Message]()
+                        
+                    }
+)
+                    )
+                }
+                                        
+                                                    )
                 .sheet(isPresented: $showBigPic) {
                     BigUserPicView(picURL: URL(string: ((meal.from.thumbnailPicURL?.absoluteString) != nil) ? meal.from.thumbnailPicURL!.absoluteString + "?width=1000&height=1000" : ""))
                 }
@@ -65,9 +91,10 @@ struct MealDetailView: View {
         }
         .padding()
             .frame(maxHeight: .infinity, alignment: .top)
-            
-            
     }
+    
+
+    
 }
 
 

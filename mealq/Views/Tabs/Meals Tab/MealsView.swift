@@ -30,11 +30,15 @@ struct MealsView: View {
         }
     }
     
-    private func bindingForChat(id: String) -> Binding<Meal> {
+    private func bindingForChat(id: String) -> Binding<Meal?> {
         .init {
-            mealsManager.acceptedMeals.first { $0.id == id }!
+            mealsManager.acceptedMeals.first(where: { $0.id == id })
         } set: { newValue in
-            mealsManager.acceptedMeals = mealsManager.acceptedMeals.map { $0.id == id ? newValue : $0 }
+            if newValue != nil {
+                mealsManager.acceptedMeals = mealsManager.acceptedMeals.map { $0.id == id ? newValue! : $0 }
+            }
+            
+            
         }
     }
     
@@ -68,13 +72,14 @@ struct MealsView: View {
                  }
                  }.background {
                      NavigationLink("", isActive: activeChatBinding(id: activeChat)) {
-                         if let activeChat = activeChat {
-                             MessageView(meal: bindingForChat(id: activeChat).wrappedValue, fromNoti: fromNoti, lastMealID: lastVisitedMealID == "" ? activeChat : lastVisitedMealID)
+                         if let activeChat = activeChat, let currentMeal = bindingForChat(id: activeChat).wrappedValue {
+                             MessageView(meal:currentMeal, fromNoti: fromNoti, lastMealID: lastVisitedMealID == "" ? activeChat : lastVisitedMealID)
                                  .onAppear{
                                      if lastVisitedMealID != activeChat {
                                          messagesManager.messages = [Message]()
+                                         messagesManager.fetchMessages(from: currentMeal.id)
                                      }
-                                     messagesManager.fetchMessages(from: bindingForChat(id: activeChat).wrappedValue.id)
+                                     
                                      sharedViewManager.currentMealChatSession = activeChat
                                      lastVisitedMealID = activeChat
                                      showMealButton.showMealButton = false

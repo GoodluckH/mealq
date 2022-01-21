@@ -26,10 +26,10 @@ struct MessageView: View {
     @State private var lastTextHeight: CGFloat = 0
     @State private var showClickToBottomButton: Bool = false
     @State private var scrollView: UIScrollView? = nil
-    
+    @State private var firstMsgToFocus: String? = nil
     
     @FocusState private var isFocused: Bool
-   
+    
     
     init(meal: Meal, fromNoti: Bool, lastMealID: String) {
         //Use this if NavigationBarTitle is with Large Font
@@ -45,6 +45,7 @@ struct MessageView: View {
         self.meal = meal
         self._fromNoti = State(initialValue: fromNoti)
         self.lastMealID = lastMealID
+        
     }
     
     
@@ -69,11 +70,11 @@ struct MessageView: View {
             // Displays all messaegs if the current meal session has messages
             if !messagesManager.messages.isEmpty {
                 ScrollViewReader { reader in
-                    ScrollView {
+                    ScrollView (messagesManager.fetchingMoreMessages == .loading ? [] : .vertical) {
                         VStack{
         
                             ForEach(Array(messagesManager.messages.enumerated()), id: \.offset) {i, msg in
-                                    if let date = getTimeStampBetween(lastDate: i == 0 ? Date() : messagesManager.messages[i-1].timeStamp, and: msg.timeStamp) {
+                                if let date = getTimeStampBetween(lastDate: i == 0 ? Date() : messagesManager.messages[i-1].timeStamp, and: msg.timeStamp, mandatory: i == 0) {
                                         ChatTimeStamp(date: date, timeStamp:msg.timeStamp)
                                     }
                                     
@@ -123,12 +124,24 @@ struct MessageView: View {
                                 }
                             })
                         .coordinateSpace(name: "frameLayer").onPreferenceChange(ViewOffsetKey.self) {
-                            print("offset >> \($0)")
-                            if $0 < -80 {
+                            if $0 < 0 {
                                 if messagesManager.fetchingMessages == .idle {
+                                    firstMsgToFocus = messagesManager.messages.first?.id ?? nil
                                     messagesManager.fetchMoreMessages()
                                 }
                             }
+                        }
+                        .onReceive(messagesManager.$fetchingMoreMessages) { status in
+                            if status == .done {
+                                if let id = firstMsgToFocus {
+                                    DispatchQueue.main.asyncAfter(deadline: .now()) {
+                                        reader.scrollTo(id, anchor: .top)
+                                        messagesManager.fetchingMoreMessages = .idle
+                                    }
+                                   
+                                }
+                            }
+                            
                         }
                         .onAppear {
                             UIScrollView.appearance().keyboardDismissMode = .interactive

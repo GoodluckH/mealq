@@ -10,7 +10,7 @@ import SwiftUI
 struct MealTimeStamp: View {
     var timeStamp: Date
     var body: some View {
-        if let date = getTimeStampBetween(lastDate: Date(), and: timeStamp) {
+        if let date = getTimeStampBetween(lastDate: Date(), and: timeStamp, mandatory: true) {
             HStack(spacing: 5) {
                 Text("created:")
                 if date == "FULLDATE" {

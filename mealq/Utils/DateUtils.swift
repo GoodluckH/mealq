@@ -39,7 +39,7 @@ func dateToString(from date: Date, to now: Date) -> String {
 }
 
 
-func getTimeStampBetween(lastDate: Date, and newDate: Date) -> String? {
+func getTimeStampBetween(lastDate: Date, and newDate: Date, mandatory: Bool) -> String? {
     let today = Date()
 //    let diffComponents = Calendar.autoupdatingCurrent.dateComponents([.hour, .day], from: lastDate, to: newDate)
     let diffFromToday =  Calendar.autoupdatingCurrent.dateComponents([.day], from: newDate, to: today)
@@ -59,7 +59,7 @@ func getTimeStampBetween(lastDate: Date, and newDate: Date) -> String? {
     
     if Calendar.autoupdatingCurrent.isDateInToday(newDate) {
         if lastDateDay == newDateDay {
-            if lastDateHour != newDateHour {return "Today"}
+            if lastDateHour != newDateHour || mandatory {return "Today"}
         } else {return "Today"}
     } else if Calendar.autoupdatingCurrent.isDateInYesterday(newDate) {
         if lastDateDay == newDateDay {if lastDateHour != newDateHour {return "Yesterday"}}

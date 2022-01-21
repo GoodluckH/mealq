@@ -33,8 +33,8 @@ struct MealChatRow: View {
                 }
                 
                         
-                Text(meal.recentMessageContent == "" ?  " " : "\(meal.sentByName): \(meal.recentMessageContent)")
-                    .customFont(name: "Quicksand-SemiBold", style: .subheadline, weight: meal.unreadMessages == 0 ? .semibold : .bold)
+                Text(meal.recentMessageContent == "" ?  " " : meal.sentByName == "" ? "🎉 \(meal.recentMessageContent)" : "\(meal.sentByName): \(meal.recentMessageContent)")
+                    .customFont(name: "Quicksand-SemiBold", style: .subheadline, weight: meal.unreadMessages != 0 ?  .bold : .semibold)
                     .foregroundColor(meal.unreadMessages == 0 ? .gray : Color("MyPrimary"))
                     .lineLimit(3)
                     .padding(.vertical, Constants.tightStackSpacing)
@@ -53,6 +53,7 @@ struct MealChatRow: View {
             }
             
         }
+        .padding(.vertical, Constants.tightStackSpacing * 2)
         
     }
     

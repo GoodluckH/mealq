@@ -18,9 +18,12 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         
-        ApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
-        FirebaseApp.configure()
+     
         
+        ApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
+        
+        FirebaseApp.configure()
+        FirebaseConfiguration.shared.setLoggerLevel(.min)
         
         Messaging.messaging().delegate = self
         // Register for remote notifications. This shows a permission dialog on first run, to
@@ -42,11 +45,22 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 
         application.registerForRemoteNotifications()
         
-        let _ = UNNotificationAction(identifier: "SEND_MESSAGE", title: "Type", options: [])
-        let messageReceivedCategory = UNNotificationCategory (identifier: "MESSAGE_RECEIVED", actions: [], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: "", options: .customDismissAction)
+        let typeAction = UNTextInputNotificationAction(identifier: "SEND_MESSAGE", title: "Reply", options: [], textInputButtonTitle: "Send", textInputPlaceholder: "send a message")
+        let messageReceivedCategory = UNNotificationCategory (identifier: "MESSAGE_RECEIVED", actions: [typeAction], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: "", options: .customDismissAction)
         
         UNUserNotificationCenter.current().setNotificationCategories([messageReceivedCategory])
+        
+        // Check if launched from notification
+        let notificationOption = launchOptions?[.remoteNotification]
 
+        // 1
+        if let _ = notificationOption as? [String: AnyObject] {
+            print("launched from notification")
+           // self.sharedViewManager.launchedWhenAppNotRunning = true
+        }
+
+        
+        
         return true
     }
     
@@ -127,9 +141,10 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
       
       let application = UIApplication.shared
       
-      
+   //   sharedViewManager.launchedWhenAppNotRunning = false
       if (application.applicationState == .active) {
           // TODO: Deliver in-app notification bar
+         
       }
       
       
@@ -166,7 +181,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
       
       switch category {
       case "MESSAGE_RECEIVED":
-          sharedViewManager.toggleChatView(of: userInfo["MEAL_ID"] as! String)
+              sharedViewManager.toggleChatView(of: userInfo["MEAL_ID"] as! String)
       default:
           break
       }
@@ -203,20 +218,6 @@ extension AppDelegate: MessagingDelegate {
     )
     // Note: This callback is fired at each app startup and whenever a new token is generated.
       
-    // Update the fcm token
-//    if let currentUser = Auth.auth().currentUser {
-//           Firestore.firestore().collection("users").document(currentUser.uid).setData(["fcmToken": fcmToken ?? ""], merge: true) {err in
-//               if let err = err {
-//                   print("Unable to add the new fcm token to Firestore db: \(err)")
-//               } else {
-//                   print("Successfully sent fresh token Firestore")
-//               }
-//           }
-//    } else {
-//       print("Unable to update token because the current user cannot be fetched.")
-//    }
-           
-       
   }
 
 }
