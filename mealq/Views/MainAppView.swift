@@ -19,6 +19,7 @@ struct MainAppView: View {
     @StateObject var mealsManager = MealsManager()
     @StateObject var messagesManager = MessagesManager()
     @StateObject var showMealButton = ShowMealButton()
+    @StateObject var activitiesManager = ActivitiesManager()
     
     @EnvironmentObject var sessionStore: SessionStore
     
@@ -58,12 +59,14 @@ struct MainAppView: View {
                     if let _ = user {
                         friendsManager.fetchData()
                         mealsManager.fetchMeals()
+                        activitiesManager.getRecentActivities()
                     }
                 }
             }.environmentObject(friendsManager)
             .environmentObject(mealsManager)
             .environmentObject(messagesManager)
             .environmentObject(showMealButton)
+            .environmentObject(activitiesManager)
 
 
 

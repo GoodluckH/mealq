@@ -86,6 +86,7 @@
 		80E721672790AA4A00FBB6E3 /* FirebaseFunctions in Frameworks */ = {isa = PBXBuildFile; productRef = 80E721662790AA4A00FBB6E3 /* FirebaseFunctions */; };
 		80E721692792185C00FBB6E3 /* ViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E721682792185B00FBB6E3 /* ViewManager.swift */; };
 		80E9388D279A137D00B06ED2 /* NotificationItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E9388C279A137D00B06ED2 /* NotificationItem.swift */; };
+		80E9388F27A04E3B00B06ED2 /* ActivitiesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E9388E27A04E3B00B06ED2 /* ActivitiesManager.swift */; };
 		80EFC3732731DE8B005520D3 /* FriendsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EFC3722731DE8A005520D3 /* FriendsManager.swift */; };
 		80EFC3752732EE38005520D3 /* GestureActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EFC3742732EE38005520D3 /* GestureActions.swift */; };
 		80EFC3792732EF5F005520D3 /* SocialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EFC3782732EF5F005520D3 /* SocialView.swift */; };
@@ -200,6 +201,7 @@
 		80E72164278FA30100FBB6E3 /* DateUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateUtils.swift; sourceTree = "<group>"; };
 		80E721682792185B00FBB6E3 /* ViewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewManager.swift; sourceTree = "<group>"; };
 		80E9388C279A137D00B06ED2 /* NotificationItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationItem.swift; sourceTree = "<group>"; };
+		80E9388E27A04E3B00B06ED2 /* ActivitiesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivitiesManager.swift; sourceTree = "<group>"; };
 		80EFC3722731DE8A005520D3 /* FriendsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsManager.swift; sourceTree = "<group>"; };
 		80EFC3742732EE38005520D3 /* GestureActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureActions.swift; sourceTree = "<group>"; };
 		80EFC3782732EF5F005520D3 /* SocialView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocialView.swift; sourceTree = "<group>"; };
@@ -405,6 +407,7 @@
 		80C12089272E08FB006D125D /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				80E9389027A05D9800B06ED2 /* NavBar */,
 				802BC3312743FAB9004F1505 /* Splash Screen */,
 				80EFC38D27349678005520D3 /* User Profile */,
 				80C12099272E504B006D125D /* Invite Components */,
@@ -439,6 +442,7 @@
 				8023FDBB2784D908003E728E /* ShowMealButton.swift */,
 				8023FDCB278692D9003E728E /* Observer.swift */,
 				80E721682792185B00FBB6E3 /* ViewManager.swift */,
+				80E9388E27A04E3B00B06ED2 /* ActivitiesManager.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -489,11 +493,7 @@
 		80C120A8272F838B006D125D /* Social Tab */ = {
 			isa = PBXGroup;
 			children = (
-				802BC32727404FCA004F1505 /* NavBar Components */,
-				80EFC381273316A5005520D3 /* Search Bar */,
-				80EFC3802733167F005520D3 /* Query Screen */,
 				80EFC3782732EF5F005520D3 /* SocialView.swift */,
-				802BC32827405083004F1505 /* SearchScreen.swift */,
 			);
 			path = "Social Tab";
 			sourceTree = "<group>";
@@ -516,6 +516,17 @@
 				80C120B2272F93CD006D125D /* test.swift */,
 			);
 			path = "Profile Tab";
+			sourceTree = "<group>";
+		};
+		80E9389027A05D9800B06ED2 /* NavBar */ = {
+			isa = PBXGroup;
+			children = (
+				802BC32827405083004F1505 /* SearchScreen.swift */,
+				802BC32727404FCA004F1505 /* NavBar Components */,
+				80EFC381273316A5005520D3 /* Search Bar */,
+				80EFC3802733167F005520D3 /* Query Screen */,
+			);
+			path = NavBar;
 			sourceTree = "<group>";
 		};
 		80EFC3802733167F005520D3 /* Query Screen */ = {
@@ -720,6 +731,7 @@
 				80F420002783860A0080C67D /* MessageModel.swift in Sources */,
 				802BC32C274063A3004F1505 /* NotificationView.swift in Sources */,
 				80C120B5272F984D006D125D /* ProfilePicStyles.swift in Sources */,
+				80E9388F27A04E3B00B06ED2 /* ActivitiesManager.swift in Sources */,
 				80F41FF92780C9300080C67D /* MealDetailView.swift in Sources */,
 				80F41FFC2780D4900080C67D /* MealControlButtons.swift in Sources */,
 				80964EAD2739ABEA00F54B6D /* AppDelegate.swift in Sources */,

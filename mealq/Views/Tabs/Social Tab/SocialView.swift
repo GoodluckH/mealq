@@ -10,12 +10,9 @@ import SwiftUI
 struct SocialView: View {
 
     @EnvironmentObject var friendsManager: FriendsManager
-//    init(){
-//            UINavigationBar.setAnimationsEnabled(false)
-//        }
+    @EnvironmentObject var activitiesManager: ActivitiesManager
 
     var body: some View {
-       // GeometryReader{ geometry in
             NavigationView{
             VStack{
                 HStack {
@@ -28,24 +25,33 @@ struct SocialView: View {
                 }
                 .padding()
                     
-          
-                    // TODO: implement the friend activity stream
-                    Text("no friend activity to display (coming up...)")
-                    .frame(maxHeight: .infinity, alignment: .top)
-                        .ignoresSafeArea(.keyboard)
+                if activitiesManager.loadingActivities == .loading {
+                    Text("Loading..")
+                    Spacer()
+                } else {
+                    if activitiesManager.activities.isEmpty {
+                        Text("Empty feed")
+                        Spacer()
+                    } else {
+                        List (activitiesManager.activities) { act in
+                            VStack(alignment: .leading){
+                                Text("\(act.from.fullname) invited \(act.to.count) other people for \(act.name)\(act.weekday == 0 ? "" : " on \(getShortWeekday(from: act.weekday))")")
+                            Text(act.createdAt, style: .date).font(.footnote).foregroundColor(.gray)
+                                
+                            }
+                             
+                        }.listStyle(.plain)
+                    }
+                }
+                
+                
                         
                 }.navigationBarHidden(true)
                     .navigationBarTitle(Text(""))
                 }.navigationViewStyle(.stack)
 
-          //  }
         }
     }
 
 
 
-struct SocialView_Previews: PreviewProvider {
-    static var previews: some View {
-        SocialView().environmentObject(FriendsManager())
-    }
-}

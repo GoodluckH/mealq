@@ -358,6 +358,10 @@ class MealsManager: ObservableObject {
                 batch.setData(["status": "pending"], forDocument: self.db.collection("users").document(user.id).collection("meals").document(newMeal.documentID))
             }
             batch.setData(["status": "accepted"], forDocument: self.db.collection("users").document(me.id).collection("meals").document(newMeal.documentID))
+            batch.updateData([
+                "createdMeals": FieldValue.arrayUnion([["createdAt": date, "mealID": newMeal.documentID]])
+            ], forDocument: self.db.collection("users").document(me.id))
+            
             batch.commit() { err in
                 if let err = err {
                     print("Error writing batch \(err)")
@@ -478,3 +482,4 @@ class MealsManager: ObservableObject {
     
     
 }
+
