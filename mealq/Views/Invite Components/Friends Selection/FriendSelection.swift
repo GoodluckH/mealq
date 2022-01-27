@@ -9,7 +9,7 @@ import SwiftUI
 
 struct FriendSelection: View {
     @Binding var selectedFriends: [MealqUser]
-    @EnvironmentObject var friendsManager: FriendsManager
+    @ObservedObject var friendsManager = FriendsManager.sharedFriendsManager
     // Debug
     var friends = [MealqUser(id: "sdfasdfdsfsd", fullname: "John Jomme", email: "slfsd@sdf.com"),
       MealqUser(id: "sdsadffasdfdsfsd", fullname: "Tim Cook", email: "slfs2d@sdf.com"),

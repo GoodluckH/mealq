@@ -11,7 +11,8 @@ import ActivityIndicatorView
 
 struct ConnectButton: View {
     var user: MealqUser
-    @EnvironmentObject var friendsManager: FriendsManager
+    @ObservedObject var friendsManager = FriendsManager.sharedFriendsManager
+    
     @EnvironmentObject var sessionStore: SessionStore
     @State private var showPendingSheet = false
     @State private var showUnfriendSheet = false
@@ -166,11 +167,11 @@ struct ConnectButton: View {
 
 
 
-
-struct ConnectButton_Previews: PreviewProvider {
-    
-    static var previews: some View {
-        ConnectButton(user: MealqUser(id: "salfjal;sdf", fullname: "Mike Kim", email: "elas@lksd")).environmentObject(FriendsManager())
-    }
-}
-
+//
+//struct ConnectButton_Previews: PreviewProvider {
+//
+//    static var previews: some View {
+//        ConnectButton(user: MealqUser(id: "salfjal;sdf", fullname: "Mike Kim", email: "elas@lksd")).environmentObject(FriendsManager())
+//    }
+//}
+//

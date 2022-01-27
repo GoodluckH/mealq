@@ -7,6 +7,7 @@
 
 import Foundation
 import Firebase
+import Combine
 
 
 class ActivitiesManager: ObservableObject {
@@ -17,6 +18,7 @@ class ActivitiesManager: ObservableObject {
     
     
     private var db = Firestore.firestore()
+    private var friendsManager = FriendsManager.sharedFriendsManager
     private let user = Auth.auth().currentUser
     
     /// For pagination purpose.
@@ -27,25 +29,127 @@ class ActivitiesManager: ObservableObject {
     private var masterAcitivityArray = [[String: Any]]()
     private var currentSliceEnd = 0
     
+    private var isListeningForNewActivities = false
+    private var isFirstTimeListening = true
     
-    
-    @Published var loadingActivities = Status.idle
-    func getRecentActivities() {
+    func listenForNewActivities() {
         if let user = user {
-            self.loadingActivities = .loading
-            self.db.collection("users").document(user.uid).collection("friends").getDocuments{ snapshots, error in
-                guard let documents = snapshots?.documents else {
-                    print("getRecentActivities: Error fetching current user's doc: \(error?.localizedDescription ?? "")")
-                    self.loadingActivities  = .error
+            // Listen for modifications in the user collection
+            // Check what is being modified
+
+            self.db.collection("chats").addSnapshotListener{ (querySnapshot, error) in
+                guard let snapshotMain = querySnapshot else {
+                    print("failed to retrieve meals snapshot")
                     return
                 }
+                let myGroup = DispatchGroup()
                 
-                var friends = [String]()
-                friends = documents.map {$0.documentID}
+                print("triggered!")
+              
+                    snapshotMain.documentChanges.forEach {diff in
+                        myGroup.enter()
+                        // NEWLY ADDED MEALS
+                        if (diff.type == .added) {
+                            print("yes it is added!")
+                            if !self.isFirstTimeListening {
+                                print("not the first time listening")
+                            let data = diff.document.data()
+                            let from = data["from"] as! String
+                            
+                                if from != user.uid && (self.friendsManager.friends.map{$0.id}.firstIndex(of: from) != nil) {
+                                        let name = data["name"] as! String
+                                        let id = data["mealID"] as! String
+                                        let weekday = data["weekday"] as! Int
+                                        let userStatus = data["userStatus"] as! [String: String]
+                                        let createdAt = data["createdAt"] as! Timestamp
+                                        let to = data["to"] as! [String]
+                                        print("New meal found!")
+                                        self.db.collection("users").document(from).getDocument {(document, error) in
+                                            if let document = document, document.exists {
+                                                let userData = document.data()!
+                                                let fromUser = MealqUser(id: from,
+                                                             fullname: userData["fullname"] as! String,
+                                                             email: userData["email"] as! String,
+                                                             thumbnailPicURL: URL(string: userData["thumbnailPicURL"] as? String ?? ""),
+                                                             normalPicURL: URL(string: userData["normalPicURL"] as? String ?? ""),
+                                                             fcmToken: userData["fcmToken"] as? String ?? "")
+
+                                                self.db.collection("users").whereField("uid", in: to).getDocuments{ (querySnapshot, error) in
+                                                    guard let querySnapshot = querySnapshot else {
+                                                        print("Error retrieving all users documents: \(String(describing: error?.localizedDescription))")
+                                                        return
+                                                    }
+
+                                                    var toUsers = [MealqUser: String]()
+
+                                                    for document in querySnapshot.documents {
+                                                        let userData = document.data()
+                                                        toUsers[MealqUser(id: document.documentID,
+                                                                     fullname: userData["fullname"] as! String,
+                                                                     email: userData["email"] as! String,
+                                                                     thumbnailPicURL: URL(string: userData["thumbnailPicURL"] as? String ?? ""),
+                                                                     normalPicURL: URL(string: userData["normalPicURL"] as? String ?? ""),
+                                                                     fcmToken: userData["fcmToken"] as? String ?? "")] = userStatus[document.documentID]
+                                                    }
+
+                                                    let meal = Meal(id: id,
+                                                                    name: name,
+                                                                    from: fromUser,
+                                                                    to: toUsers,
+                                                                    weekday: weekday,
+                                                                    createdAt: createdAt.dateValue(),
+                                                                    recentMessageID: "",
+                                                                    recentMessageContent: "",
+                                                                    sentByName: "",
+                                                                    messageTimeStamp: createdAt.dateValue(),
+                                                                    unreadMessages: 0)
+                                                    self.activities.insert(meal, at: 0)
+                                                   
+                                                    myGroup.leave()
+                                                   
+                                             }
+                                            }
+                                        }
+                                        
+                                    } else {myGroup.leave()}
+                                
+                                
+                                
+                                
+                            
+                            } else {myGroup.leave()}
+                            
+                        } else {myGroup.leave()}
+      
+                }
+            
+                myGroup.notify(queue: .main) {
+                    if self.isFirstTimeListening {
+                        print("it's first time listening, do nothing")
+                        self.isFirstTimeListening = false
+                    }
+                }
+                
+            }
+        }
+        
+    }
+
+
+    private var cancellable : AnyCancellable?
+    @Published var loadingActivities = Status.loading
+    func getRecentActivities() {
+        if let _ = user {
+            self.loadingActivities = .loading
+            
+            
+            self.cancellable = self.friendsManager.$fetchingFriends.sink { value in
+                guard value == .idle else {return}
+                
                 
                 let myGroup = DispatchGroup()
             
-                for friend in friends {
+                for friend in (self.friendsManager.friends.map{$0.id}) {
                     myGroup.enter()
                     self.db.collection("users").document(friend).getDocument{ doc, error in
                         guard let doc = doc, doc.exists else {
@@ -86,10 +190,13 @@ class ActivitiesManager: ObservableObject {
                         self.loadingActivities  = .idle
                     }
                 }
+                    
+            }
                 
+          
              
                 
-            }
+            
             
     }
 }
@@ -149,7 +256,17 @@ class ActivitiesManager: ObservableObject {
                                              fcmToken: userData["fcmToken"] as? String ?? "")] = userStatus[document.documentID]
                             }
 
-                            let meal = Meal(id: id, name: name, from: fromUser, to: toUsers, weekday: weekday, createdAt: createdAt.dateValue(), recentMessageID: "", recentMessageContent: "", sentByName: "", messageTimeStamp: createdAt.dateValue(), unreadMessages: 0)
+                            let meal = Meal(id: id,
+                                            name: name,
+                                            from: fromUser,
+                                            to: toUsers,
+                                            weekday: weekday,
+                                            createdAt: createdAt.dateValue(),
+                                            recentMessageID: "",
+                                            recentMessageContent: "",
+                                            sentByName: "",
+                                            messageTimeStamp: createdAt.dateValue(),
+                                            unreadMessages: 0)
                             self.activities.append(meal)
                            
                             myGroup.leave()
@@ -161,7 +278,11 @@ class ActivitiesManager: ObservableObject {
             
             myGroup.notify(queue: .main) {
                 self.activities.sort(by: {$0.createdAt > $1.createdAt})
-                self.loadingActivities  = .idle
+                self.loadingActivities = .idle
+                if !self.isListeningForNewActivities {
+                    self.listenForNewActivities()
+                    self.isListeningForNewActivities = true
+                }
             }
             
 

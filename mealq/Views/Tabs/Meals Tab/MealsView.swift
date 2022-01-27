@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MealsView: View {
-    @EnvironmentObject var friendsManager: FriendsManager
+    @ObservedObject var friendsManager = FriendsManager.sharedFriendsManager
     @EnvironmentObject var mealsManager: MealsManager
     @EnvironmentObject var messagesManager: MessagesManager
     @EnvironmentObject var showMealButton: ShowMealButton

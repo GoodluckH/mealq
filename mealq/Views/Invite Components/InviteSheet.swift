@@ -18,7 +18,7 @@ struct InviteSheet: View {
     
     @Binding var showSheet: Bool
     @State var showMainContent: Bool = true
-    @EnvironmentObject var friendsManager: FriendsManager
+    @ObservedObject var friendsManager = FriendsManager.sharedFriendsManager
     @EnvironmentObject var mealsManager: MealsManager
     
     var body: some View {
@@ -48,7 +48,7 @@ struct InviteSheet: View {
                 // Friends selection
                 HStack{
                     if friendsManager.friends.isEmpty {Text("no friends yet; search to add more").bold()}
-                    else {Text("tap to select friends").bold()}
+                    else {Text("tap to select friends (up to 10)").bold()}
                     Spacer()
                 }.padding(.horizontal).offset(y: 16)
                 FriendSelection(selectedFriends: $selectedFriends)

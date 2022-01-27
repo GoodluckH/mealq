@@ -15,7 +15,7 @@ enum Tab {
 
 struct MainAppView: View {
   //  @State var selection: Tab = .social
-    @StateObject var friendsManager = FriendsManager()
+    
     @StateObject var mealsManager = MealsManager()
     @StateObject var messagesManager = MessagesManager()
     @StateObject var showMealButton = ShowMealButton()
@@ -23,6 +23,7 @@ struct MainAppView: View {
     
     @EnvironmentObject var sessionStore: SessionStore
     
+    @ObservedObject private var friendsManager = FriendsManager.sharedFriendsManager
     @ObservedObject private var sharedViewManager = ViewManager.sharedViewManager
     // @State var visitedNoti = false
     
@@ -60,9 +61,12 @@ struct MainAppView: View {
                         friendsManager.fetchData()
                         mealsManager.fetchMeals()
                         activitiesManager.getRecentActivities()
+                        
+                        
                     }
                 }
-            }.environmentObject(friendsManager)
+            }
+            // .environmentObject(friendsManager)
             .environmentObject(mealsManager)
             .environmentObject(messagesManager)
             .environmentObject(showMealButton)

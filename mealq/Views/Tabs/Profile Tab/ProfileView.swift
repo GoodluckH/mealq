@@ -10,7 +10,7 @@ import ActivityIndicatorView
 
 struct ProfileView: View {
     @EnvironmentObject var sessionStore: SessionStore
-    @EnvironmentObject var friendsManager: FriendsManager
+    @ObservedObject var friendsManager = FriendsManager.sharedFriendsManager
     @State private var showUserDeletion = false
 
     

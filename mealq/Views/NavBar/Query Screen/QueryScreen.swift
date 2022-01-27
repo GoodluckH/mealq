@@ -11,7 +11,7 @@ import ActivityIndicatorView
 
 struct QueryScreen: View {
     @Binding var searchText: String
-    @EnvironmentObject var friendsManager: FriendsManager
+    @ObservedObject var friendsManager = FriendsManager.sharedFriendsManager
     @State var isDragging = false
 
     var drag: some Gesture {

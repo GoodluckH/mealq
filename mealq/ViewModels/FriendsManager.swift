@@ -11,6 +11,13 @@ import FirebaseAuth
 
 /// A ViewModel that manages operations involving fetching and querying other users and friends.
 class FriendsManager: ObservableObject {
+    enum Status {
+        case idle, loading, done, error
+    }
+    
+    static let sharedFriendsManager = FriendsManager()
+    
+    private init() {}
     
     private let db = Firestore.firestore()
    //  private var currentUser = Auth.auth().currentUser
@@ -20,21 +27,22 @@ class FriendsManager: ObservableObject {
     @Published var pendingFriends = [NotificationItem]()
     @Published var sentRequests = [MealqUser]()
 
-    
+    @Published var fetchingFriends = Status.loading
     /// Fetches a list of the current user's friends and updates `friends`.
     ///
     /// Uses Firestore's snapshot listener to only fetch and update new changes.
     ///  - SeeAlso: `friends`.
     func fetchData() {
         if let currentUser = Auth.auth().currentUser { // Synchronously get current user should be fine here because fetchData is only used when there's a valid user (see MainAppView)
-            
+           
             // update the friends list
             db.collection("users").document(currentUser.uid).collection("friends").addSnapshotListener { (querySnapshot, error) in
                 guard let documents = querySnapshot?.documents else {
                     print("no friends :(  --- failed to retrieve snapshot")
+                    self.fetchingFriends = .error
                     return
                 }
-                
+                print("fetching friends")
                 self.friends = documents.map { docSnapshot in
                     let data = docSnapshot.data()
                     let FirebaseID = data["uid"] as! String
@@ -44,7 +52,9 @@ class FriendsManager: ObservableObject {
                     let normalPicURL = data["normalPicURL"] as? String ?? ""
                     let fcmToken  = data["fcmToken"] as? String ?? ""
                     return MealqUser(id: FirebaseID, fullname: fullName, email: email, thumbnailPicURL: URL(string: thumbnailPicURL), normalPicURL: URL(string:normalPicURL), fcmToken: fcmToken)
+                    
                 }
+                self.fetchingFriends = .idle
             }
             
             

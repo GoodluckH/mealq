@@ -10,7 +10,7 @@ import Foundation
 import Combine
 
 struct NotificationView: View {
-    @EnvironmentObject var friendsManager: FriendsManager
+    @ObservedObject var friendsManager = FriendsManager.sharedFriendsManager
     @EnvironmentObject var mealsManager: MealsManager
     @State var now = Date()
     let timer = Timer.publish(every: 1, on: .current, in: .common).autoconnect()

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SocialView: View {
 
-    @EnvironmentObject var friendsManager: FriendsManager
+    @ObservedObject var friendsManager = FriendsManager.sharedFriendsManager
     @EnvironmentObject var activitiesManager: ActivitiesManager
 
     var body: some View {

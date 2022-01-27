@@ -11,7 +11,7 @@ struct SingleFriendPane: View {
     var user: MealqUser
     @State var selected = false
     @Binding var selectedFriends: [MealqUser]
-
+    let selectionLimit = 10
     var body: some View {
         GeometryReader { geo in
             
@@ -25,14 +25,17 @@ struct SingleFriendPane: View {
                 }
                 
             } else {
-                Haptics.soft()
-                selected = true
-                selectedFriends.append(user)
+                if selectedFriends.count < selectionLimit {
+                    Haptics.soft()
+                    selected = true
+                    selectedFriends.append(user)
+                    
+                }
             }}) {
                 ZStack{
                     RoundedRectangle(cornerRadius: cornerRadius)
                         .fill(Color("QueryLoaderStartingColor"))
-                        .shadow(color: .gray, radius: selected ? selectedShadowRadius : shadowRadius, y: shadowYOffset)
+                        .shadow(color: selected ? .gray : selectedFriends.count < selectionLimit ? .gray : .red , radius: (selected || (selectedFriends.count >= selectionLimit)) ? selectedShadowRadius : shadowRadius, y: shadowYOffset)
                        
                     VStack{
                             ProfilePicView(picURL: user.normalPicURL)
@@ -62,8 +65,7 @@ struct SingleFriendPane: View {
                 
                 
                 } // ZStack
-            } // button
-
+            }
         } // geometryReader
 
     }

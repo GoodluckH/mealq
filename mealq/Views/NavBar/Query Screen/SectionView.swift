@@ -11,7 +11,7 @@ struct SectionView: View {
     var headerText: String 
     var users: [MealqUser]
     
-    @EnvironmentObject var friendsManager: FriendsManager
+    @ObservedObject var friendsManager = FriendsManager.sharedFriendsManager
 
     var body: some View {
         Section(header: SectionHeader(headerText: headerText)) {

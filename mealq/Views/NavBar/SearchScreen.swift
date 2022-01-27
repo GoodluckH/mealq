@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SearchScreen: View {
     @State private var searchText = ""
-    @EnvironmentObject var friendsManager: FriendsManager
+    @ObservedObject var friendsManager = FriendsManager.sharedFriendsManager
     @EnvironmentObject var sessionStore: SessionStore
     @Binding var showNavLinkView: Bool
     var body: some View {

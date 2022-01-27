@@ -9,7 +9,7 @@ import SwiftUI
 import ActivityIndicatorView
 
 struct SingleNotificationView: View {
-    @EnvironmentObject var friendsManager: FriendsManager
+    @ObservedObject var friendsManager = FriendsManager.sharedFriendsManager
     @EnvironmentObject var sessionStore: SessionStore
     var notificationItem: NotificationItem
     
