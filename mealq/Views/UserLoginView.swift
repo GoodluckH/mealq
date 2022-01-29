@@ -15,7 +15,7 @@ struct UserLoginView: View {
     var body: some View {
         
         
-            if sessionStore.fbSigningIn {
+            if sessionStore.signingIn {
               
                 GeometryReader{ geometry in
                     VStack{
@@ -41,6 +41,24 @@ struct UserLoginView: View {
                      .buttonStyle(mealqButtonStyle(clipShape: Capsule()))
                      .frame(height: 60)
                     
+                    
+                    Button(action: {
+                        sessionStore.googleLogin(view: getRootViewController())
+                    }) {
+                        HStack{
+                            Image("g.logo.color")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                            Text("continue with Google")
+                                .font(Font.custom("Quicksand-Bold", size: 20))
+                        }
+                    }
+                     .buttonStyle(mealqButtonStyle(clipShape: Capsule()))
+                     .frame(height: 60)
+                    
+                    
+                    
+                    
                     Button("Demo Login (for Apple employees only)") {
                         sessionStore.demoLogin()
                     }
@@ -55,6 +73,18 @@ struct UserLoginView: View {
 }
 
 
+
+extension View {
+    func getRootViewController() -> UIViewController {
+        guard let screen = UIApplication.shared.connectedScenes.first as? UIWindowScene else {
+            return .init()
+        }
+        guard let root = screen.windows.first?.rootViewController else {
+            return .init()
+        }
+        return root
+    }
+}
 
 
 

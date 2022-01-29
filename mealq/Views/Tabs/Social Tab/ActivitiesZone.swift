@@ -29,11 +29,14 @@ struct ActivitiesZone: View {
                      ScrollView() {
                          LazyVStack{
                      ForEach(activitiesManager.activities, id: \.id) {act in
-                     SingleActivityCard(activity: act, me: sessionStore.localUser!, showDetail: detailedCard == act.id, detailedCard: $detailedCard)
                          
-                             .padding(.vertical, Constants.tightStackSpacing)
-                         .buttonStyle(.plain)
-                         .listRowSeparator(.hidden)
+                         if let user = sessionStore.localUser {
+                             SingleActivityCard(activity: act, me: user, showDetail: detailedCard == act.id, detailedCard: $detailedCard)
+                                 .padding(.vertical, Constants.tightStackSpacing)
+                                 .buttonStyle(.plain)
+                                 .listRowSeparator(.hidden)
+                         }
+                 
                      
                      if act.id == activitiesManager.activities.last?.id {
                          if activitiesManager.activities.last?.id != (activitiesManager.masterAcitivityArray.last?["mealID"]! as! String) {
@@ -62,7 +65,7 @@ struct ActivitiesZone: View {
                      
                  
                  
-             }
+             } .padding(.top, 1)
              //.listStyle(.plain)
          }
      }

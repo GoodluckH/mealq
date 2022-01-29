@@ -52,8 +52,8 @@ class FriendsManager: ObservableObject {
                     let normalPicURL = data["normalPicURL"] as? String ?? ""
                     let fcmToken  = data["fcmToken"] as? String ?? ""
                     return MealqUser(id: FirebaseID, fullname: fullName, email: email, thumbnailPicURL: URL(string: thumbnailPicURL), normalPicURL: URL(string:normalPicURL), fcmToken: fcmToken)
-                    
                 }
+                
                 self.fetchingFriends = .idle
             }
             
@@ -124,6 +124,7 @@ class FriendsManager: ObservableObject {
             }
         } else {
             print("Cannot fetch current Firebase user.")
+            fetchingFriends = .error
         }
 
     }

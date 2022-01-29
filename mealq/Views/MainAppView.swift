@@ -61,8 +61,6 @@ struct MainAppView: View {
                         friendsManager.fetchData()
                         mealsManager.fetchMeals()
                         activitiesManager.getRecentActivities()
-                        
-                        
                     }
                 }
             }

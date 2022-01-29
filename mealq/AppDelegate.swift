@@ -10,6 +10,7 @@ import Firebase
 import FirebaseMessaging
 import FacebookCore
 import FacebookLogin
+import GoogleSignIn
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     
@@ -119,6 +120,16 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 //        let handled = firebaseUI.handleOpen(url, sourceApplication: sourceApplication)
 //        return handled
 //    }
+    
+    @available(iOS 9.0, *)
+    func application(_ application: UIApplication, open url: URL,
+                     options: [UIApplication.OpenURLOptionsKey: Any])
+      -> Bool {
+      return GIDSignIn.sharedInstance.handle(url)
+    }
+    
+    
+    
 }
 
 @available(iOS 10, *)

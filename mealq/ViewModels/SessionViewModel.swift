@@ -10,6 +10,8 @@ import Firebase
 import FirebaseAuth
 import FirebaseMessaging
 import FacebookLogin
+import GoogleSignIn
+import SwiftUI
 
 /// A view model that handles login and logout operations.
 class SessionStore: ObservableObject {
@@ -72,7 +74,53 @@ class SessionStore: ObservableObject {
 //        }
     }
     
-    @Published var fbSigningIn = false
+    func googleLogin(view: UIViewController) {
+        guard let clientID = FirebaseApp.app()?.options.clientID else { return }
+        signingIn = true
+        // Create Google Sign In configuration object.
+        let config = GIDConfiguration(clientID: clientID)
+
+        // Start the sign in flow!
+        GIDSignIn.sharedInstance.signIn(with: config, presenting: view) { [self] user, error in
+
+          if let error = error {
+              print(error.localizedDescription)
+            return
+          }
+
+          guard
+            let authentication = user?.authentication,
+            let idToken = authentication.idToken
+          else {
+            return
+          }
+
+          let credential = GoogleAuthProvider.credential(withIDToken: idToken,
+                                                         accessToken: authentication.accessToken)
+
+            authRef.signIn(with: credential) { (authResult, error) in
+                if let error = error {
+                    print("Google auth with Firebase error: \(error)")
+                    return
+                    }
+                signingIn = false
+                if authResult!.additionalUserInfo!.isNewUser {
+                    print("The user is new. Adding to Firestore with uid: \(authResult!.user.uid)")
+                    addUserToFirestore(with: authResult!.user.uid,
+                                       authResult!.user.displayName!,
+                                       authResult!.user.email!,
+                                       authResult!.user.photoURL!.absoluteString,
+                                       "\(authResult!.user.photoURL!.absoluteString)?type=large")
+                    }
+                }
+        }
+
+    }
+    
+    
+    
+    
+    @Published var signingIn = false
     /// Logs the user in using `loginManager`.
     ///
     /// If successful, get the Facebook credential and sign in using `FirebaseAuth`.
@@ -80,13 +128,13 @@ class SessionStore: ObservableObject {
     /// - SeeAlso: `loginManager`.
     func facebookLogin() {
         loginManager.logIn(permissions: [.publicProfile, .email], viewController: nil) { [self] loginResult in
-            fbSigningIn = true
+            signingIn = true
             switch loginResult {
             case .failed(let error):
-                fbSigningIn = false
+                signingIn = false
                 print(error)
             case .cancelled:
-                fbSigningIn = false
+                signingIn = false
                 print("User cancelled login.")
             case .success:
                 let credential = FacebookAuthProvider.credential(withAccessToken: AccessToken.current!.tokenString)
@@ -95,7 +143,7 @@ class SessionStore: ObservableObject {
                         print("Facebook auth with Firebase error: \(error)")
                         return
                         }
-                    fbSigningIn = false
+                    signingIn = false
                     if authResult!.additionalUserInfo!.isNewUser {
                         print("The user is new. Adding to Firestore with uid: \(authResult!.user.uid)")
                         addUserToFirestore(with: authResult!.user.uid,

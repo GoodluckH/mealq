@@ -140,8 +140,6 @@ class ActivitiesManager: ObservableObject {
     func getRecentActivities() {
         if let user = user {
             self.loadingActivities = .loading
-            
-            
             self.cancellable = self.friendsManager.$fetchingFriends.sink { value in
                 guard value == .idle else {return}
                 
@@ -193,13 +191,11 @@ class ActivitiesManager: ObservableObject {
                 }
                     
             }
-                
-          
-             
-                
-            
-            
     }
+        else {
+            print("loadingActivities - current user not available")
+            self.loadingActivities = .idle
+        }
 }
     /// Gets ten more meal sections from `masterActivityArray` starting at `id`.
     func getMoreActivities(fromIndex id: Int = 0, delay: Bool = false) {

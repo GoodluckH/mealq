@@ -52,6 +52,7 @@
 		80A48CEA2746DCC500063B57 /* SingleFriendPane.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A48CE92746DCC500063B57 /* SingleFriendPane.swift */; };
 		80A48CEC274716E600063B57 /* FriendSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A48CEB274716E600063B57 /* FriendSelection.swift */; };
 		80A48D0A274D983A00063B57 /* BigUserPicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A48D09274D983A00063B57 /* BigUserPicView.swift */; };
+		80A8B71127A5E629002A5C58 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 80A8B71027A5E629002A5C58 /* GoogleSignIn */; };
 		80C12067272E02CB006D125D /* mealqApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C12066272E02CB006D125D /* mealqApp.swift */; };
 		80C12069272E02CB006D125D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C12068272E02CB006D125D /* ContentView.swift */; };
 		80C1206B272E02CC006D125D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 80C1206A272E02CC006D125D /* Assets.xcassets */; };
@@ -247,6 +248,7 @@
 				80C1207E272E0341006D125D /* FirebaseMessaging in Frameworks */,
 				80C12084272E06A1006D125D /* FacebookCore in Frameworks */,
 				80C120AF272F86C9006D125D /* ActivityIndicatorView in Frameworks */,
+				80A8B71127A5E629002A5C58 /* GoogleSignIn in Frameworks */,
 				80E721672790AA4A00FBB6E3 /* FirebaseFunctions in Frameworks */,
 				80C1207A272E0341006D125D /* FirebaseAuth in Frameworks */,
 				80C12080272E0341006D125D /* FirebaseStorage in Frameworks */,
@@ -636,6 +638,7 @@
 				802BC3352745AA6E004F1505 /* Introspect */,
 				802E5608275C592900464CA6 /* Lottie */,
 				80E721662790AA4A00FBB6E3 /* FirebaseFunctions */,
+				80A8B71027A5E629002A5C58 /* GoogleSignIn */,
 			);
 			productName = mealq;
 			productReference = 802BC30C273DC8BB004F1505 /* mealq.app */;
@@ -674,6 +677,7 @@
 				80C120AD272F86C9006D125D /* XCRemoteSwiftPackageReference "ActivityIndicatorView" */,
 				802BC3342745AA6D004F1505 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
 				802E5607275C592900464CA6 /* XCRemoteSwiftPackageReference "lottie-ios" */,
+				80A8B70F27A5E629002A5C58 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 			);
 			productRefGroup = 806B30C3273DC75E003FF495 /* Products */;
 			projectDirPath = "";
@@ -821,7 +825,7 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = AZ5YZ6A37J;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "notifications for mealq/Info.plist";
@@ -847,7 +851,7 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = AZ5YZ6A37J;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "notifications for mealq/Info.plist";
@@ -993,7 +997,7 @@
 				CODE_SIGN_ENTITLEMENTS = mealq/mealq.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_ASSET_PATHS = "\"mealq/Preview Content\"";
 				DEVELOPMENT_TEAM = AZ5YZ6A37J;
 				ENABLE_PREVIEWS = YES;
@@ -1005,7 +1009,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1029,7 +1033,7 @@
 				CODE_SIGN_ENTITLEMENTS = mealq/mealq.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_ASSET_PATHS = "\"mealq/Preview Content\"";
 				DEVELOPMENT_TEAM = AZ5YZ6A37J;
 				ENABLE_PREVIEWS = YES;
@@ -1041,7 +1045,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1105,6 +1109,14 @@
 				minimumVersion = 3.0.0;
 			};
 		};
+		80A8B70F27A5E629002A5C58 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/GoogleSignIn-iOS.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.0.0;
+			};
+		};
 		80C12076272E0341006D125D /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
@@ -1156,6 +1168,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 802E5607275C592900464CA6 /* XCRemoteSwiftPackageReference "lottie-ios" */;
 			productName = Lottie;
+		};
+		80A8B71027A5E629002A5C58 /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 80A8B70F27A5E629002A5C58 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
 		};
 		80C12079272E0341006D125D /* FirebaseAuth */ = {
 			isa = XCSwiftPackageProductDependency;

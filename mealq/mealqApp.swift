@@ -7,6 +7,7 @@
 
 import SwiftUI
 import FacebookLogin
+import GoogleSignIn
 
 @main
 struct mealqApp: App {
