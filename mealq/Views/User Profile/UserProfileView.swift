@@ -9,6 +9,7 @@ import SwiftUI
 
 struct UserProfileView: View {
     var user: MealqUser
+    @EnvironmentObject var sessionStore: SessionStore
     @ObservedObject var friendsManager = FriendsManager.sharedFriendsManager
    // @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @State private var showBigPic = false
@@ -38,7 +39,7 @@ struct UserProfileView: View {
                    Text("\(friendsManager.otherUserFriends.count) friends")
                        .customFont(name: "Quicksand-SemiBold", style: .subheadline, weight: .semibold)
                        
-                   ConnectButton(user: user).padding(.top).padding(.horizontal)
+                    if sessionStore.localUser != user {ConnectButton(user: user).padding(.top).padding(.horizontal)}
                        
                    Spacer()
                 }.onAppear{friendsManager.getFriendsFrom(user: user.id)}

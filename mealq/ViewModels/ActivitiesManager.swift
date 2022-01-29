@@ -25,9 +25,8 @@ class ActivitiesManager: ObservableObject {
     private var lastDoc: QueryDocumentSnapshot? = nil
     
     @Published var activities = [Meal]()
-
-    private var masterAcitivityArray = [[String: Any]]()
-    private var currentSliceEnd = 0
+    @Published var masterAcitivityArray = [[String: Any]]()
+    @Published var currentSliceEnd = 0
     
     private var isListeningForNewActivities = false
     private var isFirstTimeListening = true
@@ -56,7 +55,7 @@ class ActivitiesManager: ObservableObject {
                             let data = diff.document.data()
                             let from = data["from"] as! String
                             
-                                if from != user.uid && (self.friendsManager.friends.map{$0.id}.firstIndex(of: from) != nil) {
+                                if from == user.uid || (self.friendsManager.friends.map{$0.id}.firstIndex(of: from) != nil) {
                                         let name = data["name"] as! String
                                         let id = data["mealID"] as! String
                                         let weekday = data["weekday"] as! Int
@@ -139,7 +138,7 @@ class ActivitiesManager: ObservableObject {
     private var cancellable : AnyCancellable?
     @Published var loadingActivities = Status.loading
     func getRecentActivities() {
-        if let _ = user {
+        if let user = user {
             self.loadingActivities = .loading
             
             
@@ -149,7 +148,9 @@ class ActivitiesManager: ObservableObject {
                 
                 let myGroup = DispatchGroup()
             
-                for friend in (self.friendsManager.friends.map{$0.id}) {
+                var friendIDs: [String] = self.friendsManager.friends.map{$0.id}
+                friendIDs.append(user.uid)
+                for friend in friendIDs {
                     myGroup.enter()
                     self.db.collection("users").document(friend).getDocument{ doc, error in
                         guard let doc = doc, doc.exists else {
@@ -176,7 +177,7 @@ class ActivitiesManager: ObservableObject {
                     })
                     
                     // start getting the first batch of 10 meal docs
-                    self.currentSliceEnd = min(10, self.masterAcitivityArray[self.currentSliceEnd...].count)
+                   // self.currentSliceEnd = min(10, self.masterAcitivityArray[self.currentSliceEnd...].count)
                     if !self.masterAcitivityArray.isEmpty
                     {
                         print("master is not empty")
@@ -201,9 +202,13 @@ class ActivitiesManager: ObservableObject {
     }
 }
     /// Gets ten more meal sections from `masterActivityArray` starting at `id`.
-    func getMoreActivities(fromIndex id: Int = 0) {
-        db.collection("chats").whereField("mealID", in: masterAcitivityArray[id...].map{$0["mealID"]! as! String}).limit(to: 10).getDocuments {snapshot, error in
-            self.loadingActivities  = .loading
+    func getMoreActivities(fromIndex id: Int = 0, delay: Bool = false) {
+        if id > (self.masterAcitivityArray.count - 1) {return;}
+        let endIndex = min(id + 10, masterAcitivityArray.count)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + (delay ? 0.2 : 0)){
+            self.db.collection("chats").whereField("mealID", in: self.masterAcitivityArray[id..<endIndex].map{$0["mealID"]! as! String}).getDocuments {snapshot, error in
+            if !delay {self.loadingActivities  = .loading}
             guard let documents = snapshot?.documents else {
                 print("Error getting more activities: \(error?.localizedDescription ?? "")")
                 self.loadingActivities  = .error
@@ -213,8 +218,10 @@ class ActivitiesManager: ObservableObject {
             self.currentSliceEnd = self.currentSliceEnd + documents.count
 
             let myGroup = DispatchGroup()
-
-
+            
+            // To prevent UI sort ordering in run-time
+            var tempActivities = [Meal]()
+            
             for doc in documents {
                 myGroup.enter()
                 let data = doc.data()
@@ -226,7 +233,7 @@ class ActivitiesManager: ObservableObject {
                 let createdAt = data["createdAt"] as! Timestamp
                 let to = data["to"] as! [String]
 
-
+                print(name)
                 self.db.collection("users").document(from).getDocument {(document, error) in
                     if let document = document, document.exists {
                         let userData = document.data()!
@@ -267,17 +274,20 @@ class ActivitiesManager: ObservableObject {
                                             sentByName: "",
                                             messageTimeStamp: createdAt.dateValue(),
                                             unreadMessages: 0)
-                            self.activities.append(meal)
+                            
+                            
+                            tempActivities.append(meal)
                            
                             myGroup.leave()
-                            self.loadingActivities  = .idle
+                            // self.loadingActivities  = .idle
                      }
                     }
                 }
             }
             
             myGroup.notify(queue: .main) {
-                self.activities.sort(by: {$0.createdAt > $1.createdAt})
+                tempActivities.sort(by: {$0.createdAt > $1.createdAt})
+                self.activities.append(contentsOf: tempActivities)
                 self.loadingActivities = .idle
                 if !self.isListeningForNewActivities {
                     self.listenForNewActivities()
@@ -292,7 +302,7 @@ class ActivitiesManager: ObservableObject {
 
 
         }
-
+        }
     }
     
     
