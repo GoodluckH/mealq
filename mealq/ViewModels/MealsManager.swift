@@ -13,7 +13,7 @@ import FirebaseAuth
 /// A manager to handle fething group chat (meal) requests, sending messages, updating friends activities, etc.
 class MealsManager: ObservableObject {
     private var db = Firestore.firestore()
-    private let user = Auth.auth().currentUser
+   // private let user = Auth.auth().currentUser
 
     @Published var pendingMeals = [NotificationItem]()
     
@@ -25,7 +25,7 @@ class MealsManager: ObservableObject {
     ///
     /// - SeeAlso: `Meal`, `pendingMeals`, `acceptedMeals`, `addMeal`
     func fetchMeals() {
-        if let currentUser = user {
+        if let currentUser =  Auth.auth().currentUser {
 
             self.db.collection("chats").whereField("to", arrayContains: currentUser.uid).addSnapshotListener { (querySnapshot, error) in
                 guard let snapshot = querySnapshot else {
@@ -39,7 +39,7 @@ class MealsManager: ObservableObject {
                     if (diff.type == .added) {
                         let data = diff.document.data()
                         let status = data["userStatus"] as! [String: String]
-                        self.addMeal(diff.document.documentID, by: status[currentUser.uid]!)
+                        self.addMeal(diff.document.documentID, by: status[currentUser.uid]!, user: currentUser)
                     }
                     
                     // MEAL INFO CHANGED
@@ -49,15 +49,21 @@ class MealsManager: ObservableObject {
                         let mealID = data["mealID"] as! String
                         
                         if status[currentUser.uid]! == "pending" {
-                            self.modifyMeal(diff.document.documentID, by: status[currentUser.uid]!)
+                            self.modifyMeal(diff.document.documentID, by: status[currentUser.uid]!, user: currentUser)
                         }
 
                         if status[currentUser.uid]! == "accepted" {
                             if let idx = self.pendingMeals.firstIndex(where: {($0.payload as! Meal).id == mealID}) {
                                 self.pendingMeals.remove(at: idx)
-                                self.addMeal(diff.document.documentID, by: status[currentUser.uid]!)
+                                self.addMeal(diff.document.documentID, by: status[currentUser.uid]!, user: currentUser)
                             } else {
-                                self.modifyMeal(diff.document.documentID, by: status[currentUser.uid]!)
+                                self.modifyMeal(diff.document.documentID, by: status[currentUser.uid]!, user: currentUser)
+                            }
+                        }
+                        
+                        if status[currentUser.uid]! == "declined" {
+                            if let idx = self.pendingMeals.firstIndex(where: {($0.payload as! Meal).id == mealID}) {
+                                self.pendingMeals.remove(at: idx)
                             }
                         }
                         
@@ -92,10 +98,10 @@ class MealsManager: ObservableObject {
                 
                 snapshot.documentChanges.forEach {diff in
                     if (diff.type == .added) {
-                        self.addMeal(diff.document.documentID, by: "accepted")
+                        self.addMeal(diff.document.documentID, by: "accepted", user: currentUser)
                     }
                     if (diff.type == .modified) {
-                        self.modifyMeal(diff.document.documentID, by: "accepted")
+                        self.modifyMeal(diff.document.documentID, by: "accepted", user: currentUser)
                         // TODO: add the logic for rejected meals
                     }
                 }
@@ -106,7 +112,7 @@ class MealsManager: ObservableObject {
     
 
     
-    private func modifyMeal(_ docID: String, by status: String) {
+    private func modifyMeal(_ docID: String, by status: String, user: User) {
         // get the specific chat from docID
         db.collection("chats").document(docID).getDocument { (document, error) in
             if let document = document, document.exists {
@@ -127,7 +133,7 @@ class MealsManager: ObservableObject {
 //                let isMessageViewed = data["recentMessage.viewed"] as? Bool ?? true
                 let recentMessageID = recentMessage["messageID"] as? String ?? ""
                 
-                let unreadMessages = unreadMessagesMap[self.user!.uid] as? Int ?? 0
+                let unreadMessages = unreadMessagesMap[user.uid] as? Int ?? 0
                 
                 // fetch user detail info
                 self.db.collection("users").document(from).getDocument { (document, error) in
@@ -200,7 +206,7 @@ class MealsManager: ObservableObject {
     ///
     /// - parameter docID: the id of the meal.
     /// - parameter status: the array to append the `Meal`.
-    private func addMeal(_ docID: String, by status: String)  {
+    private func addMeal(_ docID: String, by status: String, user: User)  {
         
         // get the specific chat from docID
         db.collection("chats").document(docID).getDocument { (document, error) in
@@ -222,7 +228,7 @@ class MealsManager: ObservableObject {
 //                let isMessageViewed = data["recentMessage.viewed"] as? Bool ?? true
                 let recentMessageID = recentMessage["messageID"] as? String ?? ""
                 
-                let unreadMessages = unreadMessagesMap[self.user!.uid] as? Int ?? 0
+                let unreadMessages = unreadMessagesMap[user.uid] as? Int ?? 0
                 
                 // fetch user detail info
                 self.db.collection("users").document(from).getDocument { (document, error) in
@@ -320,7 +326,7 @@ class MealsManager: ObservableObject {
     func sendMealRequest(to users: [MealqUser], from me: MealqUser, on weekday: Int?, mealName: String) {
         sendingMealRequest = .loading
         
-        if let _ = user  {
+        if let _ =  Auth.auth().currentUser  {
             
             let newMeal = self.db.collection("chats").document()
             let date = Date()
@@ -396,7 +402,7 @@ class MealsManager: ObservableObject {
     func updateMealStatus(to status: String, of mealID: String) {
         acceptingMeal = .loading
         
-        if let currentUser = user {
+        if let currentUser = Auth.auth().currentUser {
             // change user meal status to accepted
             self.db.collection("users").document(currentUser.uid).collection("meals").document(mealID).updateData(["status": status]) {err in
                 if let err = err {
@@ -435,7 +441,7 @@ class MealsManager: ObservableObject {
     
     
     func setMessageAsViewed(mealID: String, count: Int) {
-        if let user = user {
+        if let user =  Auth.auth().currentUser {
             self.db.collection("chats").document(mealID).updateData([
                 "unreadMessages.\(user.uid)": FieldValue.increment(Int64(-count))
             ]) { err in
@@ -450,26 +456,43 @@ class MealsManager: ObservableObject {
     }
     
     
-    func deleteMealForAll(mealID: String) {
-        if let _ = user {
-            self.db.collection("chats").document(mealID).collection("messages").document().delete() { err in
+    @Published var changingMealName = Status.idle
+    func changeMealName(to newName: String, for mealID: String) {
+        changingMealName = .loading
+        db.collection("chats").document(mealID).updateData([
+            "name": newName]) { err in
                 if let err = err {
-                    print("MealsManager.deleteMealForAll -- Unable to delete the messages collection from the meal: \(err.localizedDescription)")
+                    self.changingMealName = .error
+                    print("error changing meal name: \(err.localizedDescription)")
                 } else {
-                    print("MealsManager.deleteMealForAll -- Successfully deleted the messages in collection \(mealID)")
-                    self.db.collection("chats").document(mealID).delete() { err in
-                        if let err = err {
-                            print("MealsManager.deleteMealForAll -- Unable to delete the meal: \(err.localizedDescription)")
-                        } else {
-                            print("MealsManager.deleteMealForAll -- Successfully deleted the meal \(mealID)")
-                        }
-                        
-                    }
+                    self.changingMealName = .idle
+                    print("successfully changed meal name to \(newName)")
                 }
+                
             }
-        }
     }
     
+    
+//    func deleteMealForAll(mealID: String) {
+//        if let _ =  Auth.auth().currentUser {
+//            self.db.collection("chats").document(mealID).collection("messages").document().delete() { err in
+//                if let err = err {
+//                    print("MealsManager.deleteMealForAll -- Unable to delete the messages collection from the meal: \(err.localizedDescription)")
+//                } else {
+//                    print("MealsManager.deleteMealForAll -- Successfully deleted the messages in collection \(mealID)")
+//                    self.db.collection("chats").document(mealID).delete() { err in
+//                        if let err = err {
+//                            print("MealsManager.deleteMealForAll -- Unable to delete the meal: \(err.localizedDescription)")
+//                        } else {
+//                            print("MealsManager.deleteMealForAll -- Successfully deleted the meal \(mealID)")
+//                        }
+//                        
+//                    }
+//                }
+//            }
+//        }
+//    }
+//    
     
     
     
@@ -482,4 +505,5 @@ class MealsManager: ObservableObject {
     
     
 }
+
 

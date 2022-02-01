@@ -19,7 +19,7 @@ class ActivitiesManager: ObservableObject {
     
     private var db = Firestore.firestore()
     private var friendsManager = FriendsManager.sharedFriendsManager
-    private let user = Auth.auth().currentUser
+   // private let user = Auth.auth().currentUser
     
     /// For pagination purpose.
     private var lastDoc: QueryDocumentSnapshot? = nil
@@ -32,7 +32,7 @@ class ActivitiesManager: ObservableObject {
     private var isFirstTimeListening = true
     
     func listenForNewActivities() {
-        if let user = user {
+        if let user =  Auth.auth().currentUser {
             // Listen for modifications in the user collection
             // Check what is being modified
 
@@ -138,7 +138,7 @@ class ActivitiesManager: ObservableObject {
     private var cancellable : AnyCancellable?
     @Published var loadingActivities = Status.loading
     func getRecentActivities() {
-        if let user = user {
+        if let user =  Auth.auth().currentUser {
             self.loadingActivities = .loading
             self.cancellable = self.friendsManager.$fetchingFriends.sink { value in
                 guard value == .idle else {return}

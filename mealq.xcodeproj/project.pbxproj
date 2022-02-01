@@ -14,7 +14,7 @@
 		8023FDB52784C6F4003E728E /* MealChatRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8023FDB42784C6F4003E728E /* MealChatRow.swift */; };
 		8023FDB72784CA05003E728E /* MessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8023FDB62784CA05003E728E /* MessageView.swift */; };
 		8023FDBA2784D0FA003E728E /* ChatRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8023FDB92784D0FA003E728E /* ChatRow.swift */; };
-		8023FDBC2784D908003E728E /* ShowMealButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8023FDBB2784D908003E728E /* ShowMealButton.swift */; };
+		8023FDBC2784D908003E728E /* MealVariables.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8023FDBB2784D908003E728E /* MealVariables.swift */; };
 		8023FDBE2784E915003E728E /* ChatBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8023FDBD2784E915003E728E /* ChatBubble.swift */; };
 		8023FDC227852F5E003E728E /* astronaut.json in Resources */ = {isa = PBXBuildFile; fileRef = 8023FDC127852F5E003E728E /* astronaut.json */; };
 		8023FDC427853E08003E728E /* iceRocket.json in Resources */ = {isa = PBXBuildFile; fileRef = 8023FDC327853E08003E728E /* iceRocket.json */; };
@@ -53,6 +53,7 @@
 		80A48CEC274716E600063B57 /* FriendSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A48CEB274716E600063B57 /* FriendSelection.swift */; };
 		80A48D0A274D983A00063B57 /* BigUserPicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A48D09274D983A00063B57 /* BigUserPicView.swift */; };
 		80A8B71127A5E629002A5C58 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 80A8B71027A5E629002A5C58 /* GoogleSignIn */; };
+		80A8B71327A9BCE1002A5C58 /* wagmi-loading.json in Resources */ = {isa = PBXBuildFile; fileRef = 80A8B71227A9BCE0002A5C58 /* wagmi-loading.json */; };
 		80C12067272E02CB006D125D /* mealqApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C12066272E02CB006D125D /* mealqApp.swift */; };
 		80C12069272E02CB006D125D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C12068272E02CB006D125D /* ContentView.swift */; };
 		80C1206B272E02CC006D125D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 80C1206A272E02CC006D125D /* Assets.xcassets */; };
@@ -144,7 +145,7 @@
 		8023FDB42784C6F4003E728E /* MealChatRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealChatRow.swift; sourceTree = "<group>"; };
 		8023FDB62784CA05003E728E /* MessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageView.swift; sourceTree = "<group>"; };
 		8023FDB92784D0FA003E728E /* ChatRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRow.swift; sourceTree = "<group>"; };
-		8023FDBB2784D908003E728E /* ShowMealButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowMealButton.swift; sourceTree = "<group>"; };
+		8023FDBB2784D908003E728E /* MealVariables.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealVariables.swift; sourceTree = "<group>"; };
 		8023FDBD2784E915003E728E /* ChatBubble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatBubble.swift; sourceTree = "<group>"; };
 		8023FDC127852F5E003E728E /* astronaut.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = astronaut.json; sourceTree = "<group>"; };
 		8023FDC327853E08003E728E /* iceRocket.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = iceRocket.json; sourceTree = "<group>"; };
@@ -180,6 +181,7 @@
 		80A48CE92746DCC500063B57 /* SingleFriendPane.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleFriendPane.swift; sourceTree = "<group>"; };
 		80A48CEB274716E600063B57 /* FriendSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendSelection.swift; sourceTree = "<group>"; };
 		80A48D09274D983A00063B57 /* BigUserPicView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigUserPicView.swift; sourceTree = "<group>"; };
+		80A8B71227A9BCE0002A5C58 /* wagmi-loading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "wagmi-loading.json"; sourceTree = "<group>"; };
 		80C12066272E02CB006D125D /* mealqApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mealqApp.swift; sourceTree = "<group>"; };
 		80C12068272E02CB006D125D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		80C1206A272E02CC006D125D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -334,6 +336,7 @@
 		802E560E275C5F3D00464CA6 /* LottieAnimations */ = {
 			isa = PBXGroup;
 			children = (
+				80A8B71227A9BCE0002A5C58 /* wagmi-loading.json */,
 				801257782763D1DF00DE1160 /* colorfulCheckmark.json */,
 				802E560A275C5A3000464CA6 /* bearLoader.json */,
 				8012577C276409CF00DE1160 /* rainbowLoader.json */,
@@ -453,7 +456,7 @@
 				805F28FB274DA449002DEA8D /* BigUserPicMotionObserver.swift */,
 				802E5612275FA74300464CA6 /* MealsManager.swift */,
 				8023FDB1278387F4003E728E /* MessagesManager.swift */,
-				8023FDBB2784D908003E728E /* ShowMealButton.swift */,
+				8023FDBB2784D908003E728E /* MealVariables.swift */,
 				8023FDCB278692D9003E728E /* Observer.swift */,
 				80E721682792185B00FBB6E3 /* ViewManager.swift */,
 				80E9388E27A04E3B00B06ED2 /* ActivitiesManager.swift */,
@@ -706,6 +709,7 @@
 				802E560B275C5A3000464CA6 /* bearLoader.json in Resources */,
 				80E9389627A44AB200B06ED2 /* envelope.json in Resources */,
 				8012577D276409CF00DE1160 /* rainbowLoader.json in Resources */,
+				80A8B71327A9BCE1002A5C58 /* wagmi-loading.json in Resources */,
 				8023FDC227852F5E003E728E /* astronaut.json in Resources */,
 				8023FDC427853E08003E728E /* iceRocket.json in Resources */,
 				808257A927A5B5EA0020B9FE /* star.json in Resources */,
@@ -759,7 +763,7 @@
 				802BC320273F6F74004F1505 /* Constants.swift in Sources */,
 				80EFC3732731DE8B005520D3 /* FriendsManager.swift in Sources */,
 				80C1208F272E4841006D125D /* SessionViewModel.swift in Sources */,
-				8023FDBC2784D908003E728E /* ShowMealButton.swift in Sources */,
+				8023FDBC2784D908003E728E /* MealVariables.swift in Sources */,
 				80C120A0272E511D006D125D /* MainAppView.swift in Sources */,
 				80E9389227A42D8E00B06ED2 /* ActivitiesZone.swift in Sources */,
 				80EFC37B2732EF78005520D3 /* SearchBarComponents.swift in Sources */,

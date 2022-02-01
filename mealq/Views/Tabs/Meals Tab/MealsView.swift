@@ -11,14 +11,13 @@ struct MealsView: View {
     @ObservedObject var friendsManager = FriendsManager.sharedFriendsManager
     @EnvironmentObject var mealsManager: MealsManager
     @EnvironmentObject var messagesManager: MessagesManager
-    @EnvironmentObject var showMealButton: ShowMealButton
+    @ObservedObject var sharedMealVariables = MealVariables.sharedMealVariables
 
     @State private var searchText = ""
     @State private var showMessageView = false
     @State private var lastVisitedMealID = ""
     @State private var activeChat : String?
     @State private var fromNoti = false
-    
 
     
     @ObservedObject private var sharedViewManager = ViewManager.sharedViewManager
@@ -64,7 +63,7 @@ struct MealsView: View {
                                      activeChat = meal.id
                                      fromNoti = false
                                  }) {
-                                     MealChatRow(meal: $meal)
+                                     MealChatRow(meal: $meal, showUnreadBadges: sharedMealVariables.showUnreadBadges)
                                  }
                                 }
 
@@ -79,13 +78,21 @@ struct MealsView: View {
                                          messagesManager.messages = [Message]()
                                          messagesManager.fetchMessages(from: currentMeal.id)
                                      }
+                                     sharedMealVariables.showUnreadBadges = false
+                                     sharedMealVariables.hideUnreadBadgesForMealID = currentMeal.id
                                      
                                      sharedViewManager.currentMealChatSession = activeChat
                                      lastVisitedMealID = activeChat
-                                     showMealButton.showMealButton = false
+                                     sharedMealVariables.showMealButton = false
 
                                    }.onDisappear {
-                                       showMealButton.showMealButton = true
+                                       if currentMeal.unreadMessages > 0 {
+                                           UIApplication.shared.applicationIconBadgeNumber = UIApplication.shared.applicationIconBadgeNumber - currentMeal.unreadMessages
+                                           mealsManager.setMessageAsViewed(mealID: currentMeal.id, count: currentMeal.unreadMessages)
+                                       }
+                                       sharedMealVariables.showUnreadBadges = true
+                                       sharedMealVariables.hideUnreadBadgesForMealID = nil
+                                       sharedMealVariables.showMealButton = true
                                    }
                              
                          } else {

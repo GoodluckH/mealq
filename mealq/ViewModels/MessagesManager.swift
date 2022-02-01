@@ -13,7 +13,7 @@ class MessagesManager: ObservableObject {
     @Published var messageContent = ""
     @Published var messages = [Message]()
     private var db = Firestore.firestore()
-    private let user = Auth.auth().currentUser
+  //  private let user = Auth.auth().currentUser
     
     private var lastDoc: QueryDocumentSnapshot? = nil
     private var lastMealID = ""
@@ -26,7 +26,7 @@ class MessagesManager: ObservableObject {
         fetchingMoreMessages = .idle
         fetchingMessages = .loading
         let first = db.collection("chats").document(mealID).collection("messages").order(by: "timeStamp", descending: true).limit(to: 20)
-        if let _ = user {
+        if let _ = Auth.auth().currentUser {
             first.addSnapshotListener { snapshot, error in
                 guard let documents = snapshot?.documents else {
                     self.fetchingMessages = .error
@@ -111,7 +111,7 @@ class MessagesManager: ObservableObject {
     
     func sendMessage(from sender: MealqUser, for meal: Meal) {
         self.sendingMessage = .loading
-        if let _ = user {
+        if let _ = Auth.auth().currentUser {
             
             let tempMessageContent = self.messageContent
             self.messageContent = ""

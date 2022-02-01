@@ -18,13 +18,13 @@ struct MainAppView: View {
     
     @StateObject var mealsManager = MealsManager()
     @StateObject var messagesManager = MessagesManager()
-    @StateObject var showMealButton = ShowMealButton()
     @StateObject var activitiesManager = ActivitiesManager()
     
     @EnvironmentObject var sessionStore: SessionStore
     
     @ObservedObject private var friendsManager = FriendsManager.sharedFriendsManager
     @ObservedObject private var sharedViewManager = ViewManager.sharedViewManager
+    @ObservedObject private var sharedMealVariables = MealVariables.sharedMealVariables
     // @State var visitedNoti = false
     
 
@@ -37,11 +37,16 @@ struct MainAppView: View {
                     SocialView()
                 }.tabItem{Image(systemName: "person.2")}.tag(Tab.social)
                 ZStack {
-                    if showMealButton.showMealButton {CreateMealButton().zIndex(1)}
+                    if sharedMealVariables.showMealButton {CreateMealButton().zIndex(1)}
                    // DebugView()
                     MealsView()
                 }.tabItem{Image(systemName: "mail.stack")}.tag(Tab.meals)
-                .badge(mealsManager.acceptedMeals.reduce(0){$0 + $1.unreadMessages})
+                .badge(mealsManager.acceptedMeals.reduce(0){x , y in
+                    if y.id == sharedMealVariables.hideUnreadBadgesForMealID {
+                        return x
+                    } else {return x + y.unreadMessages}
+                })
+            
                 ZStack {
                     CreateMealButton().zIndex(1)
                     NotificationView()
@@ -67,7 +72,6 @@ struct MainAppView: View {
             // .environmentObject(friendsManager)
             .environmentObject(mealsManager)
             .environmentObject(messagesManager)
-            .environmentObject(showMealButton)
             .environmentObject(activitiesManager)
 
 

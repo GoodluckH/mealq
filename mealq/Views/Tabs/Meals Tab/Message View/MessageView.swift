@@ -27,6 +27,7 @@ struct MessageView: View {
     @State private var showClickToBottomButton: Bool = false
     @State private var scrollView: UIScrollView? = nil
     @State private var firstMsgToFocus: String? = nil
+    @State private var showingDetailedMeal = false
     
     @FocusState private var isFocused: Bool
     
@@ -83,11 +84,14 @@ struct MessageView: View {
                                 ChatRow(users: Array(meal.to.keys), message: msg, currentUser: sessionStore.localUser!,
                                         invitor: meal.from, showAvatar: !(i != messagesManager.messages.count - 1 && messagesManager.messages[i + 1].senderID == msg.senderID)).id(msg.id)
                                     .onAppear{
-                                        if meal.recentMessageID == msg.id && meal.unreadMessages > 0 {
+                                        if meal.recentMessageID == msg.id && messagesManager.messages.last?.id == msg.id {
                                             // TODO: Need to add a logic here, otherwise it will scroll down
-                                            UIApplication.shared.applicationIconBadgeNumber = UIApplication.shared.applicationIconBadgeNumber - meal.unreadMessages
-                                            mealsManager.setMessageAsViewed(mealID: meal.id, count: meal.unreadMessages)
-                                            withAnimation(.easeOut.speed(3)){reader.scrollTo(messagesManager.messages.last!.id, anchor: .bottom)}
+                                            
+                                            if meal.unreadMessages > 0 {
+                                                UIApplication.shared.applicationIconBadgeNumber = UIApplication.shared.applicationIconBadgeNumber - meal.unreadMessages
+                                                mealsManager.setMessageAsViewed(mealID: meal.id, count: meal.unreadMessages)
+                                                withAnimation(.easeOut.speed(3)){reader.scrollTo(messagesManager.messages.last!.id, anchor: .bottom)}
+                                            }
                                         }
                                         if reFocus {
                                             reFocus = false
@@ -153,7 +157,9 @@ struct MessageView: View {
                                 }
                             }
                         }
-                        .introspectScrollView { scrollView = $0 }
+                        .introspectScrollView { scrollView in
+                            self.scrollView = scrollView
+                        }
                 }
                             
            }
@@ -216,23 +222,36 @@ struct MessageView: View {
         }.animation(.easeOut.speed(3), value: textHeight)
     }
         .onReceive(keyboard.$currentHeight) { height in
+            
             if lastTextHeight == CGFloat(0) || !isFocused || textHeight < lastTextHeight {lastTextHeight = textHeight}
             if let _ = scrollView {
-                if height > 0 && !isFocused && (keyboardHeight == 0 || messagesManager.messageContent == "")  {
+                if height > 0 && !isFocused && (keyboardHeight == 0 || messagesManager.messageContent == "") && !showingDetailedMeal  {
+                    print("this is triggered!!")
                     self.scrollView!.setContentOffset(CGPoint(x: 0, y: self.scrollView!.contentOffset.y + height), animated: true)
                 } else if isFocused && textHeight > lastTextHeight {
+                    print("else if this is triggered!!")
                     self.scrollView!.setContentOffset(CGPoint(x: 0, y: self.scrollView!.contentOffset.y + textHeight - lastTextHeight), animated: true)
                     lastTextHeight = textHeight
+                
                 }
-                 
+                
                 keyboardHeight = height
             }
         }
         .navigationBarTitle(messagesManager.fetchingMessages == .loading ? "loading..." : meal.name, displayMode: .inline)
         .toolbar {
-            NavigationLink (destination: MealDetailView(meal: meal).navigationBarTitle("")){
+            NavigationLink (destination: MealDetailView(meal: meal, allowEdit: true)
+                                .onAppear {
+                showingDetailedMeal = true
+            }
+                                .onDisappear {
+                        showingDetailedMeal = false
+                        }
+                                
+            ) {
                 Image(systemName: "info.circle")
                     .foregroundColor(Color("MyPrimary"))
+                    
             }
         }
     

@@ -13,7 +13,7 @@ struct MealControlButtons: View {
     @EnvironmentObject var sessionStore: SessionStore
     @EnvironmentObject var mealsManager: MealsManager
     @State private var showUnmealSheet = false
-    var mealID: String
+    var meal: Meal
     var body: some View {
         GeometryReader { geometry in
           
@@ -22,7 +22,8 @@ struct MealControlButtons: View {
                     Spacer()
                 
                     Button(action: {
-                        // TODO: sdflsaf
+                        // TODO: sdflsaf\
+                        mealsManager.updateMealStatus(to: "declined", of: meal.id)
                     }) {
                       HStack{
                           Image(systemName: "xmark").customFont(name: "Quicksand-SemiBold", style: .headline, weight: .bold)
@@ -34,7 +35,7 @@ struct MealControlButtons: View {
                     .clipShape(Circle())
                     Button(action: {
                     // TODO: sdflsaf
-                        mealsManager.updateMealStatus(to: "accepted", of: mealID)
+                        mealsManager.updateMealStatus(to: "accepted", of: meal.id)
                     }) {
                       HStack{
                           Image(systemName: "checkmark")
@@ -48,7 +49,7 @@ struct MealControlButtons: View {
                        .clipShape(Capsule())
                     Spacer()
                 }
-            } else {
+            } else if sessionStore.localUser != meal.from {
                 HStack{
 
                     Spacer()
@@ -60,7 +61,7 @@ struct MealControlButtons: View {
                    .background(Capsule().strokeBorder(Color.blue, lineWidth: 2))
                    .confirmationDialog("You sure you are not going anymore? This will change your status to 'declined'.", isPresented: $showUnmealSheet, titleVisibility: .visible) {
                        Button("decline accepted meal", role: .destructive) {
-                           // TODO: sd
+                           mealsManager.updateMealStatus(to: "declined", of: meal.id)
                        }
                    }
                     Spacer()
