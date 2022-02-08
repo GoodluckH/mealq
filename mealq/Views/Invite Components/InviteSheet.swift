@@ -9,14 +9,12 @@ import SwiftUI
 import Introspect
 
 
-
-
 struct InviteSheet: View {
-    @State var selectedFriends: [MealqUser] = []
     @State var selectedDate: Int?
     @State var mealName = ""
     
     @Binding var showSheet: Bool
+    @State var showSearchFriendSheet: Bool = false
     @State var showMainContent: Bool = true
     @ObservedObject var friendsManager = FriendsManager.sharedFriendsManager
     @EnvironmentObject var mealsManager: MealsManager
@@ -40,18 +38,40 @@ struct InviteSheet: View {
                     mealsManager.sendingMealRequest == .loading {
            ScrollView ([], showsIndicators: false) { // pass in an empty set to disable the scrolling
             VStack {
-                Header(mealName: $mealName, selectedFriends: selectedFriends).padding(.top).padding(.top)
+                Header(mealName: $mealName, selectedFriends: friendsManager.selectedFriends).padding(.top).padding(.top)
                 FakeSearchBar().shadow(color: .gray, radius: searchBarShadowRadius, y: searchBarShadowYOffset)
+                    .onTapGesture {
+                        showSearchFriendSheet = true
+                        friendsManager.changedFriendSelection = false
+                    }
+                    .fullScreenCover(isPresented: $showSearchFriendSheet) {
+                        SearchAndSelectFriends(showSearchFriendSheet: $showSearchFriendSheet)
+                    }
+                    
                 
                 
                 
                 // Friends selection
                 HStack{
                     if friendsManager.friends.isEmpty {Text("no friends yet; search to add more").bold()}
-                    else {Text("tap to select friends (up to 10)").bold()}
+                    else {
+                        HStack {
+                            Text("tap to select friends (up to 10)").bold()
+                            Spacer()
+                            
+                            if friendsManager.selectedFriends.count > 0 {
+                                Button (action: {friendsManager.selectedFriends = []}) {
+                                Text("Reset")
+                            }
+                                
+                            }
+                        }
+                        
+                        
+                    }
                     Spacer()
                 }.padding(.horizontal).offset(y: 16)
-                FriendSelection(selectedFriends: $selectedFriends)
+                FriendSelection()
                 
                 
                 
@@ -62,7 +82,7 @@ struct InviteSheet: View {
                 
                 // Send invite!
                 VStack{
-                    SendInviteButton(selectedFriends: selectedFriends, selectedDate: selectedDate, mealName: mealName, showSheet: $showSheet)
+                    SendInviteButton(selectedFriends: friendsManager.selectedFriends, selectedDate: selectedDate, mealName: mealName, showSheet: $showSheet)
                         .padding(.top)
                     Spacer()
                     

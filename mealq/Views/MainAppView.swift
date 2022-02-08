@@ -27,8 +27,6 @@ struct MainAppView: View {
     @ObservedObject private var sharedMealVariables = MealVariables.sharedMealVariables
     // @State var visitedNoti = false
     
-
-    
     var body: some View {
 //        SwiftUIView()
         TabView(selection: $sharedViewManager.selectedTab) {

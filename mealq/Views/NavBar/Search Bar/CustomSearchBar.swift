@@ -11,10 +11,11 @@ import Introspect
 struct CustomSearchBar: View {
     @Binding var searchText: String
     @Binding var showNavLinkView: Bool
+    var staticSearch: Bool?
     var body: some View {
         VStack{
             HStack {
-                SearchBarSymbols(searchText: $searchText, showNavLinkView: $showNavLinkView)
+                SearchBarSymbols(searchText: $searchText, showNavLinkView: $showNavLinkView, staticSearch: staticSearch)
                 CustomTextField(searchText: $searchText)
                 CancelButton(searchText: $searchText)
                 }

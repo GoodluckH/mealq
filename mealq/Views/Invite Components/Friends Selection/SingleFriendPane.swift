@@ -8,10 +8,12 @@
 import SwiftUI
 
 struct SingleFriendPane: View {
+    @ObservedObject var friendsManager = FriendsManager.sharedFriendsManager
+    
     var user: MealqUser
-    @State var selected = false
-    @Binding var selectedFriends: [MealqUser]
+    var selected: Bool
     let selectionLimit = 10
+    
     var body: some View {
         GeometryReader { geo in
             
@@ -19,23 +21,21 @@ struct SingleFriendPane: View {
                 UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to:nil, from:nil, for:nil)
                 if selected {
                 Haptics.rigid()
-                selected = false
-                if let index = selectedFriends.firstIndex(of: user) {
-                    selectedFriends.remove(at: index)
+                    if let index = friendsManager.selectedFriends.firstIndex(of: user) {
+                    friendsManager.selectedFriends.remove(at: index)
                 }
                 
             } else {
-                if selectedFriends.count < selectionLimit {
+                if friendsManager.selectedFriends.count < selectionLimit {
                     Haptics.soft()
-                    selected = true
-                    selectedFriends.append(user)
+                    friendsManager.selectedFriends.append(user)
                     
                 }
             }}) {
                 ZStack{
                     RoundedRectangle(cornerRadius: cornerRadius)
                         .fill(Color("QueryLoaderStartingColor"))
-                        .shadow(color: selected ? .gray : selectedFriends.count < selectionLimit ? .gray : .red , radius: (selected || (selectedFriends.count >= selectionLimit)) ? selectedShadowRadius : shadowRadius, y: shadowYOffset)
+                        .shadow(color: selected ? .gray : friendsManager.selectedFriends.count < selectionLimit ? .gray : .red , radius: (selected || (friendsManager.selectedFriends.count >= selectionLimit)) ? selectedShadowRadius : shadowRadius, y: shadowYOffset)
                        
                     VStack{
                             ProfilePicView(picURL: user.normalPicURL)

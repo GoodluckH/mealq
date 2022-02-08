@@ -14,7 +14,7 @@ struct FakeSearchBar: View {
                 Image(systemName: "magnifyingglass")
                     .font(.title2.weight(.bold))
                     .foregroundColor(Color("SearchBarSymbolColor"))
-                Text("search for more people (work in progress)")
+                Text("search for more friends")
                     .foregroundColor(.gray)
                     .lineLimit(1)
                 Spacer()
@@ -29,6 +29,7 @@ struct FakeSearchBar: View {
                 .clipShape(Capsule())
             }
             .padding(.horizontal)
+        
     }
 }
 

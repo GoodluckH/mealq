@@ -11,16 +11,24 @@ import Introspect
 struct SearchBarSymbols: View {
     @Binding var searchText: String
     @Binding var showNavLinkView: Bool
+    var staticSearch: Bool?
     var body: some View {
+        if staticSearch ?? false {
        
+            Image(systemName: "magnifyingglass")
+                .font(.title2.weight(.bold))
+                .foregroundColor(Color("SearchBarSymbolColor"))
+        } else {
             Button(action: {
-                searchText = ""
-                showNavLinkView = false
+                   searchText = ""
+                   showNavLinkView = false
             }){
             Image(systemName: "arrow.left")
                 .font(.title2.weight(.bold))
             }
             .foregroundColor(Color("SearchBarSymbolColor"))
+        }
+
         
     }
 }

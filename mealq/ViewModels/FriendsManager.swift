@@ -9,11 +9,54 @@ import Foundation
 import Firebase
 import FirebaseAuth
 
+
+class MiniFriendsManager: ObservableObject {
+    private let db = Firestore.firestore()
+    private var currentUser = Auth.auth().currentUser
+    @Published var queriedFriends = false
+    @Published var friendsOfQueriedUser = [MealqUser]()
+    
+    func getFriendsFrom(_ userID: String) {
+        db.collection("users").document(userID).collection("friends").getDocuments() { (snapshot, error) in
+            guard let documents = snapshot?.documents else {
+                print ("cannot get data from user \(userID)")
+                return
+            }
+            let userIDs = documents.map { $0.documentID }
+            
+            let myGroup = DispatchGroup()
+            
+            userIDs.forEach{ id in
+                myGroup.enter()
+                self.db.collection("users").document(id).getDocument { (snapshot, error) in
+                    guard let snapshot = snapshot else {
+                        print ("User \(id) does not exist on db")
+                        return
+                    }
+                    let userData = snapshot.data()!
+                    self.friendsOfQueriedUser.append(MealqUser(id:  userData["uid"] as! String,
+                                                               fullname: userData["fullname"] as! String,
+                                                               email: userData["email"] as! String,
+                                                               thumbnailPicURL: URL(string: userData["thumbnailPicURL"] as? String ?? ""),
+                                                               normalPicURL: URL(string: userData["normalPicURL"] as? String ?? ""),
+                                                               fcmToken: userData["fcmToken"] as? String ?? ""))
+                    myGroup.leave()
+                }
+            }
+            myGroup.notify(queue: .main) {self.queriedFriends = true}
+        }
+    }
+}
+
+
+
+enum Status {
+    case idle, loading, done, error
+}
+
 /// A ViewModel that manages operations involving fetching and querying other users and friends.
 class FriendsManager: ObservableObject {
-    enum Status {
-        case idle, loading, done, error
-    }
+    
     
     static let sharedFriendsManager = FriendsManager()
     
@@ -26,6 +69,9 @@ class FriendsManager: ObservableObject {
     @Published var friends = [MealqUser]()
     @Published var pendingFriends = [NotificationItem]()
     @Published var sentRequests = [MealqUser]()
+    
+    @Published var selectedFriends = [MealqUser]()
+    @Published var changedFriendSelection = false
 
     @Published var fetchingFriends = Status.loading
     /// Fetches a list of the current user's friends and updates `friends`.
@@ -210,7 +256,6 @@ class FriendsManager: ObservableObject {
         }
     }
 
-    
     
     
     

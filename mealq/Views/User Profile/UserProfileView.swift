@@ -10,19 +10,10 @@ import SwiftUI
 struct UserProfileView: View {
     var user: MealqUser
     @EnvironmentObject var sessionStore: SessionStore
-    @ObservedObject var friendsManager = FriendsManager.sharedFriendsManager
-   // @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    @ObservedObject var friendsManager = MiniFriendsManager()
     @State private var showBigPic = false
-    
+    @State private var showFriends = false
 
-    
-//    var goBackButton: some View {
-//        Button(action: {self.presentationMode.wrappedValue.dismiss()
-//        }){Image(systemName: "xmark").font(.body.weight(.bold))}
-//        .padding(.top)
-//        .foregroundColor(Color("MyPrimary"))
-//
-//    }
 
     var body: some View {
      
@@ -36,13 +27,18 @@ struct UserProfileView: View {
                        
                    Text(user.fullname)
                        .customFont(name: "Quicksand-SemiBold", style: .title1, weight: .black)
-                   Text("\(friendsManager.otherUserFriends.count) friends")
+                   Text("\(friendsManager.friendsOfQueriedUser.count) friends")
                        .customFont(name: "Quicksand-SemiBold", style: .subheadline, weight: .semibold)
-                       
+                       .onTapGesture {showFriends = true}
+                       .fullScreenCover(isPresented: $showFriends) {
+                           UserFriends(showSearchFriendSheet: $showFriends, friends: friendsManager.friendsOfQueriedUser)
+                       }
                     if sessionStore.localUser != user {ConnectButton(user: user).padding(.top).padding(.horizontal)}
                        
                    Spacer()
-                }.onAppear{friendsManager.getFriendsFrom(user: user.id)}
+                }.onAppear{
+                    if !friendsManager.queriedFriends {friendsManager.getFriendsFrom(user.id)}
+                }
                .padding(.top)
                //.navigationBarBackButtonHidden(true)
                // .navigationBarItems(leading: goBackButton)

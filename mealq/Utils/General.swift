@@ -6,7 +6,7 @@
 //
 
 import Foundation
-
+import UIKit 
 
 
 func getAllMealParticipantsExSelf(to: [MealqUser], from: MealqUser, me: MealqUser) -> [MealqUser] {
@@ -17,4 +17,19 @@ func getAllMealParticipantsExSelf(to: [MealqUser], from: MealqUser, me: MealqUse
 
 func combineArrays<T> (_ arrays: [T]...) -> [T] {
     return arrays.flatMap { $0 }
+}
+
+
+extension UIImage {
+    static func gradientImageWithBounds(bounds: CGRect, colors: [CGColor]) -> UIImage {
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.frame = bounds
+        gradientLayer.colors = colors
+        
+        UIGraphicsBeginImageContext(gradientLayer.bounds.size)
+        gradientLayer.render(in: UIGraphicsGetCurrentContext()!)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return image!
+    }
 }

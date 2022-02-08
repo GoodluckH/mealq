@@ -374,6 +374,7 @@ class MealsManager: ObservableObject {
                 } else {
                     self.sendingMealRequest = .done // REMEMBER TO MOVE IT TO MESSAGING
                     print("Batch write succeeded.")
+                    FriendsManager.sharedFriendsManager.selectedFriends = []
                 }
             }
             

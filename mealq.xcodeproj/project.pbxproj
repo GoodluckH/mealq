@@ -44,6 +44,7 @@
 		802E5613275FA74300464CA6 /* MealsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802E5612275FA74300464CA6 /* MealsManager.swift */; };
 		802E56172763CA0E00464CA6 /* error.json in Resources */ = {isa = PBXBuildFile; fileRef = 802E56162763CA0E00464CA6 /* error.json */; };
 		805F28FC274DA449002DEA8D /* BigUserPicMotionObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805F28FB274DA449002DEA8D /* BigUserPicMotionObserver.swift */; };
+		807631A027B1A22B00A91E94 /* UserFriends.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8076319F27B1A22B00A91E94 /* UserFriends.swift */; };
 		8079DEEF2745F4C8001420CE /* Haptics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8079DEEE2745F4C8001420CE /* Haptics.swift */; };
 		808257A727A476CB0020B9FE /* PlaceholderCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808257A627A476CB0020B9FE /* PlaceholderCard.swift */; };
 		808257A927A5B5EA0020B9FE /* star.json in Resources */ = {isa = PBXBuildFile; fileRef = 808257A827A5B5EA0020B9FE /* star.json */; };
@@ -111,6 +112,7 @@
 		80F41FFC2780D4900080C67D /* MealControlButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F41FFB2780D4900080C67D /* MealControlButtons.swift */; };
 		80F41FFE2780FFF40080C67D /* UserMealStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F41FFD2780FFF40080C67D /* UserMealStatus.swift */; };
 		80F420002783860A0080C67D /* MessageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F41FFF278386090080C67D /* MessageModel.swift */; };
+		80F5064927AD7F5200FDD900 /* SearchAndSelectFriends.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F5064827AD7F5200FDD900 /* SearchAndSelectFriends.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -172,6 +174,7 @@
 		802E5612275FA74300464CA6 /* MealsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealsManager.swift; sourceTree = "<group>"; };
 		802E56162763CA0E00464CA6 /* error.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = error.json; sourceTree = "<group>"; };
 		805F28FB274DA449002DEA8D /* BigUserPicMotionObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigUserPicMotionObserver.swift; sourceTree = "<group>"; };
+		8076319F27B1A22B00A91E94 /* UserFriends.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserFriends.swift; sourceTree = "<group>"; };
 		8079DEEE2745F4C8001420CE /* Haptics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptics.swift; sourceTree = "<group>"; };
 		808257A627A476CB0020B9FE /* PlaceholderCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderCard.swift; sourceTree = "<group>"; };
 		808257A827A5B5EA0020B9FE /* star.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = star.json; sourceTree = "<group>"; };
@@ -232,6 +235,7 @@
 		80F41FFB2780D4900080C67D /* MealControlButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealControlButtons.swift; sourceTree = "<group>"; };
 		80F41FFD2780FFF40080C67D /* UserMealStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserMealStatus.swift; sourceTree = "<group>"; };
 		80F41FFF278386090080C67D /* MessageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageModel.swift; sourceTree = "<group>"; };
+		80F5064827AD7F5200FDD900 /* SearchAndSelectFriends.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchAndSelectFriends.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -483,6 +487,7 @@
 				80A48CE52746C62600063B57 /* Fake Search Bar */,
 				80C1209A272E5066006D125D /* CreateMealButton.swift */,
 				80C1209C272E5080006D125D /* InviteSheet.swift */,
+				80F5064827AD7F5200FDD900 /* SearchAndSelectFriends.swift */,
 			);
 			path = "Invite Components";
 			sourceTree = "<group>";
@@ -577,6 +582,7 @@
 				80EFC38B27345423005520D3 /* UserProfileView.swift */,
 				80EFC38E273496FA005520D3 /* ConnectButton.swift */,
 				80A48D09274D983A00063B57 /* BigUserPicView.swift */,
+				8076319F27B1A22B00A91E94 /* UserFriends.swift */,
 			);
 			path = "User Profile";
 			sourceTree = "<group>";
@@ -762,7 +768,9 @@
 				80964EAD2739ABEA00F54B6D /* AppDelegate.swift in Sources */,
 				802BC320273F6F74004F1505 /* Constants.swift in Sources */,
 				80EFC3732731DE8B005520D3 /* FriendsManager.swift in Sources */,
+				80F5064927AD7F5200FDD900 /* SearchAndSelectFriends.swift in Sources */,
 				80C1208F272E4841006D125D /* SessionViewModel.swift in Sources */,
+				807631A027B1A22B00A91E94 /* UserFriends.swift in Sources */,
 				8023FDBC2784D908003E728E /* MealVariables.swift in Sources */,
 				80C120A0272E511D006D125D /* MainAppView.swift in Sources */,
 				80E9389227A42D8E00B06ED2 /* ActivitiesZone.swift in Sources */,
