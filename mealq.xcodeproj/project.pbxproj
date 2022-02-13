@@ -45,6 +45,10 @@
 		802E56172763CA0E00464CA6 /* error.json in Resources */ = {isa = PBXBuildFile; fileRef = 802E56162763CA0E00464CA6 /* error.json */; };
 		805F28FC274DA449002DEA8D /* BigUserPicMotionObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805F28FB274DA449002DEA8D /* BigUserPicMotionObserver.swift */; };
 		807631A027B1A22B00A91E94 /* UserFriends.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8076319F27B1A22B00A91E94 /* UserFriends.swift */; };
+		807631A227B8516600A91E94 /* SetDetailedDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807631A127B8516600A91E94 /* SetDetailedDate.swift */; };
+		807631A427B89E0D00A91E94 /* MealDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807631A327B89E0C00A91E94 /* MealDatePicker.swift */; };
+		807631A627B89EC900A91E94 /* DatePickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807631A527B89EC900A91E94 /* DatePickerViewModel.swift */; };
+		807631A827B8C41F00A91E94 /* MealDetailNotiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807631A727B8C41F00A91E94 /* MealDetailNotiView.swift */; };
 		8079DEEF2745F4C8001420CE /* Haptics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8079DEEE2745F4C8001420CE /* Haptics.swift */; };
 		808257A727A476CB0020B9FE /* PlaceholderCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808257A627A476CB0020B9FE /* PlaceholderCard.swift */; };
 		808257A927A5B5EA0020B9FE /* star.json in Resources */ = {isa = PBXBuildFile; fileRef = 808257A827A5B5EA0020B9FE /* star.json */; };
@@ -175,6 +179,10 @@
 		802E56162763CA0E00464CA6 /* error.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = error.json; sourceTree = "<group>"; };
 		805F28FB274DA449002DEA8D /* BigUserPicMotionObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigUserPicMotionObserver.swift; sourceTree = "<group>"; };
 		8076319F27B1A22B00A91E94 /* UserFriends.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserFriends.swift; sourceTree = "<group>"; };
+		807631A127B8516600A91E94 /* SetDetailedDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetDetailedDate.swift; sourceTree = "<group>"; };
+		807631A327B89E0C00A91E94 /* MealDatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealDatePicker.swift; sourceTree = "<group>"; };
+		807631A527B89EC900A91E94 /* DatePickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerViewModel.swift; sourceTree = "<group>"; };
+		807631A727B8C41F00A91E94 /* MealDetailNotiView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealDetailNotiView.swift; sourceTree = "<group>"; };
 		8079DEEE2745F4C8001420CE /* Haptics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptics.swift; sourceTree = "<group>"; };
 		808257A627A476CB0020B9FE /* PlaceholderCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderCard.swift; sourceTree = "<group>"; };
 		808257A827A5B5EA0020B9FE /* star.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = star.json; sourceTree = "<group>"; };
@@ -325,6 +333,7 @@
 				80F41FFA2780D4730080C67D /* Meal Details */,
 				802BC32B274063A3004F1505 /* NotificationView.swift */,
 				802BC321273F7394004F1505 /* SingleNotificationView.swift */,
+				807631A727B8C41F00A91E94 /* MealDetailNotiView.swift */,
 			);
 			path = "Noti Tab";
 			sourceTree = "<group>";
@@ -464,6 +473,7 @@
 				8023FDCB278692D9003E728E /* Observer.swift */,
 				80E721682792185B00FBB6E3 /* ViewManager.swift */,
 				80E9388E27A04E3B00B06ED2 /* ActivitiesManager.swift */,
+				807631A527B89EC900A91E94 /* DatePickerViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -592,6 +602,8 @@
 			children = (
 				80F41FF82780C9300080C67D /* MealDetailView.swift */,
 				80F41FFB2780D4900080C67D /* MealControlButtons.swift */,
+				807631A127B8516600A91E94 /* SetDetailedDate.swift */,
+				807631A327B89E0C00A91E94 /* MealDatePicker.swift */,
 			);
 			path = "Meal Details";
 			sourceTree = "<group>";
@@ -745,6 +757,7 @@
 				80E72158278CA76700FBB6E3 /* MealTimeStamp.swift in Sources */,
 				8023FDCC278692D9003E728E /* Observer.swift in Sources */,
 				8023FDC8278685CC003E728E /* TextEditorBubble.swift in Sources */,
+				807631A427B89E0D00A91E94 /* MealDatePicker.swift in Sources */,
 				802BC3332743FAC9004F1505 /* SplashScreen.swift in Sources */,
 				802BC32427404D87004F1505 /* AlertButton.swift in Sources */,
 				802E560D275C5CF200464CA6 /* LottieView.swift in Sources */,
@@ -752,6 +765,7 @@
 				80E72161278F472600FBB6E3 /* CustomNavigationLink.swift in Sources */,
 				80EFC38C27345423005520D3 /* UserProfileView.swift in Sources */,
 				805F28FC274DA449002DEA8D /* BigUserPicMotionObserver.swift in Sources */,
+				807631A627B89EC900A91E94 /* DatePickerViewModel.swift in Sources */,
 				8023FDCE27875106003E728E /* DynamicHeightTextField.swift in Sources */,
 				80E721692792185C00FBB6E3 /* ViewManager.swift in Sources */,
 				8023FDD42787D3E5003E728E /* ChatTimeStamp.swift in Sources */,
@@ -792,6 +806,7 @@
 				802E5611275D371200464CA6 /* DateSelection.swift in Sources */,
 				8023FDBA2784D0FA003E728E /* ChatRow.swift in Sources */,
 				80C1209B272E5066006D125D /* CreateMealButton.swift in Sources */,
+				807631A827B8C41F00A91E94 /* MealDetailNotiView.swift in Sources */,
 				8023FDCA27868728003E728E /* FieldView.swift in Sources */,
 				8079DEEF2745F4C8001420CE /* Haptics.swift in Sources */,
 				80EFC38F273496FA005520D3 /* ConnectButton.swift in Sources */,
@@ -803,6 +818,7 @@
 				80C1209D272E5080006D125D /* InviteSheet.swift in Sources */,
 				8012577F27755E6400DE1160 /* MealModel.swift in Sources */,
 				80C120AC272F851B006D125D /* ProfilePicView.swift in Sources */,
+				807631A227B8516600A91E94 /* SetDetailedDate.swift in Sources */,
 				802BC32927405083004F1505 /* SearchScreen.swift in Sources */,
 				80C120B3272F93CE006D125D /* test.swift in Sources */,
 				80E7215D278E374C00FBB6E3 /* DebugView.swift in Sources */,

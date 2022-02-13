@@ -22,7 +22,8 @@ struct Meal: Identifiable, Codable, Hashable {
     var sentByName: String
     var messageTimeStamp: Date
     var unreadMessages: Int
-
+    var specificDate: Date?
+    
     static func == (lhs: Meal, rhs: Meal) -> Bool {
         return lhs.id == rhs.id
     }

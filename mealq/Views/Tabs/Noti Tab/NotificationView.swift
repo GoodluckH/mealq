@@ -39,7 +39,7 @@ struct NotificationView: View {
                     List {
                         ForEach(combineArrays(friendsManager.pendingFriends, mealsManager.pendingMeals).sorted {$0.timeStamp > $1.timeStamp}, id: \.id) { item in
                             
-                            SingleNotificationView(notificationItem: item, now: self.now)
+                            SingleNotificationView(notificationItem: item, now: self.now).onAppear {self.now = Date()}
                             
                     }
                 }.listStyle(.plain)

@@ -9,7 +9,7 @@ import SwiftUI
 import Introspect
 
 struct MessageView: View {
-    let meal: Meal
+    @Binding var meal: Meal?
     @State var fromNoti: Bool
     let lastMealID: String
     
@@ -32,7 +32,7 @@ struct MessageView: View {
     @FocusState private var isFocused: Bool
     
     
-    init(meal: Meal, fromNoti: Bool, lastMealID: String) {
+    init(meal: Binding<Meal?>, fromNoti: Bool, lastMealID: String) {
         //Use this if NavigationBarTitle is with Large Font
         //UINavigationBar.appearance().largeTitleTextAttributes = [.font : UIFont(name: "Quicksand-Bold", size: 20)!]
 
@@ -43,7 +43,7 @@ struct MessageView: View {
         UITextView.appearance().isScrollEnabled  = false
         UITextView.appearance().backgroundColor = .clear
         
-        self.meal = meal
+        self._meal = meal
         self._fromNoti = State(initialValue: fromNoti)
         self.lastMealID = lastMealID
         
@@ -67,7 +67,8 @@ struct MessageView: View {
     
     
     var body: some View {
-        VStack (spacing: 0) {
+     if let meal = meal {
+         VStack (spacing: 0) {
             // Displays all messaegs if the current meal session has messages
             if !messagesManager.messages.isEmpty {
                 ScrollViewReader { reader in
@@ -240,7 +241,7 @@ struct MessageView: View {
         }
         .navigationBarTitle(messagesManager.fetchingMessages == .loading ? "loading..." : meal.name, displayMode: .inline)
         .toolbar {
-            NavigationLink (destination: MealDetailView(meal: meal, allowEdit: true)
+            NavigationLink (destination: MealDetailView(meal: $meal, allowEdit: true)
                                 .onAppear {
                 showingDetailedMeal = true
             }
@@ -254,7 +255,7 @@ struct MessageView: View {
                     
             }
         }
-    
+    }
     }
 }
 

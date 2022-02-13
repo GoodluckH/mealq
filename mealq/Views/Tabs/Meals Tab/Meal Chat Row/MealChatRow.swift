@@ -44,7 +44,7 @@ struct MealChatRow: View {
                     
                   
                 
-                RowProfilePicView(meal: meal)
+                RowProfilePicView(meal: $meal)
                 // MealTimeStamp(timeStamp: meal.createdAt)
                 
             }

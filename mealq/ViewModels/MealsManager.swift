@@ -135,6 +135,8 @@ class MealsManager: ObservableObject {
                 
                 let unreadMessages = unreadMessagesMap[user.uid] as? Int ?? 0
                 
+                let specificDate = data["specificDate"] as? Timestamp ?? nil
+                
                 // fetch user detail info
                 self.db.collection("users").document(from).getDocument { (document, error) in
                     if let document = document, document.exists {
@@ -165,7 +167,7 @@ class MealsManager: ObservableObject {
                                              fcmToken: userData["fcmToken"] as? String ?? "")] = userStatus[document.documentID]
                             }
                             
-                            let meal = Meal(id: id, name: name, from: fromUser, to: to, weekday: weekday, createdAt: createdAt.dateValue(), recentMessageID: recentMessageID, recentMessageContent: recentMessageContent, sentByName: sentByName, messageTimeStamp: messageTimeStamp.dateValue(), unreadMessages: unreadMessages)
+                            let meal = Meal(id: id, name: name, from: fromUser, to: to, weekday: weekday, createdAt: createdAt.dateValue(), recentMessageID: recentMessageID, recentMessageContent: recentMessageContent, sentByName: sentByName, messageTimeStamp: messageTimeStamp.dateValue(), unreadMessages: unreadMessages, specificDate: specificDate?.dateValue())
                             
                            
                             if status == "pending" {
@@ -230,6 +232,8 @@ class MealsManager: ObservableObject {
                 
                 let unreadMessages = unreadMessagesMap[user.uid] as? Int ?? 0
                 
+                let specificDate = data["specificDate"] as? Timestamp ?? nil
+                
                 // fetch user detail info
                 self.db.collection("users").document(from).getDocument { (document, error) in
                     if let document = document, document.exists {
@@ -260,7 +264,7 @@ class MealsManager: ObservableObject {
                                              fcmToken: userData["fcmToken"] as? String ?? "")] = userStatus[document.documentID]
                             }
                             
-                            let meal = Meal(id: id, name: name, from: fromUser, to: to, weekday: weekday, createdAt: createdAt.dateValue(), recentMessageID: recentMessageID, recentMessageContent: recentMessageContent, sentByName: sentByName, messageTimeStamp: messageTimeStamp.dateValue(), unreadMessages: unreadMessages)
+                            let meal = Meal(id: id, name: name, from: fromUser, to: to, weekday: weekday, createdAt: createdAt.dateValue(), recentMessageID: recentMessageID, recentMessageContent: recentMessageContent, sentByName: sentByName, messageTimeStamp: messageTimeStamp.dateValue(), unreadMessages: unreadMessages, specificDate: specificDate?.dateValue())
                             
                            
                             if status == "pending" { self.pendingMeals.append(NotificationItem(id: UUID(), payload: meal, timeStamp: meal.createdAt))}
@@ -379,18 +383,6 @@ class MealsManager: ObservableObject {
             }
             
             
-            // Subscribe all invited users to a FCM topic named by the newMeal's docID
-//            Messaging.messaging().subscribe(toTopic: newMeal.documentID) { error in
-//                if let error = error {
-//                    print("Unable to subscribe current user to FCM topic: \(error.localizedDescription)")
-//                    self.sendingMealRequest = .error
-//                } else {
-//                    self.sendingMealRequest = .done
-//                    print("Successfully subscribed the current user to FCM topic: \(newMeal.documentID)")
-//                }
-//
-//            }
-            
             
         } else {
             print("Could not fetch current user when sending meal request")
@@ -474,27 +466,20 @@ class MealsManager: ObservableObject {
     }
     
     
-//    func deleteMealForAll(mealID: String) {
-//        if let _ =  Auth.auth().currentUser {
-//            self.db.collection("chats").document(mealID).collection("messages").document().delete() { err in
-//                if let err = err {
-//                    print("MealsManager.deleteMealForAll -- Unable to delete the messages collection from the meal: \(err.localizedDescription)")
-//                } else {
-//                    print("MealsManager.deleteMealForAll -- Successfully deleted the messages in collection \(mealID)")
-//                    self.db.collection("chats").document(mealID).delete() { err in
-//                        if let err = err {
-//                            print("MealsManager.deleteMealForAll -- Unable to delete the meal: \(err.localizedDescription)")
-//                        } else {
-//                            print("MealsManager.deleteMealForAll -- Successfully deleted the meal \(mealID)")
-//                        }
-//                        
-//                    }
-//                }
-//            }
-//        }
-//    }
-//    
-    
+    @Published var settingSpecificDate = Status.idle
+    func setSpecificDate(on date: Date, for mealID: String) {
+        settingSpecificDate = .loading
+        db.collection("chats").document(mealID).updateData([
+            "specificDate": date]) { err in
+                if let err = err {
+                    self.settingSpecificDate = .error
+                    print("error setting specific date: \(err.localizedDescription)")
+                } else {
+                    self.settingSpecificDate = .idle
+                    print("successfully set date for meal \(mealID)")
+                }
+            }
+    }
     
     
     

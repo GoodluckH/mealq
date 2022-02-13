@@ -8,12 +8,14 @@
 import SwiftUI
 
 struct RowProfilePicView: View {
-    var meal: Meal
+    @Binding var meal: Meal
     @EnvironmentObject var sessionStore: SessionStore
     var body: some View {
         //ScrollView(.horizontal, showsIndicators: false) {
             HStack (alignment: .top, spacing: Constants.tightStackSpacing){
-                ForEach(getAllMealParticipantsExSelf(to: Array(meal.to.keys), from: meal.from, me: sessionStore.localUser!), id: \.self) { user in
+                
+                if let localUser = sessionStore.localUser {
+                    ForEach(getAllMealParticipantsExSelf(to: Array(meal.to.keys), from: meal.from, me: localUser), id: \.self) { user in
                     VStack (spacing: Constants.tightStackSpacing){
                         ProfilePicView(picURL: user.normalPicURL)
                         .frame(width: UIScreen.main.bounds.width / 17, height: UIScreen.main.bounds.width / 17)
@@ -22,6 +24,7 @@ struct RowProfilePicView: View {
                             .frame(width: UIScreen.main.bounds.width / 25, height: UIScreen.main.bounds.width / 100)
                             
                     }
+                }    
                 }
                 Spacer()
             }

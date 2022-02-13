@@ -71,8 +71,8 @@ struct MealsView: View {
                  }
                  }.background {
                      NavigationLink("", isActive: activeChatBinding(id: activeChat)) {
-                         if let activeChat = activeChat, let currentMeal = bindingForChat(id: activeChat).wrappedValue {
-                             MessageView(meal:currentMeal, fromNoti: fromNoti, lastMealID: lastVisitedMealID == "" ? activeChat : lastVisitedMealID)
+                         if let activeChat = activeChat, let bindingMeal = bindingForChat(id: activeChat), let currentMeal = bindingForChat(id: activeChat).wrappedValue {
+                             MessageView(meal: bindingMeal, fromNoti: fromNoti, lastMealID: lastVisitedMealID == "" ? activeChat : lastVisitedMealID)
                                  .onAppear{
                                      if lastVisitedMealID != activeChat {
                                          messagesManager.messages = [Message]()

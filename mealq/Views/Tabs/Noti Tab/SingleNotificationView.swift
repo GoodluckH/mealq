@@ -28,7 +28,7 @@ struct SingleNotificationView: View {
             self.user = meal.from
             self.now = now
             self.time = meal.createdAt
-            self.navDest =  AnyView(MealDetailView(meal: meal, allowEdit: false))
+            self.navDest =  AnyView(MealDetailNotiView(meal: meal))
         } else {
             let user = notificationItem.payload as! MealqUser
             self.displayText = "\(user.fullname) wants to be your friend"

@@ -25,11 +25,12 @@ struct MainAppView: View {
     @ObservedObject private var friendsManager = FriendsManager.sharedFriendsManager
     @ObservedObject private var sharedViewManager = ViewManager.sharedViewManager
     @ObservedObject private var sharedMealVariables = MealVariables.sharedMealVariables
-    // @State var visitedNoti = false
+    @ObservedObject private var sharedDatePickerViewModel = DatePickerViewModel.sharedDatePickerViewModel
     
     var body: some View {
 //        SwiftUIView()
-        TabView(selection: $sharedViewManager.selectedTab) {
+        ZStack{
+            TabView(selection: $sharedViewManager.selectedTab) {
                 ZStack {
                     CreateMealButton().zIndex(1)
                     SocialView()
@@ -68,12 +69,23 @@ struct MainAppView: View {
                 }
             }
             // .environmentObject(friendsManager)
-            .environmentObject(mealsManager)
+           
+
+            if sharedDatePickerViewModel.showDatePicker {
+                ZStack {
+                    Color("QueryLoaderStartingColor")
+                        .background(.ultraThinMaterial)
+                        .onTapGesture {
+                            sharedDatePickerViewModel.showDatePicker = false
+                        }.opacity(sharedDatePickerViewModel.showDatePicker ? 1 : 0)
+                        .animation(Animation.easeOut(duration: 0.3), value: sharedDatePickerViewModel.showDatePicker)
+                   
+                    MealDatePicker()
+                }.ignoresSafeArea(.all)
+            }
+        } .environmentObject(mealsManager)
             .environmentObject(messagesManager)
             .environmentObject(activitiesManager)
-
-
-
     }
 }
 
