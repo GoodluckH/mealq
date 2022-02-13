@@ -101,3 +101,17 @@ func getWeekdayColor(from num: Int) -> Color {
     default: return Color.red
     }
 }
+
+func getDayComponent(from date: Date) -> String {
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "d"
+    return dateFormatter.string(from: date)
+}
+ 
+func getMonthComponent(from date: Date) -> String {
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "MMM"
+    return dateFormatter.string(from: date)
+}
+
+

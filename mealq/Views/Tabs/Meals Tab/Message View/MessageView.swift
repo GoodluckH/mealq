@@ -119,6 +119,13 @@ struct MessageView: View {
                         }
                         .overlay(
                             VStack {
+                                if let specificDate = meal.specificDate {
+                                    HStack {
+                                        Spacer()
+                                        SpecificCalendarBadge(specificDate: specificDate, weekday: meal.weekday, mealID: meal.id)
+                                            .padding()
+                                    }
+                                }
                                 Spacer ()
                                 HStack{
                                     Spacer()

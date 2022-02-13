@@ -51,7 +51,7 @@ struct MealChatRow: View {
             
             Spacer()
             if meal.weekday != 0 {
-                CalendarBadge(weekday: meal.weekday)
+                CalendarBadge(specificDate: meal.specificDate, weekday: meal.weekday)
             }
             
         }

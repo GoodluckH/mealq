@@ -77,6 +77,9 @@ struct MainAppView: View {
                         .background(.ultraThinMaterial)
                         .onTapGesture {
                             sharedDatePickerViewModel.showDatePicker = false
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                                sharedDatePickerViewModel.animate = false
+                            }
                         }.opacity(sharedDatePickerViewModel.showDatePicker ? 1 : 0)
                         .animation(Animation.easeOut(duration: 0.3), value: sharedDatePickerViewModel.showDatePicker)
                    

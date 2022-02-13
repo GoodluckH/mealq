@@ -470,7 +470,9 @@ class MealsManager: ObservableObject {
     func setSpecificDate(on date: Date, for mealID: String) {
         settingSpecificDate = .loading
         db.collection("chats").document(mealID).updateData([
-            "specificDate": date]) { err in
+            "specificDate": date,
+            "weekday": (Calendar.current.component(.weekday, from: date) - 1) == 0 ? 7 : (Calendar.current.component(.weekday, from: date) - 1)
+        ]) { err in
                 if let err = err {
                     self.settingSpecificDate = .error
                     print("error setting specific date: \(err.localizedDescription)")
