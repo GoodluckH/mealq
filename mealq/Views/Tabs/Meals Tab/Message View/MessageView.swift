@@ -39,6 +39,23 @@ struct MessageView: View {
         //Use this if NavigationBarTitle is with displayMode = .inline
         UINavigationBar.appearance().titleTextAttributes = [.font : UIFont(name: "Quicksand-Bold", size: 20)!]
         UINavigationBar.appearance().tintColor = UIColor(Color("MyPrimary"))
+        
+     
+    
+        let navigationBarAppearance = UINavigationBarAppearance()
+        navigationBarAppearance.configureWithTransparentBackground()
+        navigationBarAppearance.backgroundColor = UIColor(Color("QueryLoaderStartingColor"))
+        
+        
+        
+        UINavigationBar.appearance().standardAppearance = navigationBarAppearance
+        UINavigationBar.appearance().compactAppearance = navigationBarAppearance
+        UINavigationBar.appearance().scrollEdgeAppearance = navigationBarAppearance
+            
+            
+        
+        
+        
         UITextView.appearance().textDragInteraction?.isEnabled = false
         UITextView.appearance().isScrollEnabled  = false
         UITextView.appearance().backgroundColor = .clear
@@ -117,15 +134,10 @@ struct MessageView: View {
                         })
             
                         }
+                        .overlay(ExpandableInfo(meal: $meal).offset(y: -(Constants.tightStackSpacing * 6)), alignment: .top)
                         .overlay(
                             VStack {
-                                if let specificDate = meal.specificDate {
-                                    HStack {
-                                        Spacer()
-                                        SpecificCalendarBadge(specificDate: specificDate, weekday: meal.weekday, mealID: meal.id)
-                                            .padding()
-                                    }
-                                }
+                                
                                 Spacer ()
                                 HStack{
                                     Spacer()
@@ -168,6 +180,7 @@ struct MessageView: View {
                         .introspectScrollView { scrollView in
                             self.scrollView = scrollView
                         }
+                        .padding(.top, Constants.tightStackSpacing * 6)
                 }
                             
            }
@@ -247,20 +260,16 @@ struct MessageView: View {
             }
         }
         .navigationBarTitle(messagesManager.fetchingMessages == .loading ? "loading..." : meal.name, displayMode: .inline)
+        
         .toolbar {
-            NavigationLink (destination: MealDetailView(meal: $meal, allowEdit: true)
-                                .onAppear {
-                showingDetailedMeal = true
-            }
-                                .onDisappear {
-                        showingDetailedMeal = false
-                        }
-                                
-            ) {
-                Image(systemName: "info.circle")
-                    .foregroundColor(Color("MyPrimary"))
-                    
-            }
+                NavigationLink (destination: MealDetailView(meal: $meal, allowEdit: true)
+                                                .onAppear { showingDetailedMeal = true }
+                                                .onDisappear { showingDetailedMeal = false }
+                ) {
+                    Image(systemName: "info.circle").foregroundColor(Color("MyPrimary"))
+                }
+
+            
         }
     }
     }

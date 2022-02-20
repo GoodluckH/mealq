@@ -15,7 +15,8 @@ struct Constants {
     static let roundedRectSelectedShadowRadius: CGFloat = 3
     static let roundedRectShadowYOffset: CGFloat = 1
     static let isPressedShadowRadius: Double = 2
-    static let chatBubbleCornerRadius : CGSize = CGSize(width: 10, height: 10)
+    static let chatBubbleCornerRadius: CGSize = CGSize(width: 10, height: 10)
+    static let expandableInfoCornerRadius: CGSize = CGSize(width: 25, height: 25)
     static let textFieldBubbleCornerRadius : CGSize = CGSize(width: 15, height: 15)
     static let dynamicTextFieldMinHeight: CGFloat = 35
     static let dynamicTextFieldMaxHeight: CGFloat = 300

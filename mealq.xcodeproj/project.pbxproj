@@ -43,6 +43,8 @@
 		802E5611275D371200464CA6 /* DateSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802E5610275D371200464CA6 /* DateSelection.swift */; };
 		802E5613275FA74300464CA6 /* MealsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802E5612275FA74300464CA6 /* MealsManager.swift */; };
 		802E56172763CA0E00464CA6 /* error.json in Resources */ = {isa = PBXBuildFile; fileRef = 802E56162763CA0E00464CA6 /* error.json */; };
+		80543CC727C1734200E77307 /* ExpandableInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80543CC627C1734100E77307 /* ExpandableInfo.swift */; };
+		80543CC927C1ACF200E77307 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80543CC827C1ACF200E77307 /* MapKit.framework */; };
 		805F28FC274DA449002DEA8D /* BigUserPicMotionObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805F28FB274DA449002DEA8D /* BigUserPicMotionObserver.swift */; };
 		807631A027B1A22B00A91E94 /* UserFriends.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8076319F27B1A22B00A91E94 /* UserFriends.swift */; };
 		807631A227B8516600A91E94 /* SetDetailedDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807631A127B8516600A91E94 /* SetDetailedDate.swift */; };
@@ -178,6 +180,8 @@
 		802E5610275D371200464CA6 /* DateSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateSelection.swift; sourceTree = "<group>"; };
 		802E5612275FA74300464CA6 /* MealsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealsManager.swift; sourceTree = "<group>"; };
 		802E56162763CA0E00464CA6 /* error.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = error.json; sourceTree = "<group>"; };
+		80543CC627C1734100E77307 /* ExpandableInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandableInfo.swift; sourceTree = "<group>"; };
+		80543CC827C1ACF200E77307 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		805F28FB274DA449002DEA8D /* BigUserPicMotionObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigUserPicMotionObserver.swift; sourceTree = "<group>"; };
 		8076319F27B1A22B00A91E94 /* UserFriends.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserFriends.swift; sourceTree = "<group>"; };
 		807631A127B8516600A91E94 /* SetDetailedDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetDetailedDate.swift; sourceTree = "<group>"; };
@@ -265,6 +269,7 @@
 				80C12084272E06A1006D125D /* FacebookCore in Frameworks */,
 				80C120AF272F86C9006D125D /* ActivityIndicatorView in Frameworks */,
 				80A8B71127A5E629002A5C58 /* GoogleSignIn in Frameworks */,
+				80543CC927C1ACF200E77307 /* MapKit.framework in Frameworks */,
 				80E721672790AA4A00FBB6E3 /* FirebaseFunctions in Frameworks */,
 				80C1207A272E0341006D125D /* FirebaseAuth in Frameworks */,
 				80C12080272E0341006D125D /* FirebaseStorage in Frameworks */,
@@ -301,6 +306,7 @@
 				8023FDC7278685CC003E728E /* TextEditorBubble.swift */,
 				8023FDD12787AC98003E728E /* ToBottomMessageButton.swift */,
 				8023FDD32787D3E5003E728E /* ChatTimeStamp.swift */,
+				80543CC627C1734100E77307 /* ExpandableInfo.swift */,
 			);
 			path = "Message View";
 			sourceTree = "<group>";
@@ -317,6 +323,7 @@
 		802BC31C273DC92F004F1505 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				80543CC827C1ACF200E77307 /* MapKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -801,6 +808,7 @@
 				80EFC38A27336984005520D3 /* ReferralView.swift in Sources */,
 				80E9389427A42F2C00B06ED2 /* SingleActivityCard.swift in Sources */,
 				8023FDBE2784E915003E728E /* ChatBubble.swift in Sources */,
+				80543CC727C1734200E77307 /* ExpandableInfo.swift in Sources */,
 				80EFC38627333D46005520D3 /* SectionView.swift in Sources */,
 				808257A727A476CB0020B9FE /* PlaceholderCard.swift in Sources */,
 				80A48CE42746C61000063B57 /* FakeSearchBar.swift in Sources */,

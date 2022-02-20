@@ -118,7 +118,8 @@ struct MealsView: View {
              
          }
              .navigationViewStyle(.stack)
-      
+             .ignoresSafeArea(edges: .top)
+             
                 
            
    
