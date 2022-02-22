@@ -24,15 +24,15 @@ struct MealDetailView: View {
     @State private var text: String
 
     
-    
     init(meal: Binding<Meal?>, allowEdit: Bool) {
         //Use this if NavigationBarTitle is with Large Font
        // UINavigationBar.appearance().largeTitleTextAttributes = [.font : UIFont(name: "Georgia-Bold", size: 20)!]
 
         //Use this if NavigationBarTitle is with displayMode = .inline
        // UINavigationBar.appearance().titleTextAttributes = [.font : UIFont(name: "Quicksand-Bold", size: 20)!]
-        UIBarButtonItem.appearance().setTitleTextAttributes([.foregroundColor: UIColor.clear], for: .normal)
-
+        // UIBarButtonItem.appearance().setTitleTextAttributes([.foregroundColor: UIColor.clear], for: .normal)
+      //   UINavigationItem.BackButtonDisplayMode = .minimal
+            
         self._meal = meal
         self._text = State(initialValue: meal.wrappedValue?.name ?? "" )
         self.allowEdit = allowEdit
@@ -120,8 +120,8 @@ struct MealDetailView: View {
                  
                     ScrollView{
                         LazyVStack(pinnedViews: [.sectionHeaders]){
-                            Section(header: SectionHeader(headerText: "other invitees")) {
-                                ForEach(meal.to.keys.filter{$0 != sessionStore.localUser!}.sorted{$0.fullname > $1.fullname}, id: \.self) { user in
+                            Section(header: SectionHeader(headerText: "invited:")) {
+                                ForEach(meal.to.keys.sorted{$0.fullname > $1.fullname}, id: \.self) { user in
                                 
                                 HStack {
                                     NavigationLink(destination: UserProfileView(user: user)){

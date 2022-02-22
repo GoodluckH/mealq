@@ -11,15 +11,15 @@ struct SearchAndSelectFriends: View {
     @ObservedObject var friendsManager = FriendsManager.sharedFriendsManager
     
     @Binding var showSearchFriendSheet: Bool
-    private var initialStateOfSelectedFriends: Set<String>
+    private var initialStateOfSelectedFriends: Set<MealqUser>
     
     @State var searchText = ""
     
     init(showSearchFriendSheet: Binding<Bool>) {
         self._showSearchFriendSheet = showSearchFriendSheet
-        self.initialStateOfSelectedFriends = Set<String>()
+        self.initialStateOfSelectedFriends = Set<MealqUser>()
         if !FriendsManager.sharedFriendsManager.changedFriendSelection {
-            FriendsManager.sharedFriendsManager.selectedFriends.forEach {self.initialStateOfSelectedFriends.insert($0.id)}
+            FriendsManager.sharedFriendsManager.selectedFriends.forEach {self.initialStateOfSelectedFriends.insert($0)}
         }
         UIScrollView.appearance().keyboardDismissMode = .interactive
     }
@@ -77,7 +77,13 @@ struct SearchAndSelectFriends: View {
                         }
                         ToolbarItem(placement: .navigationBarLeading) {
                             Button(action: {
-                                friendsManager.selectedFriends = friendsManager.friends.filter {initialStateOfSelectedFriends.contains($0.id)}
+                                //TODO: Fix this thing
+                                for friend in friendsManager.selectedFriends {
+                                    if !initialStateOfSelectedFriends.contains(friend) {
+                                        friendsManager.selectedFriends.remove(at: friendsManager.selectedFriends.firstIndex(of: friend)!)
+                                    }
+                                }
+                                
                                 showSearchFriendSheet = false
                             }) {
                                 Text("Cancel")

@@ -451,36 +451,80 @@ class MealsManager: ObservableObject {
     
     @Published var changingMealName = Status.idle
     func changeMealName(to newName: String, for mealID: String) {
-        changingMealName = .loading
-        db.collection("chats").document(mealID).updateData([
-            "name": newName]) { err in
-                if let err = err {
-                    self.changingMealName = .error
-                    print("error changing meal name: \(err.localizedDescription)")
-                } else {
-                    self.changingMealName = .idle
-                    print("successfully changed meal name to \(newName)")
+        
+        if let currentUser =  Auth.auth().currentUser {
+            changingMealName = .loading
+            db.collection("chats").document(mealID).updateData([
+                "name": newName]) { err in
+                    if let err = err {
+                        self.changingMealName = .error
+                        print("error changing meal name: \(err.localizedDescription)")
+                    } else {
+                        let message =  self.db.collection("chats").document(mealID).collection("messages").document()
+                        let payload = [
+                            "id": message.documentID,
+                            "senderID": "SYSTEM",
+                            "senderName": "SYSTEM",
+                            "content":  "\(currentUser.displayName!) changed the group chat name to \"\(newName)\"",
+                            "timeStamp": Date()
+                        ] as [String: Any]
+                        message.setData(payload) { err in
+                            if let err = err {
+                                print("something went wrong when setting the system message to reflect the meal name change: \(err.localizedDescription)")
+                                self.changingMealName = .error
+                                return
+                            } else {
+                                print("successfully set the system message to reflect the meal name change")
+                                print("successfully changed meal name to \(newName)")
+                                self.changingMealName = .idle
+
+                            }
+                        }
+                        
+                    }
+                    
                 }
-                
-            }
+        }
+     
     }
     
     
     @Published var settingSpecificDate = Status.idle
     func setSpecificDate(on date: Date, for mealID: String) {
-        settingSpecificDate = .loading
-        db.collection("chats").document(mealID).updateData([
-            "specificDate": date,
-            "weekday": (Calendar.current.component(.weekday, from: date) - 1) == 0 ? 7 : (Calendar.current.component(.weekday, from: date) - 1)
-        ]) { err in
-                if let err = err {
-                    self.settingSpecificDate = .error
-                    print("error setting specific date: \(err.localizedDescription)")
-                } else {
-                    self.settingSpecificDate = .idle
-                    print("successfully set date for meal \(mealID)")
+        if let currentUser = Auth.auth().currentUser {
+            settingSpecificDate = .loading
+            db.collection("chats").document(mealID).updateData([
+                "specificDate": date,
+                "weekday": (Calendar.current.component(.weekday, from: date) - 1) == 0 ? 7 : (Calendar.current.component(.weekday, from: date) - 1)
+            ]) { err in
+                    if let err = err {
+                        self.settingSpecificDate = .error
+                        print("error setting specific date: \(err.localizedDescription)")
+                    } else {
+                        let message =  self.db.collection("chats").document(mealID).collection("messages").document()
+                        let payload = [
+                            "id": message.documentID,
+                            "senderID": "SYSTEM",
+                            "senderName": "SYSTEM",
+                            "content":  "\(currentUser.displayName!) modified the date",
+                            "timeStamp": Date()
+                        ] as [String: Any]
+                        message.setData(payload) { err in
+                            if let err = err {
+                                print("something went wrong when setting the system message to reflect the meal name change: \(err.localizedDescription)")
+                                self.changingMealName = .error
+                                return
+                            } else {
+                                self.settingSpecificDate = .idle
+                                print("successfully set date for meal \(mealID)")
+
+                            }
+                        }
+                      
+                    }
                 }
-            }
+        }
+     
     }
     
     

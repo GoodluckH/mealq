@@ -32,52 +32,61 @@ struct ChatRow: View {
 
     
     var body: some View {
-        HStack (alignment: showAvatar ? .bottom : .center,spacing: 0) {
-            if sender != currentUser && showAvatar {
-                
-             NavigationLink(destination: UserProfileView(user: sender)) {
-                    ProfilePicView(picURL: sender.normalPicURL)
-                         .padding(.leading).padding(.bottom, 5)
-                         .frame(width: UIScreen.main.bounds.width / 6, height: UIScreen.main.bounds.width / 10)
-   
-             }.isDetailLink(false)
-            
-            
-               
-            } else  {
-                HStack{}.padding(.vertical)
-                    .padding(.leading)
-                    .frame(width: UIScreen.main.bounds.width / 6, height: UIScreen.main.bounds.width / 12)
-            }
-            
-            if sender == currentUser {Spacer(minLength: UIScreen.main.bounds.width / 6)}
-            
-            VStack(alignment: sender == currentUser ? .trailing : .leading, spacing: 5) {
-                Text(message.content)
-                    .customFont(name: "Quicksand-Regular", style: .callout)
-                    .foregroundColor(sender == currentUser ? .white : .black)
-                    .padding(8)
-                    .background(sender == currentUser ? .blue : Color("SearchBarBackgroundColor"))
-                    .clipShape(ChatBubble(myMsg: sender == currentUser))
-                    .onTapGesture {
-                        if !showAvatar {
-                            withAnimation(.easeOut(duration: 0.2)){showTimeStamp.toggle()}
-                        }
-                    }
-                
-                if showAvatar || showTimeStamp {
-                    Text(message.timeStamp, style: .time)
-                    .customFont(name: "Quicksand-Regular", style: .caption2)
-                    .foregroundColor(.gray)
-                    .transition(.move(edge: .top))
-                }
+        if message.senderID == "SYSTEM" {
+            Text(message.content)
+                .customFont(name: "Quicksand-Regular", style: .footnote)
+                .foregroundColor(.gray)
+                .padding(.horizontal, 8)
+        } else {
+            HStack (alignment: showAvatar ? .bottom : .center,spacing: 0) {
+                if sender != currentUser && showAvatar {
                     
-            }
-            if sender != currentUser {Spacer(minLength: UIScreen.main.bounds.width / 6)}
-            else {
-                VStack{}.padding(.trailing, UIScreen.main.bounds.width / 24).padding(.vertical)
+                 NavigationLink(destination: UserProfileView(user: sender)) {
+                        ProfilePicView(picURL: sender.normalPicURL)
+                             .padding(.leading).padding(.bottom, 5)
+                             .frame(width: UIScreen.main.bounds.width / 6, height: UIScreen.main.bounds.width / 10)
+       
+                 }.isDetailLink(false)
+                
+                
+                   
+                } else  {
+                    HStack{}.padding(.vertical)
+                        .padding(.leading)
+                        .frame(width: UIScreen.main.bounds.width / 6, height: UIScreen.main.bounds.width / 12)
+                }
+                
+                if sender == currentUser {Spacer(minLength: UIScreen.main.bounds.width / 6)}
+                
+                VStack(alignment: sender == currentUser ? .trailing : .leading, spacing: 5) {
+                    Text(message.content)
+                        .customFont(name: "Quicksand-Regular", style: .callout)
+                        .foregroundColor(sender == currentUser ? .white : .black)
+                        .padding(8)
+                        .background(sender == currentUser ? .blue : Color("SearchBarBackgroundColor"))
+                        .clipShape(ChatBubble(myMsg: sender == currentUser))
+                        .onTapGesture {
+                            if !showAvatar {
+                                withAnimation(.easeOut(duration: 0.2)){showTimeStamp.toggle()}
+                            }
+                        }
+                    
+                    if showAvatar || showTimeStamp {
+                        Text(message.timeStamp, style: .time)
+                        .customFont(name: "Quicksand-Regular", style: .caption2)
+                        .foregroundColor(.gray)
+                        .transition(.move(edge: .top))
+                    }
+                        
+                }
+                if sender != currentUser {Spacer(minLength: UIScreen.main.bounds.width / 6)}
+                else {
+                    VStack{}.padding(.trailing, UIScreen.main.bounds.width / 24).padding(.vertical)
+                }
             }
         }
+        
+        
     }
 }
 

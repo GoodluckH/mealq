@@ -259,15 +259,24 @@ struct MessageView: View {
                 keyboardHeight = height
             }
         }
-        .navigationBarTitle(messagesManager.fetchingMessages == .loading ? "loading..." : meal.name, displayMode: .inline)
+        .navigationBarTitle("", displayMode: .inline)//messagesManager.fetchingMessages == .loading ? "loading..." : meal.name, displayMode: .inline)
         
         .toolbar {
+            ToolbarItemGroup(placement: .principal) {
+                Text("\(messagesManager.fetchingMessages == .loading ? "loading..." : meal.name)")
+                    .font(Font.custom("Quicksand-Bold", size: 20))
+            }
+            ToolbarItemGroup(placement: .primaryAction) {
                 NavigationLink (destination: MealDetailView(meal: $meal, allowEdit: true)
                                                 .onAppear { showingDetailedMeal = true }
                                                 .onDisappear { showingDetailedMeal = false }
+                                               
                 ) {
                     Image(systemName: "info.circle").foregroundColor(Color("MyPrimary"))
-                }
+            }
+            }
+            
+          
 
             
         }

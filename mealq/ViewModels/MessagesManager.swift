@@ -126,7 +126,7 @@ class MessagesManager: ObservableObject {
                 "content": tempMessageContent,
                 "timeStamp": date
             ] as [String: Any]
-            
+           
             self.messages.append(Message(id: message.documentID, senderID:sender.id, senderName: sender.fullname, timeStamp: date, content: tempMessageContent))
             
             let batch = self.db.batch()
