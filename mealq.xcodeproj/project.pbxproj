@@ -43,9 +43,18 @@
 		802E5611275D371200464CA6 /* DateSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802E5610275D371200464CA6 /* DateSelection.swift */; };
 		802E5613275FA74300464CA6 /* MealsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802E5612275FA74300464CA6 /* MealsManager.swift */; };
 		802E56172763CA0E00464CA6 /* error.json in Resources */ = {isa = PBXBuildFile; fileRef = 802E56162763CA0E00464CA6 /* error.json */; };
+		8044610627D401A0006F547E /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8044610527D401A0006F547E /* MapView.swift */; };
+		8044610827D40FA9006F547E /* MapSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8044610727D40FA9006F547E /* MapSearchBar.swift */; };
 		80543CC727C1734200E77307 /* ExpandableInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80543CC627C1734100E77307 /* ExpandableInfo.swift */; };
 		80543CC927C1ACF200E77307 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80543CC827C1ACF200E77307 /* MapKit.framework */; };
 		805F28FC274DA449002DEA8D /* BigUserPicMotionObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805F28FB274DA449002DEA8D /* BigUserPicMotionObserver.swift */; };
+		80657BA827CABEAE009BED1A /* MapSnippet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80657BA727CABEAE009BED1A /* MapSnippet.swift */; };
+		80657BAA27CAC64B009BED1A /* MapViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80657BA927CAC64A009BED1A /* MapViewManager.swift */; };
+		80657BAC27CAC68A009BED1A /* DetailedMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80657BAB27CAC68A009BED1A /* DetailedMapView.swift */; };
+		80657BAF27CADF06009BED1A /* MapboxSearch in Frameworks */ = {isa = PBXBuildFile; productRef = 80657BAE27CADF06009BED1A /* MapboxSearch */; };
+		80657BB127CADF06009BED1A /* MapboxSearchUI in Frameworks */ = {isa = PBXBuildFile; productRef = 80657BB027CADF06009BED1A /* MapboxSearchUI */; };
+		80657BB627CAE155009BED1A /* MapboxMaps in Frameworks */ = {isa = PBXBuildFile; productRef = 80657BB527CAE155009BED1A /* MapboxMaps */; };
+		80657BB827CC2791009BED1A /* MapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80657BB727CC2791009BED1A /* MapViewModel.swift */; };
 		807631A027B1A22B00A91E94 /* UserFriends.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8076319F27B1A22B00A91E94 /* UserFriends.swift */; };
 		807631A227B8516600A91E94 /* SetDetailedDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807631A127B8516600A91E94 /* SetDetailedDate.swift */; };
 		807631A427B89E0D00A91E94 /* MealDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807631A327B89E0C00A91E94 /* MealDatePicker.swift */; };
@@ -180,9 +189,15 @@
 		802E5610275D371200464CA6 /* DateSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateSelection.swift; sourceTree = "<group>"; };
 		802E5612275FA74300464CA6 /* MealsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealsManager.swift; sourceTree = "<group>"; };
 		802E56162763CA0E00464CA6 /* error.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = error.json; sourceTree = "<group>"; };
+		8044610527D401A0006F547E /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
+		8044610727D40FA9006F547E /* MapSearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapSearchBar.swift; sourceTree = "<group>"; };
 		80543CC627C1734100E77307 /* ExpandableInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandableInfo.swift; sourceTree = "<group>"; };
 		80543CC827C1ACF200E77307 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		805F28FB274DA449002DEA8D /* BigUserPicMotionObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigUserPicMotionObserver.swift; sourceTree = "<group>"; };
+		80657BA727CABEAE009BED1A /* MapSnippet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapSnippet.swift; sourceTree = "<group>"; };
+		80657BA927CAC64A009BED1A /* MapViewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewManager.swift; sourceTree = "<group>"; };
+		80657BAB27CAC68A009BED1A /* DetailedMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailedMapView.swift; sourceTree = "<group>"; };
+		80657BB727CC2791009BED1A /* MapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewModel.swift; sourceTree = "<group>"; };
 		8076319F27B1A22B00A91E94 /* UserFriends.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserFriends.swift; sourceTree = "<group>"; };
 		807631A127B8516600A91E94 /* SetDetailedDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetDetailedDate.swift; sourceTree = "<group>"; };
 		807631A327B89E0C00A91E94 /* MealDatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealDatePicker.swift; sourceTree = "<group>"; };
@@ -265,14 +280,17 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				80657BAF27CADF06009BED1A /* MapboxSearch in Frameworks */,
 				80C1207E272E0341006D125D /* FirebaseMessaging in Frameworks */,
 				80C12084272E06A1006D125D /* FacebookCore in Frameworks */,
+				80657BB627CAE155009BED1A /* MapboxMaps in Frameworks */,
 				80C120AF272F86C9006D125D /* ActivityIndicatorView in Frameworks */,
 				80A8B71127A5E629002A5C58 /* GoogleSignIn in Frameworks */,
 				80543CC927C1ACF200E77307 /* MapKit.framework in Frameworks */,
 				80E721672790AA4A00FBB6E3 /* FirebaseFunctions in Frameworks */,
 				80C1207A272E0341006D125D /* FirebaseAuth in Frameworks */,
 				80C12080272E0341006D125D /* FirebaseStorage in Frameworks */,
+				80657BB127CADF06009BED1A /* MapboxSearchUI in Frameworks */,
 				80C12086272E06A1006D125D /* FacebookLogin in Frameworks */,
 				802E5609275C592900464CA6 /* Lottie in Frameworks */,
 				802BC32E27435472004F1505 /* FirebaseAppCheck in Frameworks */,
@@ -340,7 +358,6 @@
 		802BC32A27406392004F1505 /* Noti Tab */ = {
 			isa = PBXGroup;
 			children = (
-				80F41FFA2780D4730080C67D /* Meal Details */,
 				802BC32B274063A3004F1505 /* NotificationView.swift */,
 				802BC321273F7394004F1505 /* SingleNotificationView.swift */,
 				807631A727B8C41F00A91E94 /* MealDetailNotiView.swift */,
@@ -378,6 +395,17 @@
 				802E5610275D371200464CA6 /* DateSelection.swift */,
 			);
 			path = "Date Selection";
+			sourceTree = "<group>";
+		};
+		80657BA627CABE9F009BED1A /* Map View */ = {
+			isa = PBXGroup;
+			children = (
+				80657BA727CABEAE009BED1A /* MapSnippet.swift */,
+				80657BAB27CAC68A009BED1A /* DetailedMapView.swift */,
+				8044610527D401A0006F547E /* MapView.swift */,
+				8044610727D40FA9006F547E /* MapSearchBar.swift */,
+			);
+			path = "Map View";
 			sourceTree = "<group>";
 		};
 		806B30C3273DC75E003FF495 /* Products */ = {
@@ -484,6 +512,8 @@
 				80E721682792185B00FBB6E3 /* ViewManager.swift */,
 				80E9388E27A04E3B00B06ED2 /* ActivitiesManager.swift */,
 				807631A527B89EC900A91E94 /* DatePickerViewModel.swift */,
+				80657BA927CAC64A009BED1A /* MapViewManager.swift */,
+				80657BB727CC2791009BED1A /* MapViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -546,6 +576,8 @@
 		80C120A9272F8391006D125D /* Meals Tab */ = {
 			isa = PBXGroup;
 			children = (
+				80F41FFA2780D4730080C67D /* Meal Details */,
+				80657BA627CABE9F009BED1A /* Map View */,
 				8023FDB82784CA09003E728E /* Message View */,
 				8023FDB32784C6DE003E728E /* Meal Chat Row */,
 				80C12095272E5024006D125D /* MealsView.swift */,
@@ -670,6 +702,9 @@
 				802E5608275C592900464CA6 /* Lottie */,
 				80E721662790AA4A00FBB6E3 /* FirebaseFunctions */,
 				80A8B71027A5E629002A5C58 /* GoogleSignIn */,
+				80657BAE27CADF06009BED1A /* MapboxSearch */,
+				80657BB027CADF06009BED1A /* MapboxSearchUI */,
+				80657BB527CAE155009BED1A /* MapboxMaps */,
 			);
 			productName = mealq;
 			productReference = 802BC30C273DC8BB004F1505 /* mealq.app */;
@@ -709,6 +744,8 @@
 				802BC3342745AA6D004F1505 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
 				802E5607275C592900464CA6 /* XCRemoteSwiftPackageReference "lottie-ios" */,
 				80A8B70F27A5E629002A5C58 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+				80657BAD27CADF06009BED1A /* XCRemoteSwiftPackageReference "search-ios" */,
+				80657BB427CAE155009BED1A /* XCRemoteSwiftPackageReference "mapbox-maps-ios" */,
 			);
 			productRefGroup = 806B30C3273DC75E003FF495 /* Products */;
 			projectDirPath = "";
@@ -788,6 +825,7 @@
 				80C120B5272F984D006D125D /* ProfilePicStyles.swift in Sources */,
 				80E9388F27A04E3B00B06ED2 /* ActivitiesManager.swift in Sources */,
 				80F41FF92780C9300080C67D /* MealDetailView.swift in Sources */,
+				8044610627D401A0006F547E /* MapView.swift in Sources */,
 				80F41FFC2780D4900080C67D /* MealControlButtons.swift in Sources */,
 				80964EAD2739ABEA00F54B6D /* AppDelegate.swift in Sources */,
 				807631AA27B987D900A91E94 /* SpecificCalendarBadge.swift in Sources */,
@@ -802,16 +840,20 @@
 				80EFC37B2732EF78005520D3 /* SearchBarComponents.swift in Sources */,
 				80C120B7272F98B8006D125D /* ResizeFont.swift in Sources */,
 				80C12098272E502E006D125D /* ProfileView.swift in Sources */,
+				80657BB827CC2791009BED1A /* MapViewModel.swift in Sources */,
 				80EFC37F27330A19005520D3 /* QueryScreen.swift in Sources */,
 				8023FDB52784C6F4003E728E /* MealChatRow.swift in Sources */,
 				80C12069272E02CB006D125D /* ContentView.swift in Sources */,
 				80EFC38A27336984005520D3 /* ReferralView.swift in Sources */,
 				80E9389427A42F2C00B06ED2 /* SingleActivityCard.swift in Sources */,
 				8023FDBE2784E915003E728E /* ChatBubble.swift in Sources */,
+				80657BAA27CAC64B009BED1A /* MapViewManager.swift in Sources */,
 				80543CC727C1734200E77307 /* ExpandableInfo.swift in Sources */,
+				80657BAC27CAC68A009BED1A /* DetailedMapView.swift in Sources */,
 				80EFC38627333D46005520D3 /* SectionView.swift in Sources */,
 				808257A727A476CB0020B9FE /* PlaceholderCard.swift in Sources */,
 				80A48CE42746C61000063B57 /* FakeSearchBar.swift in Sources */,
+				80657BA827CABEAE009BED1A /* MapSnippet.swift in Sources */,
 				80A48CEA2746DCC500063B57 /* SingleFriendPane.swift in Sources */,
 				80C12067272E02CB006D125D /* mealqApp.swift in Sources */,
 				80F41FFE2780FFF40080C67D /* UserMealStatus.swift in Sources */,
@@ -824,6 +866,7 @@
 				80EFC38F273496FA005520D3 /* ConnectButton.swift in Sources */,
 				80E9388D279A137D00B06ED2 /* NotificationItem.swift in Sources */,
 				8023FDB2278387F4003E728E /* MessagesManager.swift in Sources */,
+				8044610827D40FA9006F547E /* MapSearchBar.swift in Sources */,
 				80C12091272E4F62006D125D /* UserLoginView.swift in Sources */,
 				80E72165278FA30100FBB6E3 /* DateUtils.swift in Sources */,
 				80C1208C272E472C006D125D /* UserModel.swift in Sources */,
@@ -1043,6 +1086,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = mealq/Info.plist;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -1079,6 +1123,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = mealq/Info.plist;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -1149,6 +1194,22 @@
 				minimumVersion = 3.0.0;
 			};
 		};
+		80657BAD27CADF06009BED1A /* XCRemoteSwiftPackageReference "search-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mapbox/search-ios.git";
+			requirement = {
+				kind = exactVersion;
+				version = "1.0.0-beta.24";
+			};
+		};
+		80657BB427CAE155009BED1A /* XCRemoteSwiftPackageReference "mapbox-maps-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mapbox/mapbox-maps-ios.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.3.0;
+			};
+		};
 		80A8B70F27A5E629002A5C58 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/google/GoogleSignIn-iOS.git";
@@ -1208,6 +1269,21 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 802E5607275C592900464CA6 /* XCRemoteSwiftPackageReference "lottie-ios" */;
 			productName = Lottie;
+		};
+		80657BAE27CADF06009BED1A /* MapboxSearch */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 80657BAD27CADF06009BED1A /* XCRemoteSwiftPackageReference "search-ios" */;
+			productName = MapboxSearch;
+		};
+		80657BB027CADF06009BED1A /* MapboxSearchUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 80657BAD27CADF06009BED1A /* XCRemoteSwiftPackageReference "search-ios" */;
+			productName = MapboxSearchUI;
+		};
+		80657BB527CAE155009BED1A /* MapboxMaps */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 80657BB427CAE155009BED1A /* XCRemoteSwiftPackageReference "mapbox-maps-ios" */;
+			productName = MapboxMaps;
 		};
 		80A8B71027A5E629002A5C58 /* GoogleSignIn */ = {
 			isa = XCSwiftPackageProductDependency;

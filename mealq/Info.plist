@@ -56,6 +56,8 @@
 		<string>fbauth2</string>
 		<string>fbshareextension</string>
 	</array>
+	<key>MBXAccessToken</key>
+	<string>pk.eyJ1IjoiZ29vZGx1Y2toIiwiYSI6ImNrbHZkMnl0aDA3djEyeG8wbWpiMnphOGwifQ.gTYaO-uu46huh_eqhIpqUw</string>
 	<key>MKDirectionsApplicationSupportedModes</key>
 	<array>
 		<string>MKDirectionsModeBike</string>

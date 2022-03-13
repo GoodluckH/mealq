@@ -9,6 +9,9 @@ import SwiftUI
 import Firebase
 import FirebaseAuth
 
+import MapKit
+import CoreLocation
+
 enum Tab {
     case social, meals, profile, noti, test
 }
@@ -19,7 +22,9 @@ struct MainAppView: View {
     @StateObject var mealsManager = MealsManager()
     @StateObject var messagesManager = MessagesManager()
     @StateObject var activitiesManager = ActivitiesManager()
-    
+
+
+
     @EnvironmentObject var sessionStore: SessionStore
     
     @ObservedObject private var friendsManager = FriendsManager.sharedFriendsManager
@@ -86,6 +91,9 @@ struct MainAppView: View {
                     MealDatePicker()
                 }.ignoresSafeArea(.all)
             }
+
+            
+            
         } .environmentObject(mealsManager)
             .environmentObject(messagesManager)
             .environmentObject(activitiesManager)

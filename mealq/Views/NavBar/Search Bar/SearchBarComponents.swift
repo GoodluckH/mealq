@@ -36,10 +36,10 @@ struct SearchBarSymbols: View {
 struct CustomTextField: View {
     @Binding var searchText: String
     @FocusState private var focusedField: Bool
-
+    var placeholder: String?
     var body: some View {
         TextField("", text: $searchText)
-            .placeholder("search people", when: searchText.isEmpty)
+            .placeholder(placeholder ?? "search people", when: searchText.isEmpty)
                 .frame(alignment: .leading)
                 .focused($focusedField)
                 .foregroundColor(Color("SearchBarSymbolColor"))
