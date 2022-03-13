@@ -98,6 +98,9 @@
 		80C120B3272F93CE006D125D /* test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C120B2272F93CD006D125D /* test.swift */; };
 		80C120B5272F984D006D125D /* ProfilePicStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C120B4272F984C006D125D /* ProfilePicStyles.swift */; };
 		80C120B7272F98B8006D125D /* ResizeFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C120B6272F98B8006D125D /* ResizeFont.swift */; };
+		80CB8E6827DE6E8600C46734 /* PlaceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80CB8E6727DE6E8600C46734 /* PlaceModel.swift */; };
+		80CB8E6B27DE8F2900C46734 /* GeoFire in Frameworks */ = {isa = PBXBuildFile; productRef = 80CB8E6A27DE8F2900C46734 /* GeoFire */; };
+		80CB8E6D27DE8F2900C46734 /* GeoFireUtils in Frameworks */ = {isa = PBXBuildFile; productRef = 80CB8E6C27DE8F2900C46734 /* GeoFireUtils */; };
 		80E72158278CA76700FBB6E3 /* MealTimeStamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E72157278CA76700FBB6E3 /* MealTimeStamp.swift */; };
 		80E7215B278CADEC00FBB6E3 /* RowProfilePicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E7215A278CADEC00FBB6E3 /* RowProfilePicView.swift */; };
 		80E7215D278E374C00FBB6E3 /* DebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E7215C278E374C00FBB6E3 /* DebugView.swift */; };
@@ -235,6 +238,7 @@
 		80C120B2272F93CD006D125D /* test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = test.swift; sourceTree = "<group>"; };
 		80C120B4272F984C006D125D /* ProfilePicStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePicStyles.swift; sourceTree = "<group>"; };
 		80C120B6272F98B8006D125D /* ResizeFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResizeFont.swift; sourceTree = "<group>"; };
+		80CB8E6727DE6E8600C46734 /* PlaceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceModel.swift; sourceTree = "<group>"; };
 		80E72157278CA76700FBB6E3 /* MealTimeStamp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealTimeStamp.swift; sourceTree = "<group>"; };
 		80E7215A278CADEC00FBB6E3 /* RowProfilePicView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RowProfilePicView.swift; sourceTree = "<group>"; };
 		80E7215C278E374C00FBB6E3 /* DebugView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugView.swift; sourceTree = "<group>"; };
@@ -292,7 +296,9 @@
 				80C12080272E0341006D125D /* FirebaseStorage in Frameworks */,
 				80657BB127CADF06009BED1A /* MapboxSearchUI in Frameworks */,
 				80C12086272E06A1006D125D /* FacebookLogin in Frameworks */,
+				80CB8E6B27DE8F2900C46734 /* GeoFire in Frameworks */,
 				802E5609275C592900464CA6 /* Lottie in Frameworks */,
+				80CB8E6D27DE8F2900C46734 /* GeoFireUtils in Frameworks */,
 				802BC32E27435472004F1505 /* FirebaseAppCheck in Frameworks */,
 				802BC3362745AA6E004F1505 /* Introspect in Frameworks */,
 				80C1207C272E0341006D125D /* FirebaseFirestore in Frameworks */,
@@ -495,6 +501,7 @@
 				8012577E27755E6400DE1160 /* MealModel.swift */,
 				80F41FFF278386090080C67D /* MessageModel.swift */,
 				80E9388C279A137D00B06ED2 /* NotificationItem.swift */,
+				80CB8E6727DE6E8600C46734 /* PlaceModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -705,6 +712,8 @@
 				80657BAE27CADF06009BED1A /* MapboxSearch */,
 				80657BB027CADF06009BED1A /* MapboxSearchUI */,
 				80657BB527CAE155009BED1A /* MapboxMaps */,
+				80CB8E6A27DE8F2900C46734 /* GeoFire */,
+				80CB8E6C27DE8F2900C46734 /* GeoFireUtils */,
 			);
 			productName = mealq;
 			productReference = 802BC30C273DC8BB004F1505 /* mealq.app */;
@@ -746,6 +755,7 @@
 				80A8B70F27A5E629002A5C58 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 				80657BAD27CADF06009BED1A /* XCRemoteSwiftPackageReference "search-ios" */,
 				80657BB427CAE155009BED1A /* XCRemoteSwiftPackageReference "mapbox-maps-ios" */,
+				80CB8E6927DE8F2900C46734 /* XCRemoteSwiftPackageReference "geofire-objc" */,
 			);
 			productRefGroup = 806B30C3273DC75E003FF495 /* Products */;
 			projectDirPath = "";
@@ -807,6 +817,7 @@
 				807631A427B89E0D00A91E94 /* MealDatePicker.swift in Sources */,
 				802BC3332743FAC9004F1505 /* SplashScreen.swift in Sources */,
 				802BC32427404D87004F1505 /* AlertButton.swift in Sources */,
+				80CB8E6827DE6E8600C46734 /* PlaceModel.swift in Sources */,
 				802E560D275C5CF200464CA6 /* LottieView.swift in Sources */,
 				80C120A3272E55EE006D125D /* mealqButtonStyle.swift in Sources */,
 				80E72161278F472600FBB6E3 /* CustomNavigationLink.swift in Sources */,
@@ -1242,6 +1253,14 @@
 				minimumVersion = 1.0.0;
 			};
 		};
+		80CB8E6927DE8F2900C46734 /* XCRemoteSwiftPackageReference "geofire-objc" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/geofire-objc.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1324,6 +1343,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 80C120AD272F86C9006D125D /* XCRemoteSwiftPackageReference "ActivityIndicatorView" */;
 			productName = ActivityIndicatorView;
+		};
+		80CB8E6A27DE8F2900C46734 /* GeoFire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 80CB8E6927DE8F2900C46734 /* XCRemoteSwiftPackageReference "geofire-objc" */;
+			productName = GeoFire;
+		};
+		80CB8E6C27DE8F2900C46734 /* GeoFireUtils */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 80CB8E6927DE8F2900C46734 /* XCRemoteSwiftPackageReference "geofire-objc" */;
+			productName = GeoFireUtils;
 		};
 		80E721662790AA4A00FBB6E3 /* FirebaseFunctions */ = {
 			isa = XCSwiftPackageProductDependency;

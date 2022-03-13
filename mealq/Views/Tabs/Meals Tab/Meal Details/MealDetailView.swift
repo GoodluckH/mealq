@@ -117,7 +117,7 @@ struct MealDetailView: View {
     //                                 Text("specific date is not set")
     //                             }
     //                         }
-                       MapSnippet()
+                         MapSnippet(meal: meal)
                          
                        
                             LazyVStack(pinnedViews: [.sectionHeaders]){

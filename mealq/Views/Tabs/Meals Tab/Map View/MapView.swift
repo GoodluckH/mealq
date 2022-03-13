@@ -13,10 +13,11 @@ struct MapView: View {
     @StateObject var mapData = MapViewModel()
     @State var locationManager = CLLocationManager()
     @ObservedObject private var sharedMapViewManager = MapViewManager.sharedMapViewManager
+    var meal: Meal
 
     var body: some View {
         ZStack {
-            DetailedMapView()
+            DetailedMapView(meal: meal)
                 .ignoresSafeArea(.all, edges: .all)
                 .onAppear {
                     locationManager.delegate = mapData

@@ -9,8 +9,7 @@ import SwiftUI
 import CoreLocation
 struct MapSnippet: View {
     @ObservedObject private var sharedMapViewManager = MapViewManager.sharedMapViewManager
-//    @StateObject var mapData = MapViewModel()
-//    @State var locationManager = CLLocationManager()
+    var meal: Meal
     var body: some View {
         
             Button(action: {
@@ -35,7 +34,7 @@ struct MapSnippet: View {
       
                 }.aspectRatio(2, contentMode: .fit)
                     .fullScreenCover(isPresented: $sharedMapViewManager.showDetailedMapView) {
-                        MapView()
+                        MapView(meal: meal)
 
                     }
                
@@ -48,9 +47,9 @@ struct MapSnippet: View {
 
     }
 }
-
-struct MapView_Previews: PreviewProvider {
-    static var previews: some View {
-        MapSnippet()
-    }
-}
+//
+//struct MapView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        MapSnippet()
+//    }
+//}

@@ -19,52 +19,86 @@ struct MapSearchBar: View
     @Namespace var ns
     
     var body: some View {
-        HStack {
-            
-            if !isFocused {
-                Button(action: {sharedMapViewManager.showDetailedMapView = false}) {
-                    Image(systemName: "xmark")
-                        .font(.title2.weight(.bold))
-                        .foregroundColor(Color("MyPrimary"))
-                        .padding(9)
-                        .background()
-                        .clipShape(Circle())
-                        .shadow(color: .gray, radius: searchBarShadowRadius, y: searchBarShadowYOffset)
-                        .padding([.leading, .top, .bottom])
-                        .matchedGeometryEffect(id: "search", in: ns)
-                }
-            }
-       
-            
+        VStack {
             HStack {
-                Image(systemName: "magnifyingglass")
-                    .font(.title2.weight(.bold))
-                    .foregroundColor(Color("MyPrimary"))
-                TextField("search for a place", text: $mapData.searchText)
-                        .placeholder("search for a place", when: mapData.searchText.isEmpty)
-                        .multilineTextAlignment(.leading)
-                        .lineLimit(1)
-                        .frame(alignment: .leading)
-                        .focused($isFocused)
-                        .foregroundColor(Color("MyPrimary"))
-                        .accentColor(Color("MyPrimary"))
-                        .disableAutocorrection(true)
-                Spacer()
-                if isFocused && !mapData.searchText.isEmpty {
-                    Button(action: {mapData.searchText = ""}) {
-                        Image(systemName: "x.circle.fill")
-                            .foregroundColor(.gray)
-                            .symbolRenderingMode(.hierarchical)
-                        }
+                
+                if !isFocused {
+                    Button(action: {sharedMapViewManager.showDetailedMapView = false}) {
+                        Image(systemName: "xmark")
+                            .font(.title2.weight(.bold))
+                            .foregroundColor(Color("MyPrimary"))
+                            .padding(9)
+                            .background()
+                            .clipShape(Circle())
+                            .shadow(color: .gray, radius: searchBarShadowRadius, y: searchBarShadowYOffset)
+                            .padding([.leading, .top])
+                            .matchedGeometryEffect(id: "search", in: ns)
                     }
                 }
-                .padding(.vertical, 7.0)
-                .padding(.horizontal, 10.0)
-                .background(Color("QueryLoaderStartingColor"))
-                .clipShape(Capsule())
-                .padding(isFocused ? [.trailing, .top, .bottom, .leading] : [.trailing, .top, .bottom])
-                .shadow(color: .gray, radius: searchBarShadowRadius, y: searchBarShadowYOffset)
+           
+                
+                HStack {
+                    Image(systemName: "magnifyingglass")
+                        .font(.title2.weight(.bold))
+                        .foregroundColor(Color("MyPrimary"))
+                    TextField("search for a place", text: $mapData.searchText)
+                            .placeholder("search for a place", when: mapData.searchText.isEmpty)
+                            .multilineTextAlignment(.leading)
+                            .lineLimit(1)
+                            .frame(alignment: .leading)
+                            .focused($isFocused)
+                            .foregroundColor(Color("MyPrimary"))
+                            .accentColor(Color("MyPrimary"))
+                            .disableAutocorrection(true)
+                    Spacer()
+                    if isFocused && !mapData.searchText.isEmpty {
+                        Button(action: {mapData.searchText = ""}) {
+                            Image(systemName: "x.circle.fill")
+                                .foregroundColor(.gray)
+                                .symbolRenderingMode(.hierarchical)
+                            }
+                        }
+                    }
+                    .padding(.vertical, 7.0)
+                    .padding(.horizontal, 10.0)
+                    .background(Color("QueryLoaderStartingColor"))
+                    .clipShape(Capsule())
+                    .padding(isFocused ? [.trailing, .top, .leading] : [.trailing, .top])
+                    .shadow(color: .gray, radius: searchBarShadowRadius, y: searchBarShadowYOffset)
 
+            }
+            if !mapData.places.isEmpty && !mapData.searchText.isEmpty {
+                ScrollView {
+                    VStack {
+                        ForEach(mapData.places) {place in
+                            Text(place.placemark.name ?? "")
+                                .foregroundColor(Color("MyPrimary"))
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .onTapGesture {
+                                    mapData.selectPlace(place: place)
+                                }
+                            Divider()
+                        }
+                        .padding(.horizontal)
+                    }.padding(.vertical)
+                }.background(Color("QueryLoaderStartingColor"))
+                    .clipShape(RoundedRectangle(cornerRadius: Constants.roundedRectCornerRadius))
+                    .padding(.horizontal)
+                    .shadow(color: .gray, radius: searchBarShadowRadius, y: searchBarShadowYOffset)
+            }
+            
+        }
+        .onChange(of: mapData.searchText) { value in
+            if mapData.searchText == " " {
+                mapData.searchText = ""
+            } else {
+                let delay = 0.3
+                DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+                    if value == mapData.searchText {
+                        mapData.searchPlaces()
+                    }
+                }
+            }
         }
         
    

@@ -56,6 +56,15 @@
         }
       },
       {
+        "package": "GeoFire",
+        "repositoryURL": "https://github.com/firebase/geofire-objc.git",
+        "state": {
+          "branch": "master",
+          "revision": "fd0349afe7f9fd88c5c55f2e875abc4533f3dcd9",
+          "version": null
+        }
+      },
+      {
         "package": "GoogleAppMeasurement",
         "repositoryURL": "https://github.com/google/GoogleAppMeasurement.git",
         "state": {
