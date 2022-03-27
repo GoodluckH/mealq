@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 /// A data model for meals.
-struct Meal: Identifiable, Codable, Hashable {
+struct Meal: Identifiable, Hashable {
      
     var id: String
     var name: String
@@ -23,6 +23,7 @@ struct Meal: Identifiable, Codable, Hashable {
     var messageTimeStamp: Date
     var unreadMessages: Int
     var specificDate: Date?
+    var place: Place? 
     
     static func == (lhs: Meal, rhs: Meal) -> Bool {
         return lhs.id == rhs.id

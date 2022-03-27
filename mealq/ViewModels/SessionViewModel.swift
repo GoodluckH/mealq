@@ -103,10 +103,10 @@ class SessionStore: ObservableObject {
                     print("Google auth with Firebase error: \(error)")
                     return
                     }
-                signingIn = false
+                self.signingIn = false
                 if authResult!.additionalUserInfo!.isNewUser {
                     print("The user is new. Adding to Firestore with uid: \(authResult!.user.uid)")
-                    addUserToFirestore(with: authResult!.user.uid,
+                    self.addUserToFirestore(with: authResult!.user.uid,
                                        authResult!.user.displayName!,
                                        authResult!.user.email!,
                                        authResult!.user.photoURL!.absoluteString,
@@ -143,10 +143,10 @@ class SessionStore: ObservableObject {
                         print("Facebook auth with Firebase error: \(error)")
                         return
                         }
-                    signingIn = false
+                    self.signingIn = false
                     if authResult!.additionalUserInfo!.isNewUser {
                         print("The user is new. Adding to Firestore with uid: \(authResult!.user.uid)")
-                        addUserToFirestore(with: authResult!.user.uid,
+                        self.addUserToFirestore(with: authResult!.user.uid,
                                            authResult!.user.displayName!,
                                            authResult!.user.email!,
                                            authResult!.user.photoURL!.absoluteString,

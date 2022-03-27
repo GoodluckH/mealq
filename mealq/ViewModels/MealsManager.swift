@@ -9,6 +9,8 @@ import Foundation
 import Firebase
 import FirebaseMessaging
 import FirebaseAuth
+import CoreLocation
+
 
 /// A manager to handle fething group chat (meal) requests, sending messages, updating friends activities, etc.
 class MealsManager: ObservableObject {
@@ -18,6 +20,7 @@ class MealsManager: ObservableObject {
     @Published var pendingMeals = [NotificationItem]()
     
     @Published var acceptedMeals = [Meal]()
+        
     // @Published var rejectedMeals = [Meal]()
     
     /// Fetches meals from the current user's "meals" collection;
@@ -82,12 +85,6 @@ class MealsManager: ObservableObject {
                     
                 }
                 
-//                self.pendingMeals = [Meal]()
-//                for document in documents {
-//                    let data = document.data()
-//                    let status = data["userStatus"] as! [String: String]
-//                    self.addMeal(document.documentID, by: status[currentUser.uid]!)
-//                }
             }
             
             self.db.collection("chats").whereField("from", isEqualTo: currentUser.uid).addSnapshotListener { (querySnapshot, error) in
@@ -137,65 +134,197 @@ class MealsManager: ObservableObject {
                 
                 let specificDate = data["specificDate"] as? Timestamp ?? nil
                 
-                // fetch user detail info
-                self.db.collection("users").document(from).getDocument { (document, error) in
-                    if let document = document, document.exists {
-                        let userData = document.data()!
-                        let fromUser = MealqUser(id: from,
-                                     fullname: userData["fullname"] as! String,
-                                     email: userData["email"] as! String,
-                                     thumbnailPicURL: URL(string: userData["thumbnailPicURL"] as? String ?? ""),
-                                     normalPicURL: URL(string: userData["normalPicURL"] as? String ?? ""),
-                                     fcmToken: userData["fcmToken"] as? String ?? "")
-                                                
-                        
-                        self.db.collection("users").whereField("uid", in: data["to"] as! [String]).getDocuments{ (querySnapshot, error) in
-                            guard let querySnapshot = querySnapshot else {
-                                print("Error retrieving all users documents: \(String(describing: error?.localizedDescription))")
-                                return
-                            }
-                            
-                            var to = [MealqUser: String]()
-                            
-                            for document in querySnapshot.documents {
-                                let userData = document.data()
-                                to[MealqUser(id: document.documentID,
-                                             fullname: userData["fullname"] as! String,
-                                             email: userData["email"] as! String,
-                                             thumbnailPicURL: URL(string: userData["thumbnailPicURL"] as? String ?? ""),
-                                             normalPicURL: URL(string: userData["normalPicURL"] as? String ?? ""),
-                                             fcmToken: userData["fcmToken"] as? String ?? "")] = userStatus[document.documentID]
-                            }
-                            
-                            let meal = Meal(id: id, name: name, from: fromUser, to: to, weekday: weekday, createdAt: createdAt.dateValue(), recentMessageID: recentMessageID, recentMessageContent: recentMessageContent, sentByName: sentByName, messageTimeStamp: messageTimeStamp.dateValue(), unreadMessages: unreadMessages, specificDate: specificDate?.dateValue())
-                            
-                           
-                            if status == "pending" {
-                                for idx in self.pendingMeals.indices {
-                                    if self.pendingMeals[idx].payload as! Meal == meal {
-                                        let oldID = self.pendingMeals[idx].id
-                                        let oldTimeStamp = self.pendingMeals[idx].timeStamp
-                                        self.pendingMeals[idx] = NotificationItem(id: oldID, payload: meal, timeStamp: oldTimeStamp)
+                let place = data["location"] as? GeoPoint ?? nil
+                var placemark: CLPlacemark? = nil
+                if let place = place {
+                    let location = CLLocation(latitude: place.latitude, longitude: place.longitude)
+                    let coder = CLGeocoder()
+                    coder.reverseGeocodeLocation(location) {placemarks, error in
+                        if let error = error {
+                            print("failed to parse placemarks: \(error)")
+                            self.db.collection("users").document(from).getDocument { (document, error) in
+                                if let document = document, document.exists {
+                                    let userData = document.data()!
+                                    let fromUser = MealqUser(id: from,
+                                                 fullname: userData["fullname"] as! String,
+                                                 email: userData["email"] as! String,
+                                                 thumbnailPicURL: URL(string: userData["thumbnailPicURL"] as? String ?? ""),
+                                                 normalPicURL: URL(string: userData["normalPicURL"] as? String ?? ""),
+                                                 fcmToken: userData["fcmToken"] as? String ?? "")
+                                                            
+                                    
+                                    self.db.collection("users").whereField("uid", in: data["to"] as! [String]).getDocuments{ (querySnapshot, error) in
+                                        guard let querySnapshot = querySnapshot else {
+                                            print("Error retrieving all users documents: \(String(describing: error?.localizedDescription))")
+                                            return
+                                        }
+                                        
+                                        var to = [MealqUser: String]()
+                                        
+                                        for document in querySnapshot.documents {
+                                            let userData = document.data()
+                                            to[MealqUser(id: document.documentID,
+                                                         fullname: userData["fullname"] as! String,
+                                                         email: userData["email"] as! String,
+                                                         thumbnailPicURL: URL(string: userData["thumbnailPicURL"] as? String ?? ""),
+                                                         normalPicURL: URL(string: userData["normalPicURL"] as? String ?? ""),
+                                                         fcmToken: userData["fcmToken"] as? String ?? "")] = userStatus[document.documentID]
+                                        }
+                                        
+                                        let meal = Meal(id: id, name: name, from: fromUser, to: to, weekday: weekday, createdAt: createdAt.dateValue(), recentMessageID: recentMessageID, recentMessageContent: recentMessageContent, sentByName: sentByName, messageTimeStamp: messageTimeStamp.dateValue(), unreadMessages: unreadMessages, specificDate: specificDate?.dateValue())
+                                        
+                                       
+                                        if status == "pending" {
+                                            for idx in self.pendingMeals.indices {
+                                                if self.pendingMeals[idx].payload as! Meal == meal {
+                                                    let oldID = self.pendingMeals[idx].id
+                                                    let oldTimeStamp = self.pendingMeals[idx].timeStamp
+                                                    self.pendingMeals[idx] = NotificationItem(id: oldID, payload: meal, timeStamp: oldTimeStamp)
+                                                }
+                                            }
+                                            
+                                            
+                                        }
+                                        else if status == "accepted" {
+                                            for idx in self.acceptedMeals.indices {
+                                                if self.acceptedMeals[idx] == meal {
+                                                    self.acceptedMeals[idx] = meal
+                                                }
+                                            }
+                                            self.acceptedMeals.sort(by: {$0.messageTimeStamp.compare($1.messageTimeStamp) == .orderedDescending})
+                                        }
                                     }
+                                    
+
+                                } else {
+                                    print("The document for user \(from) does not exist when retrieving such user's data to construct the Meal data model: \(String(describing: error?.localizedDescription))")
                                 }
-                                
-                                
                             }
-                            else if status == "accepted" {
-                                for idx in self.acceptedMeals.indices {
-                                    if self.acceptedMeals[idx] == meal {
-                                        self.acceptedMeals[idx] = meal
+                        } else {
+                            placemark = placemarks?.last
+                            // fetch user detail info
+                            self.db.collection("users").document(from).getDocument { (document, error) in
+                                if let document = document, document.exists {
+                                    let userData = document.data()!
+                                    let fromUser = MealqUser(id: from,
+                                                 fullname: userData["fullname"] as! String,
+                                                 email: userData["email"] as! String,
+                                                 thumbnailPicURL: URL(string: userData["thumbnailPicURL"] as? String ?? ""),
+                                                 normalPicURL: URL(string: userData["normalPicURL"] as? String ?? ""),
+                                                 fcmToken: userData["fcmToken"] as? String ?? "")
+                                                            
+                                    
+                                    self.db.collection("users").whereField("uid", in: data["to"] as! [String]).getDocuments{ (querySnapshot, error) in
+                                        guard let querySnapshot = querySnapshot else {
+                                            print("Error retrieving all users documents: \(String(describing: error?.localizedDescription))")
+                                            return
+                                        }
+                                        
+                                        var to = [MealqUser: String]()
+                                        
+                                        for document in querySnapshot.documents {
+                                            let userData = document.data()
+                                            to[MealqUser(id: document.documentID,
+                                                         fullname: userData["fullname"] as! String,
+                                                         email: userData["email"] as! String,
+                                                         thumbnailPicURL: URL(string: userData["thumbnailPicURL"] as? String ?? ""),
+                                                         normalPicURL: URL(string: userData["normalPicURL"] as? String ?? ""),
+                                                         fcmToken: userData["fcmToken"] as? String ?? "")] = userStatus[document.documentID]
+                                        }
+                                        
+                                        let meal = Meal(id: id, name: name, from: fromUser, to: to, weekday: weekday, createdAt: createdAt.dateValue(), recentMessageID: recentMessageID, recentMessageContent: recentMessageContent, sentByName: sentByName, messageTimeStamp: messageTimeStamp.dateValue(), unreadMessages: unreadMessages, specificDate: specificDate?.dateValue(), place: placemark == nil ? nil : Place(placemark: placemark!))
+                                        
+                                       
+                                        if status == "pending" {
+                                            for idx in self.pendingMeals.indices {
+                                                if self.pendingMeals[idx].payload as! Meal == meal {
+                                                    let oldID = self.pendingMeals[idx].id
+                                                    let oldTimeStamp = self.pendingMeals[idx].timeStamp
+                                                    self.pendingMeals[idx] = NotificationItem(id: oldID, payload: meal, timeStamp: oldTimeStamp)
+                                                }
+                                            }
+                                            
+                                            
+                                        }
+                                        else if status == "accepted" {
+                                            for idx in self.acceptedMeals.indices {
+                                                if self.acceptedMeals[idx] == meal {
+                                                    self.acceptedMeals[idx] = meal
+                                                }
+                                            }
+                                            self.acceptedMeals.sort(by: {$0.messageTimeStamp.compare($1.messageTimeStamp) == .orderedDescending})
+                                        }
                                     }
+                                    
+
+                                } else {
+                                    print("The document for user \(from) does not exist when retrieving such user's data to construct the Meal data model: \(String(describing: error?.localizedDescription))")
                                 }
-                                self.acceptedMeals.sort(by: {$0.messageTimeStamp.compare($1.messageTimeStamp) == .orderedDescending})
                             }
                         }
-                        
+                    }
+                } else {
+                    // fetch user detail info
+                    self.db.collection("users").document(from).getDocument { (document, error) in
+                        if let document = document, document.exists {
+                            let userData = document.data()!
+                            let fromUser = MealqUser(id: from,
+                                         fullname: userData["fullname"] as! String,
+                                         email: userData["email"] as! String,
+                                         thumbnailPicURL: URL(string: userData["thumbnailPicURL"] as? String ?? ""),
+                                         normalPicURL: URL(string: userData["normalPicURL"] as? String ?? ""),
+                                         fcmToken: userData["fcmToken"] as? String ?? "")
+                                                    
+                            
+                            self.db.collection("users").whereField("uid", in: data["to"] as! [String]).getDocuments{ (querySnapshot, error) in
+                                guard let querySnapshot = querySnapshot else {
+                                    print("Error retrieving all users documents: \(String(describing: error?.localizedDescription))")
+                                    return
+                                }
+                                
+                                var to = [MealqUser: String]()
+                                
+                                for document in querySnapshot.documents {
+                                    let userData = document.data()
+                                    to[MealqUser(id: document.documentID,
+                                                 fullname: userData["fullname"] as! String,
+                                                 email: userData["email"] as! String,
+                                                 thumbnailPicURL: URL(string: userData["thumbnailPicURL"] as? String ?? ""),
+                                                 normalPicURL: URL(string: userData["normalPicURL"] as? String ?? ""),
+                                                 fcmToken: userData["fcmToken"] as? String ?? "")] = userStatus[document.documentID]
+                                }
+                                
+                                let meal = Meal(id: id, name: name, from: fromUser, to: to, weekday: weekday, createdAt: createdAt.dateValue(), recentMessageID: recentMessageID, recentMessageContent: recentMessageContent, sentByName: sentByName, messageTimeStamp: messageTimeStamp.dateValue(), unreadMessages: unreadMessages, specificDate: specificDate?.dateValue())
+                                
+                               
+                                if status == "pending" {
+                                    for idx in self.pendingMeals.indices {
+                                        if self.pendingMeals[idx].payload as! Meal == meal {
+                                            let oldID = self.pendingMeals[idx].id
+                                            let oldTimeStamp = self.pendingMeals[idx].timeStamp
+                                            self.pendingMeals[idx] = NotificationItem(id: oldID, payload: meal, timeStamp: oldTimeStamp)
+                                        }
+                                    }
+                                    
+                                    
+                                }
+                                else if status == "accepted" {
+                                    for idx in self.acceptedMeals.indices {
+                                        if self.acceptedMeals[idx] == meal {
+                                            self.acceptedMeals[idx] = meal
+                                        }
+                                    }
+                                    self.acceptedMeals.sort(by: {$0.messageTimeStamp.compare($1.messageTimeStamp) == .orderedDescending})
+                                }
+                            }
+                            
 
-                    } else {
-                        print("The document for user \(from) does not exist when retrieving such user's data to construct the Meal data model: \(String(describing: error?.localizedDescription))")
+                        } else {
+                            print("The document for user \(from) does not exist when retrieving such user's data to construct the Meal data model: \(String(describing: error?.localizedDescription))")
+                        }
                     }
                 }
+
                 
             } else {
                 print("The document for meal \(docID) does not exist")
@@ -227,84 +356,165 @@ class MealsManager: ObservableObject {
                 let recentMessageContent = recentMessage["content"] as? String ?? ""
                 let sentByName = recentMessage["sentByName"] as? String ?? ""
                 let messageTimeStamp = recentMessage["timeStamp"] as? Timestamp ?? createdAt
-//                let isMessageViewed = data["recentMessage.viewed"] as? Bool ?? true
                 let recentMessageID = recentMessage["messageID"] as? String ?? ""
                 
                 let unreadMessages = unreadMessagesMap[user.uid] as? Int ?? 0
                 
                 let specificDate = data["specificDate"] as? Timestamp ?? nil
                 
-                // fetch user detail info
-                self.db.collection("users").document(from).getDocument { (document, error) in
-                    if let document = document, document.exists {
-                        let userData = document.data()!
-                        let fromUser = MealqUser(id: from,
-                                     fullname: userData["fullname"] as! String,
-                                     email: userData["email"] as! String,
-                                     thumbnailPicURL: URL(string: userData["thumbnailPicURL"] as? String ?? ""),
-                                     normalPicURL: URL(string: userData["normalPicURL"] as? String ?? ""),
-                                     fcmToken: userData["fcmToken"] as? String ?? "")
-                                                
-                        
-                        self.db.collection("users").whereField("uid", in: data["to"] as! [String]).getDocuments{ (querySnapshot, error) in
-                            guard let querySnapshot = querySnapshot else {
-                                print("Error retrieving all users documents: \(String(describing: error?.localizedDescription))")
-                                return
-                            }
-                            
-                            var to = [MealqUser: String]()
-                            
-                            for document in querySnapshot.documents {
-                                let userData = document.data()
-                                to[MealqUser(id: document.documentID,
-                                             fullname: userData["fullname"] as! String,
-                                             email: userData["email"] as! String,
-                                             thumbnailPicURL: URL(string: userData["thumbnailPicURL"] as? String ?? ""),
-                                             normalPicURL: URL(string: userData["normalPicURL"] as? String ?? ""),
-                                             fcmToken: userData["fcmToken"] as? String ?? "")] = userStatus[document.documentID]
-                            }
-                            
-                            let meal = Meal(id: id, name: name, from: fromUser, to: to, weekday: weekday, createdAt: createdAt.dateValue(), recentMessageID: recentMessageID, recentMessageContent: recentMessageContent, sentByName: sentByName, messageTimeStamp: messageTimeStamp.dateValue(), unreadMessages: unreadMessages, specificDate: specificDate?.dateValue())
-                            
-                           
-                            if status == "pending" { self.pendingMeals.append(NotificationItem(id: UUID(), payload: meal, timeStamp: meal.createdAt))}
-                            else if status == "accepted" {
-                                self.acceptedMeals.append(meal)
-                                self.acceptedMeals.sort(by: {$0.messageTimeStamp.compare($1.messageTimeStamp) == .orderedDescending})
-                            }
-                        
-                        }
-                        
-                        
-                        
-//                        for userID in data["to"] as! [String]  {
-//
-//
-//
-//
-//                            self.db.collection("users").document(userID).getDocument{ (document, error) in
-//                                if let document = document, document.exists {
-//                                    let userData = document.data()!
-//                                    self.to[MealqUser(id: userID,
-//                                                 fullname: userData["fullname"] as! String,
-//                                                 email: userData["email"] as! String,
-//                                                 thumbnailPicURL: URL(string: userData["thumbnailPicURL"] as? String ?? ""),
-//                                                 normalPicURL: URL(string: userData["normalPicURL"] as? String ?? ""),
-//                                                 fcmToken: userData["fcmToken"] as? String ?? "")] = userStatus[userID]
-//
-//
-//                                } else {
-//                                    print("The document for user \(userID) does not exist when retrieving such user's data to construct the Meal data model: \(String(describing: error?.localizedDescription))")
-//                                }
-//                            }
-//                        }
-                        
+                let place = data["location"] as? GeoPoint ?? nil
+                var placemark: CLPlacemark? = nil
+                
+                if let place = place {
+                    let location = CLLocation(latitude: place.latitude, longitude: place.longitude)
+                    let coder = CLGeocoder()
+                    coder.reverseGeocodeLocation(location) {placemarks, error in
+                        if let error = error {
+                            print("failed to parse placemarks: \(error)")
+                            self.db.collection("users").document(from).getDocument { (document, error) in
+                                if let document = document, document.exists {
+                                    let userData = document.data()!
+                                    let fromUser = MealqUser(id: from,
+                                                 fullname: userData["fullname"] as! String,
+                                                 email: userData["email"] as! String,
+                                                 thumbnailPicURL: URL(string: userData["thumbnailPicURL"] as? String ?? ""),
+                                                 normalPicURL: URL(string: userData["normalPicURL"] as? String ?? ""),
+                                                 fcmToken: userData["fcmToken"] as? String ?? "")
+                                                            
+                                    
+                                    self.db.collection("users").whereField("uid", in: data["to"] as! [String]).getDocuments{ (querySnapshot, error) in
+                                        guard let querySnapshot = querySnapshot else {
+                                            print("Error retrieving all users documents: \(String(describing: error?.localizedDescription))")
+                                            return
+                                        }
+                                        
+                                        var to = [MealqUser: String]()
+                                        
+                                        for document in querySnapshot.documents {
+                                            let userData = document.data()
+                                            to[MealqUser(id: document.documentID,
+                                                         fullname: userData["fullname"] as! String,
+                                                         email: userData["email"] as! String,
+                                                         thumbnailPicURL: URL(string: userData["thumbnailPicURL"] as? String ?? ""),
+                                                         normalPicURL: URL(string: userData["normalPicURL"] as? String ?? ""),
+                                                         fcmToken: userData["fcmToken"] as? String ?? "")] = userStatus[document.documentID]
+                                        }
+                                        
+                                        let meal = Meal(id: id, name: name, from: fromUser, to: to, weekday: weekday, createdAt: createdAt.dateValue(), recentMessageID: recentMessageID, recentMessageContent: recentMessageContent, sentByName: sentByName, messageTimeStamp: messageTimeStamp.dateValue(), unreadMessages: unreadMessages, specificDate: specificDate?.dateValue())
+                                        
+                                       
+                                        if status == "pending" { self.pendingMeals.append(NotificationItem(id: UUID(), payload: meal, timeStamp: meal.createdAt))}
+                                        else if status == "accepted" {
+                                            self.acceptedMeals.append(meal)
+                                            self.acceptedMeals.sort(by: {$0.messageTimeStamp.compare($1.messageTimeStamp) == .orderedDescending})
+                                        }
+                                    }
+                                    
 
-                        
-                    } else {
-                        print("The document for user \(from) does not exist when retrieving such user's data to construct the Meal data model: \(String(describing: error?.localizedDescription))")
+                                } else {
+                                    print("The document for user \(from) does not exist when retrieving such user's data to construct the Meal data model: \(String(describing: error?.localizedDescription))")
+                                }
+                            }
+                        } else {
+                            placemark = placemarks?.last
+                            // fetch user detail info
+                            self.db.collection("users").document(from).getDocument { (document, error) in
+                                if let document = document, document.exists {
+                                    let userData = document.data()!
+                                    let fromUser = MealqUser(id: from,
+                                                 fullname: userData["fullname"] as! String,
+                                                 email: userData["email"] as! String,
+                                                 thumbnailPicURL: URL(string: userData["thumbnailPicURL"] as? String ?? ""),
+                                                 normalPicURL: URL(string: userData["normalPicURL"] as? String ?? ""),
+                                                 fcmToken: userData["fcmToken"] as? String ?? "")
+                                                            
+                                    
+                                    self.db.collection("users").whereField("uid", in: data["to"] as! [String]).getDocuments{ (querySnapshot, error) in
+                                        guard let querySnapshot = querySnapshot else {
+                                            print("Error retrieving all users documents: \(String(describing: error?.localizedDescription))")
+                                            return
+                                        }
+                                        
+                                        var to = [MealqUser: String]()
+                                        
+                                        for document in querySnapshot.documents {
+                                            let userData = document.data()
+                                            to[MealqUser(id: document.documentID,
+                                                         fullname: userData["fullname"] as! String,
+                                                         email: userData["email"] as! String,
+                                                         thumbnailPicURL: URL(string: userData["thumbnailPicURL"] as? String ?? ""),
+                                                         normalPicURL: URL(string: userData["normalPicURL"] as? String ?? ""),
+                                                         fcmToken: userData["fcmToken"] as? String ?? "")] = userStatus[document.documentID]
+                                        }
+                                        
+                                        let meal = Meal(id: id, name: name, from: fromUser, to: to, weekday: weekday, createdAt: createdAt.dateValue(), recentMessageID: recentMessageID, recentMessageContent: recentMessageContent, sentByName: sentByName, messageTimeStamp: messageTimeStamp.dateValue(), unreadMessages: unreadMessages, specificDate: specificDate?.dateValue(), place: placemark == nil ? nil : Place(placemark: placemark!))
+                                       
+                                        if status == "pending" { self.pendingMeals.append(NotificationItem(id: UUID(), payload: meal, timeStamp: meal.createdAt))}
+                                        else if status == "accepted" {
+                                            self.acceptedMeals.append(meal)
+                                            self.acceptedMeals.sort(by: {$0.messageTimeStamp.compare($1.messageTimeStamp) == .orderedDescending})
+                                        }
+                                    }
+                                    
+
+                                } else {
+                                    print("The document for user \(from) does not exist when retrieving such user's data to construct the Meal data model: \(String(describing: error?.localizedDescription))")
+                                }
+                            }
+                        }
+                    }
+                    
+                } else {
+                    // fetch user detail info
+                    self.db.collection("users").document(from).getDocument { (document, error) in
+                        if let document = document, document.exists {
+                            let userData = document.data()!
+                            let fromUser = MealqUser(id: from,
+                                         fullname: userData["fullname"] as! String,
+                                         email: userData["email"] as! String,
+                                         thumbnailPicURL: URL(string: userData["thumbnailPicURL"] as? String ?? ""),
+                                         normalPicURL: URL(string: userData["normalPicURL"] as? String ?? ""),
+                                         fcmToken: userData["fcmToken"] as? String ?? "")
+                                                    
+                            
+                            self.db.collection("users").whereField("uid", in: data["to"] as! [String]).getDocuments{ (querySnapshot, error) in
+                                guard let querySnapshot = querySnapshot else {
+                                    print("Error retrieving all users documents: \(String(describing: error?.localizedDescription))")
+                                    return
+                                }
+                                
+                                var to = [MealqUser: String]()
+                                
+                                for document in querySnapshot.documents {
+                                    let userData = document.data()
+                                    to[MealqUser(id: document.documentID,
+                                                 fullname: userData["fullname"] as! String,
+                                                 email: userData["email"] as! String,
+                                                 thumbnailPicURL: URL(string: userData["thumbnailPicURL"] as? String ?? ""),
+                                                 normalPicURL: URL(string: userData["normalPicURL"] as? String ?? ""),
+                                                 fcmToken: userData["fcmToken"] as? String ?? "")] = userStatus[document.documentID]
+                                }
+                                
+                                let meal = Meal(id: id, name: name, from: fromUser, to: to, weekday: weekday, createdAt: createdAt.dateValue(), recentMessageID: recentMessageID, recentMessageContent: recentMessageContent, sentByName: sentByName, messageTimeStamp: messageTimeStamp.dateValue(), unreadMessages: unreadMessages, specificDate: specificDate?.dateValue())
+                                
+                               
+                                if status == "pending" { self.pendingMeals.append(NotificationItem(id: UUID(), payload: meal, timeStamp: meal.createdAt))}
+                                else if status == "accepted" {
+                                    self.acceptedMeals.append(meal)
+                                    self.acceptedMeals.sort(by: {$0.messageTimeStamp.compare($1.messageTimeStamp) == .orderedDescending})
+                                }
+                            
+                            }
+
+
+                            
+                        } else {
+                            print("The document for user \(from) does not exist when retrieving such user's data to construct the Meal data model: \(String(describing: error?.localizedDescription))")
+                        }
                     }
                 }
+
+
                 
 
             } else {
@@ -342,10 +552,6 @@ class MealsManager: ObservableObject {
                            "weekday": weekday ?? 0,
                            "createdAt": date,
                            "recentMessage": ["content": "", "sentByName": "", "timeStamp": date],
-//                           "recentMessage": [],
-//                           "recentMessage": [],
-//                           "recentMessage": ["viewed": true],
-//                           "recentMessage": [],
             ] as [String : Any]
             
             

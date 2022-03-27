@@ -7,7 +7,7 @@
 
 import Foundation
 import MapKit
-
+import Combine
 
 struct Place: Identifiable  {
     var id = UUID().uuidString

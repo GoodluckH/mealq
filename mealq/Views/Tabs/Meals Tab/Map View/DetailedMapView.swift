@@ -19,6 +19,10 @@ struct DetailedMapView: UIViewRepresentable {
         self.meal = meal
     }
     func makeCoordinator() -> Coordinator {
+        if let place = meal.place {
+            self.mapData.mealPlace = place
+            self.mapData.selectPlace(place: place)
+        }
         return DetailedMapView.Coordinator(mapData: mapData, meal: meal)
     }
         
@@ -37,7 +41,7 @@ struct DetailedMapView: UIViewRepresentable {
     class Coordinator: NSObject, MKMapViewDelegate {
         let mapData: MapViewModel
         let meal: Meal
-        init(mapData: MapViewModel, meal: Meal) {
+        init(mapData: MapViewModel, meal:Meal) {
             self.mapData = mapData
             self.meal = meal
         }
@@ -47,25 +51,60 @@ struct DetailedMapView: UIViewRepresentable {
             else {
                 let pinAnnoation = MKPinAnnotationView(annotation: annotation, reuseIdentifier: String(annotation.hash))
                 
-                let rightButton = UIButton(type: .contactAdd)
-                rightButton.tag = annotation.hash
-                rightButton.addTarget(self, action: #selector(setLocation), for: .touchUpInside)
-                
-                let leftButton = UIButton(type: .close)
-                leftButton.tag = annotation.hash
-                leftButton.addTarget(self, action: #selector(removePin), for: .touchUpInside)
-                
+                if let place = meal.place {
+                    if place.placemark.location!.coordinate.latitude == annotation.coordinate.latitude
+                    && place.placemark.location!.coordinate.longitude == annotation.coordinate.longitude {
+                        // do nothing
+                        let leftButton = UIButton(type: .close)
+                        leftButton.tag = annotation.hash
+                        leftButton.addTarget(self, action: #selector(removeMealPin), for: .touchUpInside)
+                        pinAnnoation.leftCalloutAccessoryView = leftButton
+                        
+                        pinAnnoation.pinTintColor = .green
+                        
+                    }
+                    else  {
+                        let rightButton = UIButton(type: .contactAdd)
+                        rightButton.tag = annotation.hash
+                        rightButton.addTarget(self, action: #selector(setLocation), for: .touchUpInside)
+                        pinAnnoation.rightCalloutAccessoryView = rightButton
+                        
+                        let leftButton = UIButton(type: .close)
+                        leftButton.tag = annotation.hash
+                        leftButton.addTarget(self, action: #selector(removePin), for: .touchUpInside)
+                        pinAnnoation.leftCalloutAccessoryView = leftButton
+                        
+                    }
+                } else  {
+                    let rightButton = UIButton(type: .contactAdd)
+                    rightButton.tag = annotation.hash
+                    rightButton.addTarget(self, action: #selector(setLocation), for: .touchUpInside)
+                    pinAnnoation.rightCalloutAccessoryView = rightButton
+                    
+                    let leftButton = UIButton(type: .close)
+                    leftButton.tag = annotation.hash
+                    leftButton.addTarget(self, action: #selector(removePin), for: .touchUpInside)
+                    pinAnnoation.leftCalloutAccessoryView = leftButton
+                    
+                }
+
                 pinAnnoation.tintColor = .red
+
                 pinAnnoation.animatesDrop = true
                 pinAnnoation.canShowCallout = true
-                pinAnnoation.rightCalloutAccessoryView = rightButton
-                pinAnnoation.leftCalloutAccessoryView = leftButton
+                
+
+           
                 return pinAnnoation
             }
         }
         
+        @objc func removeMealPin(sender: UIButton) {
+            mapData.removePin(mealPin: true, mealID: self.meal.id)
+        }
+        
         @objc func removePin(sender: UIButton) {
-            mapData.removePin()
+            mapData.removePin(mealPin: false, mealID: nil)
         }
         
         @objc func setLocation(sender: UIButton) {
@@ -73,6 +112,5 @@ struct DetailedMapView: UIViewRepresentable {
         }
     }
 }
-
 
 
