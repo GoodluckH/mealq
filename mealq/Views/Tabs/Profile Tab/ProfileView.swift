@@ -11,8 +11,9 @@ import ActivityIndicatorView
 struct ProfileView: View {
     @EnvironmentObject var sessionStore: SessionStore
     @ObservedObject var friendsManager = FriendsManager.sharedFriendsManager
+    @ObservedObject var miniFriendsManager = MiniFriendsManager()
     @State private var showUserDeletion = false
-
+    @State private var showFriends = false
     
     var body: some View {
             
@@ -41,12 +42,27 @@ struct ProfileView: View {
                     ProfilePicView(picURL: sessionStore.localUser?.normalPicURL)
                            .frame(width: ProfilePicStyles.profilePicWidth, height: ProfilePicStyles.profilePicHeight)
                       
-                    Text(sessionStore.localUser?.fullname ?? "Rando")
-                           .customFont(name: "Quicksand-SemiBold", style: .title1, weight: .black)
-                    
-                    Text("\(friendsManager.friends.count) friends")
-                           .customFont(name: "Quicksand-SemiBold", style: .subheadline, weight: .semibold)
+                    if let user = sessionStore.localUser {
+                        Text(user.fullname)
+                            .customFont(name: "Quicksand-SemiBold", style: .title1, weight: .black)
+                        Text("\(friendsManager.friends.count) friends")
+                               .customFont(name: "Quicksand-SemiBold", style: .subheadline, weight: .semibold)
+                               .onTapGesture {showFriends = true}
+                               .fullScreenCover(isPresented: $showFriends) {
+                                   UserFriends(showSearchFriendSheet: $showFriends, friends: miniFriendsManager.friendsOfQueriedUser)
+                                       .onAppear{
+                                           if !miniFriendsManager.queriedFriends {miniFriendsManager.getFriendsFrom(user.id)}
+                                       }
+                               }
+                            
                     }
+               else
+                    {
+                   Text(sessionStore.localUser?.fullname ?? "Rando")
+                           .customFont(name: "Quicksand-SemiBold", style: .title1, weight: .black)
+               }
+                    }
+                   
                 
                 
                 Button("sign out")  {

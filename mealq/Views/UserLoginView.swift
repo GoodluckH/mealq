@@ -31,30 +31,36 @@ struct UserLoginView: View {
                         sessionStore.facebookLogin()
                     }) {
                         HStack{
+                            Spacer()
                             Image("fb.logo.white")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                             Text("continue with Facebook")
-                                .font(Font.custom("Quicksand-Bold", size: 20))
+                                .font(Font.custom("Quicksand-Bold", size: 18))
+                            Spacer()
                         }
                     }
                      .buttonStyle(mealqButtonStyle(clipShape: Capsule()))
-                     .frame(height: 60)
+                     .frame(width: UIScreen.main.bounds.width * 0.8, height: 60)
+                    
                     
                     
                     Button(action: {
                         sessionStore.googleLogin(view: getRootViewController())
                     }) {
                         HStack{
+                            Spacer()
                             Image("g.logo.color")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                             Text("continue with Google")
                                 .font(Font.custom("Quicksand-Bold", size: 20))
+                            Spacer()
                         }
                     }
                      .buttonStyle(mealqButtonStyle(clipShape: Capsule()))
-                     .frame(height: 60)
+                     .frame(width: UIScreen.main.bounds.width * 0.8, height: 60)
+
                     
                     
                     
