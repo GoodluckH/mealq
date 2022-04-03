@@ -3,16 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDocumentTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleTypeName</key>
-			<string>MKDirectionsRequest</string>
-			<key>LSItemContentTypes</key>
-			<array>
-				<string>com.apple.maps.directionsrequest</string>
-			</array>
-		</dict>
-	</array>
+	<array/>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -59,18 +50,7 @@
 	<key>MBXAccessToken</key>
 	<string>pk.eyJ1IjoiZ29vZGx1Y2toIiwiYSI6ImNrbHZkMnl0aDA3djEyeG8wbWpiMnphOGwifQ.gTYaO-uu46huh_eqhIpqUw</string>
 	<key>MKDirectionsApplicationSupportedModes</key>
-	<array>
-		<string>MKDirectionsModeBike</string>
-		<string>MKDirectionsModeBus</string>
-		<string>MKDirectionsModeCar</string>
-		<string>MKDirectionsModeFerry</string>
-		<string>MKDirectionsModePedestrian</string>
-		<string>MKDirectionsModeRideShare</string>
-		<string>MKDirectionsModeStreetCar</string>
-		<string>MKDirectionsModeSubway</string>
-		<string>MKDirectionsModeTaxi</string>
-		<string>MKDirectionsModeTrain</string>
-	</array>
+	<array/>
 	<key>UIAppFonts</key>
 	<array>
 		<string>/Fonts/Quicksand-Medium.ttf</string>
@@ -84,5 +64,7 @@
 		<string>location</string>
 		<string>remote-notification</string>
 	</array>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Support users to look up restaurants near the user&apos;s precise location</string>
 </dict>
 </plist>
