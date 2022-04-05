@@ -60,11 +60,8 @@
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>
-		<string>fetch</string>
 		<string>location</string>
 		<string>remote-notification</string>
 	</array>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Support users to look up restaurants near the user&apos;s precise location</string>
 </dict>
 </plist>

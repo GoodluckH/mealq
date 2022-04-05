@@ -12,6 +12,30 @@ import FirebaseMessaging
 import FacebookLogin
 import GoogleSignIn
 import SwiftUI
+import AuthenticationServices
+import CryptoKit
+
+
+
+struct AppleUser: Codable {
+    let userId: String
+    let firstName: String
+    let lastName: String
+    let email: String
+    
+    init?(credentials: ASAuthorizationAppleIDCredential) {
+        guard
+            let firstName = credentials.fullName?.givenName,
+            let lastName = credentials.fullName?.familyName,
+            let email = credentials.email
+        else {return nil}
+        
+        self.userId = credentials.user
+        self.firstName = firstName
+        self.lastName = lastName
+        self.email = email
+    }
+}
 
 /// A view model that handles login and logout operations.
 class SessionStore: ObservableObject {
@@ -24,6 +48,8 @@ class SessionStore: ObservableObject {
     private let db = Firestore.firestore()
     private let authRef = Auth.auth()
     
+    // Unhashed nonce.
+    fileprivate var currentNonce: String?
 
    // \(user!.photoURL!.absoluteString)
     /// Listens to state changes made by Firebase operations.
@@ -74,6 +100,88 @@ class SessionStore: ObservableObject {
 //        }
     }
     
+    func appleLoginConfig(_ request: ASAuthorizationAppleIDRequest) {
+        let nonce = randomNonceString()
+        currentNonce = nonce
+        request.requestedScopes = [.fullName, .email]
+        request.nonce = sha256(nonce)
+    }
+    
+    func appleLoginHandler(_ authResult: Result<ASAuthorization, Error>) {
+        signingIn = true
+        switch authResult {
+        case .success(let auth):
+            print(auth)
+            if let appleIdCredentials = auth.credential as? ASAuthorizationAppleIDCredential {
+                guard let nonce = self.currentNonce else {
+                    self.signingIn = false
+                    fatalError("Invalid state: A login callback was received, but no login request was sent.")
+                }
+                guard let appleIDToken = appleIdCredentials.identityToken else {
+                  print("Unable to fetch identity token")
+                    self.signingIn = false
+                  return
+                }
+                guard let idTokenString = String(data: appleIDToken, encoding: .utf8) else {
+                  print("Unable to serialize token string from data: \(appleIDToken.debugDescription)")
+                    self.signingIn = false
+                  return
+                }
+                // Initialize a Firebase credential.
+                  let credential = OAuthProvider.credential(withProviderID: "apple.com",
+                                                            idToken: idTokenString,
+                                                            rawNonce: nonce)
+                
+                
+                if let appleUser = AppleUser(credentials: appleIdCredentials) {
+                    let appleUserData = try? JSONEncoder().encode(appleUser)
+                    UserDefaults.standard.setValue(appleUserData, forKey: appleUser.userId)
+                    Auth.auth().signIn(with: credential) {authResult, error in
+                        if let error = error {
+                            print(error.localizedDescription)
+                            return
+                        }
+                        self.signingIn = false
+                        if authResult!.additionalUserInfo!.isNewUser {
+                            print("The user is new. Adding to Firestore with uid: \(authResult!.user.uid)")
+                            self.addUserToFirestore(with: authResult!.user.uid,
+                                                    appleUser.firstName + " " + appleUser.lastName,
+                                                    appleUser.email)
+                            }
+                    }
+                    
+                } else {
+                    guard let appleUserData = UserDefaults.standard.data(forKey: appleIdCredentials.user),
+                          let appleUser = try? JSONDecoder().decode(AppleUser.self, from: appleUserData)
+                    else {
+                        self.signingIn = false
+                        return
+                    }
+                    Auth.auth().signIn(with: credential) {authResult, error in
+                        if let error = error {
+                            print(error.localizedDescription)
+                            return
+                        }
+                        self.signingIn = false
+                        if authResult!.additionalUserInfo!.isNewUser {
+                            print("The user is new. Adding to Firestore with uid: \(authResult!.user.uid)")
+                            self.addUserToFirestore(with: authResult!.user.uid,
+                                                    appleUser.firstName + " " + appleUser.lastName,
+                                                    appleUser.email)
+                            }
+                    }
+                     
+                }
+                
+              
+     
+                
+            }
+        case .failure(let error):
+            print("something went wrong when signing in with Apple: \(error)")
+        }
+    }
+    
     func googleLogin(view: UIViewController) {
         guard let clientID = FirebaseApp.app()?.options.clientID else { return }
         signingIn = true
@@ -85,6 +193,7 @@ class SessionStore: ObservableObject {
 
           if let error = error {
               print(error.localizedDescription)
+              self.signingIn = false
             return
           }
 
@@ -92,6 +201,7 @@ class SessionStore: ObservableObject {
             let authentication = user?.authentication,
             let idToken = authentication.idToken
           else {
+              self.signingIn = false
             return
           }
 
@@ -310,3 +420,51 @@ class SessionStore: ObservableObject {
 
 
 }
+
+
+// Adapted from https://auth0.com/docs/api-auth/tutorials/nonce#generate-a-cryptographically-random-nonce
+private func randomNonceString(length: Int = 32) -> String {
+  precondition(length > 0)
+  let charset: [Character] =
+    Array("0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._")
+  var result = ""
+  var remainingLength = length
+
+  while remainingLength > 0 {
+    let randoms: [UInt8] = (0 ..< 16).map { _ in
+      var random: UInt8 = 0
+      let errorCode = SecRandomCopyBytes(kSecRandomDefault, 1, &random)
+      if errorCode != errSecSuccess {
+        fatalError(
+          "Unable to generate nonce. SecRandomCopyBytes failed with OSStatus \(errorCode)"
+        )
+      }
+      return random
+    }
+
+    randoms.forEach { random in
+      if remainingLength == 0 {
+        return
+      }
+
+      if random < charset.count {
+        result.append(charset[Int(random)])
+        remainingLength -= 1
+      }
+    }
+  }
+
+  return result
+}
+
+@available(iOS 13, *)
+private func sha256(_ input: String) -> String {
+  let inputData = Data(input.utf8)
+  let hashedData = SHA256.hash(data: inputData)
+  let hashString = hashedData.compactMap {
+    String(format: "%02x", $0)
+  }.joined()
+
+  return hashString
+}
+

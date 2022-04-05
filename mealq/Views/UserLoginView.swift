@@ -7,6 +7,7 @@
 
 import SwiftUI
 import ActivityIndicatorView
+import AuthenticationServices
 
 struct UserLoginView: View {
     @EnvironmentObject var sessionStore: SessionStore
@@ -61,13 +62,14 @@ struct UserLoginView: View {
                      .buttonStyle(mealqButtonStyle(clipShape: Capsule()))
                      .frame(width: UIScreen.main.bounds.width * 0.8, height: 60)
 
+                    SignInWithAppleButton(.signIn, onRequest: sessionStore.appleLoginConfig, onCompletion: sessionStore.appleLoginHandler)
+                        .buttonStyle(mealqButtonStyle(clipShape: Capsule()))
+                        .frame(width: UIScreen.main.bounds.width * 0.8, height: 60)
                     
                     
-                    
-                    
-                    Button("Demo Login (for Apple employees only)") {
-                        sessionStore.demoLogin()
-                    }
+//                    Button("Demo Login (for Apple employees only)") {
+//                        sessionStore.demoLogin()
+//                    }
             }
         }
             
