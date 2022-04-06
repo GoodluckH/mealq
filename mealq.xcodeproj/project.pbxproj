@@ -51,9 +51,6 @@
 		80657BA827CABEAE009BED1A /* MapSnippet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80657BA727CABEAE009BED1A /* MapSnippet.swift */; };
 		80657BAA27CAC64B009BED1A /* MapViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80657BA927CAC64A009BED1A /* MapViewManager.swift */; };
 		80657BAC27CAC68A009BED1A /* DetailedMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80657BAB27CAC68A009BED1A /* DetailedMapView.swift */; };
-		80657BAF27CADF06009BED1A /* MapboxSearch in Frameworks */ = {isa = PBXBuildFile; productRef = 80657BAE27CADF06009BED1A /* MapboxSearch */; };
-		80657BB127CADF06009BED1A /* MapboxSearchUI in Frameworks */ = {isa = PBXBuildFile; productRef = 80657BB027CADF06009BED1A /* MapboxSearchUI */; };
-		80657BB627CAE155009BED1A /* MapboxMaps in Frameworks */ = {isa = PBXBuildFile; productRef = 80657BB527CAE155009BED1A /* MapboxMaps */; };
 		80657BB827CC2791009BED1A /* MapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80657BB727CC2791009BED1A /* MapViewModel.swift */; };
 		807631A027B1A22B00A91E94 /* UserFriends.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8076319F27B1A22B00A91E94 /* UserFriends.swift */; };
 		807631A227B8516600A91E94 /* SetDetailedDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807631A127B8516600A91E94 /* SetDetailedDate.swift */; };
@@ -286,17 +283,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				80657BAF27CADF06009BED1A /* MapboxSearch in Frameworks */,
 				80C1207E272E0341006D125D /* FirebaseMessaging in Frameworks */,
 				80C12084272E06A1006D125D /* FacebookCore in Frameworks */,
-				80657BB627CAE155009BED1A /* MapboxMaps in Frameworks */,
 				80C120AF272F86C9006D125D /* ActivityIndicatorView in Frameworks */,
 				80A8B71127A5E629002A5C58 /* GoogleSignIn in Frameworks */,
 				80543CC927C1ACF200E77307 /* MapKit.framework in Frameworks */,
 				80E721672790AA4A00FBB6E3 /* FirebaseFunctions in Frameworks */,
 				80C1207A272E0341006D125D /* FirebaseAuth in Frameworks */,
 				80C12080272E0341006D125D /* FirebaseStorage in Frameworks */,
-				80657BB127CADF06009BED1A /* MapboxSearchUI in Frameworks */,
 				80C12086272E06A1006D125D /* FacebookLogin in Frameworks */,
 				80CB8E6B27DE8F2900C46734 /* GeoFire in Frameworks */,
 				802E5609275C592900464CA6 /* Lottie in Frameworks */,
@@ -712,9 +706,6 @@
 				802E5608275C592900464CA6 /* Lottie */,
 				80E721662790AA4A00FBB6E3 /* FirebaseFunctions */,
 				80A8B71027A5E629002A5C58 /* GoogleSignIn */,
-				80657BAE27CADF06009BED1A /* MapboxSearch */,
-				80657BB027CADF06009BED1A /* MapboxSearchUI */,
-				80657BB527CAE155009BED1A /* MapboxMaps */,
 				80CB8E6A27DE8F2900C46734 /* GeoFire */,
 				80CB8E6C27DE8F2900C46734 /* GeoFireUtils */,
 			);
@@ -923,7 +914,7 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = AZ5YZ6A37J;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "notifications for mealq/Info.plist";
@@ -949,7 +940,7 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = AZ5YZ6A37J;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "notifications for mealq/Info.plist";
@@ -1095,7 +1086,7 @@
 				CODE_SIGN_ENTITLEMENTS = mealq/mealq.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_ASSET_PATHS = "\"mealq/Preview Content\"";
 				DEVELOPMENT_TEAM = AZ5YZ6A37J;
 				ENABLE_PREVIEWS = YES;
@@ -1133,7 +1124,7 @@
 				CODE_SIGN_ENTITLEMENTS = mealq/mealq.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_ASSET_PATHS = "\"mealq/Preview Content\"";
 				DEVELOPMENT_TEAM = AZ5YZ6A37J;
 				ENABLE_PREVIEWS = YES;
@@ -1294,21 +1285,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 802E5607275C592900464CA6 /* XCRemoteSwiftPackageReference "lottie-ios" */;
 			productName = Lottie;
-		};
-		80657BAE27CADF06009BED1A /* MapboxSearch */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 80657BAD27CADF06009BED1A /* XCRemoteSwiftPackageReference "search-ios" */;
-			productName = MapboxSearch;
-		};
-		80657BB027CADF06009BED1A /* MapboxSearchUI */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 80657BAD27CADF06009BED1A /* XCRemoteSwiftPackageReference "search-ios" */;
-			productName = MapboxSearchUI;
-		};
-		80657BB527CAE155009BED1A /* MapboxMaps */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 80657BB427CAE155009BED1A /* XCRemoteSwiftPackageReference "mapbox-maps-ios" */;
-			productName = MapboxMaps;
 		};
 		80A8B71027A5E629002A5C58 /* GoogleSignIn */ = {
 			isa = XCSwiftPackageProductDependency;
