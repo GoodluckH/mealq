@@ -28,6 +28,7 @@ struct MessageView: View {
     @State private var scrollView: UIScrollView? = nil
     @State private var firstMsgToFocus: String? = nil
     @State private var showingDetailedMeal = false
+    @State private var showingAlert = false
     
     @FocusState private var isFocused: Bool
     
@@ -106,7 +107,6 @@ struct MessageView: View {
                                             // TODO: Need to add a logic here, otherwise it will scroll down
                                             
                                             if meal.unreadMessages > 0 {
-                                                UIApplication.shared.applicationIconBadgeNumber = UIApplication.shared.applicationIconBadgeNumber - meal.unreadMessages
                                                 mealsManager.setMessageAsViewed(mealID: meal.id, count: meal.unreadMessages)
                                                 withAnimation(.easeOut.speed(3)){reader.scrollTo(messagesManager.messages.last!.id, anchor: .bottom)}
                                             }
@@ -115,7 +115,16 @@ struct MessageView: View {
                                             reFocus = false
                                             withAnimation(.easeOut.speed(3)){reader.scrollTo(messagesManager.messages.last!.id, anchor: .bottom)}
                                         }
+                                    }.contextMenu {
+                                        Button(action: {showingAlert = true}) {
+                                            Text("Report")
+                                        }
+                                    }.alert("Report Content", isPresented: $showingAlert) {
+                                        Button("Yes", role: .destructive) {}
+                                    } message: {
+                                        Text("Is this message inappropriate? We will review this report within 24 hrs and if deemed inappropriate the message will be removed within that timeframe. We will also take actions against it's sender.")
                                     }
+
                                 }
                             
                             GeometryReader { proxy -> Color in

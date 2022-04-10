@@ -16,13 +16,25 @@ struct ConnectButton: View {
     @EnvironmentObject var sessionStore: SessionStore
     @State private var showPendingSheet = false
     @State private var showUnfriendSheet = false
+    @State private var showingAlert = false
+    
+    @State private var blocked = false
     
     var body: some View {
 
         GeometryReader{ geometry in
      
-            // if it's a friend, then display the button for removing this friend
-            if friendsManager.friends.contains(user) {
+          VStack {
+              // if it's a friend, then display the button for removing this friend
+              
+              if blocked {
+                  HStack {
+                      Spacer()
+                      Text("Blocked")
+                      Spacer()
+                  }
+              }
+              else if friendsManager.friends.contains(user) {
                 HStack{
                     Spacer()
                     Button(action: {showUnfriendSheet = true}) {
@@ -132,9 +144,25 @@ struct ConnectButton: View {
                 
                 
             }
-                
-                
-                
+              
+              Spacer()
+              Spacer()
+              Spacer()
+              
+              if blocked {
+                  Button(action: {blocked = false}) {
+                      Text("Unblock User")
+                  }
+              } else {
+                  Button(action: {blocked = true}) {
+                      Text("Block User").foregroundColor(.red)
+                  }
+              }
+          
+              
+              Spacer()
+              Spacer()
+            }
                 
                 
             } // GeometryReader

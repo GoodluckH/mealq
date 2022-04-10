@@ -13,9 +13,13 @@ struct ContentView: View {
     
     var body: some View {
         MainAppView()
-            .fullScreenCover(isPresented: $sessionStore.isAnon) {
+            .fullScreenCover(isPresented: $sessionStore.isAnon || !$sessionStore.agreedToEULA) {
                 ZStack{
-                    UserLoginView()
+                    if sessionStore.localUser == nil {
+                        UserLoginView()
+                    } else if !sessionStore.agreedToEULA {
+                        EULA()
+                    }
                 }
             }
     }
@@ -23,9 +27,18 @@ struct ContentView: View {
 
 
 
+extension Binding where Value == Bool {
 
-
-
+    static func ||(_ lhs: Binding<Bool>, _ rhs: Binding<Bool>) -> Binding<Bool> {
+        return Binding<Bool>( get: { lhs.wrappedValue || rhs.wrappedValue },
+                              set: {_ in })
+    }
+    
+    static prefix func !(_ lhs: Binding<Bool>) -> Binding<Bool> {
+        return Binding<Bool>(get:{ !lhs.wrappedValue },
+                             set: { lhs.wrappedValue = !$0})
+    }
+}
 
 
 

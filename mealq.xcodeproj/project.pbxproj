@@ -43,6 +43,7 @@
 		802E5611275D371200464CA6 /* DateSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802E5610275D371200464CA6 /* DateSelection.swift */; };
 		802E5613275FA74300464CA6 /* MealsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802E5612275FA74300464CA6 /* MealsManager.swift */; };
 		802E56172763CA0E00464CA6 /* error.json in Resources */ = {isa = PBXBuildFile; fileRef = 802E56162763CA0E00464CA6 /* error.json */; };
+		80387F70280368E300AFA74D /* EULA.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80387F6F280368E300AFA74D /* EULA.swift */; };
 		8044610627D401A0006F547E /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8044610527D401A0006F547E /* MapView.swift */; };
 		8044610827D40FA9006F547E /* MapSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8044610727D40FA9006F547E /* MapSearchBar.swift */; };
 		80543CC727C1734200E77307 /* ExpandableInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80543CC627C1734100E77307 /* ExpandableInfo.swift */; };
@@ -190,6 +191,7 @@
 		802E5610275D371200464CA6 /* DateSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateSelection.swift; sourceTree = "<group>"; };
 		802E5612275FA74300464CA6 /* MealsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealsManager.swift; sourceTree = "<group>"; };
 		802E56162763CA0E00464CA6 /* error.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = error.json; sourceTree = "<group>"; };
+		80387F6F280368E300AFA74D /* EULA.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EULA.swift; sourceTree = "<group>"; };
 		8044610527D401A0006F547E /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		8044610727D40FA9006F547E /* MapSearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapSearchBar.swift; sourceTree = "<group>"; };
 		80543CC627C1734100E77307 /* ExpandableInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandableInfo.swift; sourceTree = "<group>"; };
@@ -485,6 +487,7 @@
 				80C12092272E4FFA006D125D /* Tabs */,
 				80C12068272E02CB006D125D /* ContentView.swift */,
 				80C12090272E4F62006D125D /* UserLoginView.swift */,
+				80387F6F280368E300AFA74D /* EULA.swift */,
 				80C1209F272E511D006D125D /* MainAppView.swift */,
 				80EFC38927336984005520D3 /* ReferralView.swift */,
 			);
@@ -844,6 +847,7 @@
 				80E9389227A42D8E00B06ED2 /* ActivitiesZone.swift in Sources */,
 				80EFC37B2732EF78005520D3 /* SearchBarComponents.swift in Sources */,
 				80C120B7272F98B8006D125D /* ResizeFont.swift in Sources */,
+				80387F70280368E300AFA74D /* EULA.swift in Sources */,
 				80C12098272E502E006D125D /* ProfileView.swift in Sources */,
 				80657BB827CC2791009BED1A /* MapViewModel.swift in Sources */,
 				80EFC37F27330A19005520D3 /* QueryScreen.swift in Sources */,
@@ -914,7 +918,7 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = AZ5YZ6A37J;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "notifications for mealq/Info.plist";
@@ -940,7 +944,7 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = AZ5YZ6A37J;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "notifications for mealq/Info.plist";
@@ -1086,7 +1090,7 @@
 				CODE_SIGN_ENTITLEMENTS = mealq/mealq.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_ASSET_PATHS = "\"mealq/Preview Content\"";
 				DEVELOPMENT_TEAM = AZ5YZ6A37J;
 				ENABLE_PREVIEWS = YES;
@@ -1124,7 +1128,7 @@
 				CODE_SIGN_ENTITLEMENTS = mealq/mealq.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_ASSET_PATHS = "\"mealq/Preview Content\"";
 				DEVELOPMENT_TEAM = AZ5YZ6A37J;
 				ENABLE_PREVIEWS = YES;

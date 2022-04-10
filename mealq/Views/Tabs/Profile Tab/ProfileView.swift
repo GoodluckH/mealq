@@ -14,6 +14,7 @@ struct ProfileView: View {
     @ObservedObject var miniFriendsManager = MiniFriendsManager()
     @State private var showUserDeletion = false
     @State private var showFriends = false
+    @State private var showingAlert = false
     
     var body: some View {
             
@@ -79,6 +80,13 @@ struct ProfileView: View {
                         sessionStore.deleteUser()
                     }
                     
+                }
+                
+                Button("contact developer") {
+                    showingAlert = true
+                }.alert("Hi there!", isPresented: $showingAlert)
+                {} message: {
+                    Text("contact us at mealq.app@gmail.com")
                 }
             
             }.padding()

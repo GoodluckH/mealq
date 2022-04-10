@@ -68,6 +68,9 @@ class MealsManager: ObservableObject {
                             if let idx = self.pendingMeals.firstIndex(where: {($0.payload as! Meal).id == mealID}) {
                                 self.pendingMeals.remove(at: idx)
                             }
+                            if let idx = self.acceptedMeals.firstIndex(where: {$0.id == mealID}) {
+                                self.acceptedMeals.remove(at: idx)
+                            }
                         }
                         
                         // TODO: add the logic for rejected meals

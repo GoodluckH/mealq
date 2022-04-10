@@ -40,8 +40,7 @@ struct UserProfileView: View {
                     if !friendsManager.queriedFriends {friendsManager.getFriendsFrom(user.id)}
                 }
                .padding(.top)
-               //.navigationBarBackButtonHidden(true)
-               // .navigationBarItems(leading: goBackButton)
+   
                
          
     }

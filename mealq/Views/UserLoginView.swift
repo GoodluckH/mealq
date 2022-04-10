@@ -66,10 +66,7 @@ struct UserLoginView: View {
                         .buttonStyle(mealqButtonStyle(clipShape: Capsule()))
                         .frame(width: UIScreen.main.bounds.width * 0.8, height: 60)
                     
-                    
-//                    Button("Demo Login (for Apple employees only)") {
-//                        sessionStore.demoLogin()
-//                    }
+
             }
         }
             

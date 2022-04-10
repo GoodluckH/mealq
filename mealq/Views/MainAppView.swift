@@ -97,6 +97,8 @@ struct MainAppView: View {
         } .environmentObject(mealsManager)
             .environmentObject(messagesManager)
             .environmentObject(activitiesManager)
+
+        
     }
 }
 

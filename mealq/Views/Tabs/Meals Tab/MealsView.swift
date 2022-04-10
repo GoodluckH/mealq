@@ -87,7 +87,6 @@ struct MealsView: View {
 
                                    }.onDisappear {
                                        if currentMeal.unreadMessages > 0 {
-                                           UIApplication.shared.applicationIconBadgeNumber = UIApplication.shared.applicationIconBadgeNumber - currentMeal.unreadMessages
                                            mealsManager.setMessageAsViewed(mealID: currentMeal.id, count: currentMeal.unreadMessages)
                                        }
                                        sharedMealVariables.showUnreadBadges = true

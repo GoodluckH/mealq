@@ -146,7 +146,6 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
 
     // Print full message.
     print(userInfo)
-      UIApplication.shared.applicationIconBadgeNumber = UIApplication.shared.applicationIconBadgeNumber + 1
       
       var notificationType: UNNotificationPresentationOptions = []
       

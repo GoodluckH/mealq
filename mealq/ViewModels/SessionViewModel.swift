@@ -41,6 +41,7 @@ struct AppleUser: Codable {
 class SessionStore: ObservableObject {
     @Published var localUser: MealqUser?
     @Published var isAnon = false
+    @Published var agreedToEULA = false
     
     private var handle: AuthStateDidChangeListenerHandle?
     
