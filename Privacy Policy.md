@@ -20,6 +20,7 @@ Link to privacy policy of third party service providers used by the app
 *   [Facebook](https://www.facebook.com/about/privacy/update/printable)
 
 **Data Deletion**
+
 If you would like to completely delete your data linked to mealq, please contact me at lixipu98@gmail.com with your username and login method (Facebook, Google, or Apple). I will perform the deletion in 3 business days and send a confirmation email back upon successful deletion.
 
 
