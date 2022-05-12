@@ -19,6 +19,12 @@ Link to privacy policy of third party service providers used by the app
 *   [Google Analytics for Firebase](https://firebase.google.com/policies/analytics)
 *   [Facebook](https://www.facebook.com/about/privacy/update/printable)
 
+We collect the following data:
+*  Fullname -  we use this so that other users can find you on the app
+*  Email - not being used for any purpose at this time; but in the future, we may ask your consent for us to send you feature updates
+*  iOS Device Tokens - we use this so that our backend service can deliver notifications on your device
+*  Profile pic links - to display your profile pic in the app
+
 **Data Deletion**
 
 If you would like to completely delete your data linked to mealq, please contact me at lixipu98@gmail.com with your username and login method (Facebook, Google, or Apple). I will perform the deletion in 3 business days and send a confirmation email back upon successful deletion.
